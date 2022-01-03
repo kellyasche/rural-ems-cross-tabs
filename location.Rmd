@@ -1,0 +1,1655 @@
+---
+title: "Location crosstabs"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 4
+runtime: shiny
+resource_files:
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.cpg
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.dbf
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.prj
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.sbn
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.sbx
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.shp.xml
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.shx
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(sf)
+library(ggrepel)
+library(scales)
+library(shiny)
+library(shinycssloaders)
+library(ggiraph)
+library(kableExtra)
+library(rmapshaper)
+library(cowplot)
+library(DT)
+library(htmlwidgets)
+library(RColorBrewer)
+library(extrafont)
+library(readxl)
+library(janitor)
+library(lubridate)
+library(gmodels)
+library(infer)
+library(broom)
+library(crosstable)
+
+loadfonts()
+```
+
+```{r loading jon docs and shapefiles, cache=TRUE, include=FALSE}
+theme_bar <- theme_bw() +
+  theme(panel.grid.major = element_line(color = "grey70", size = 0.1),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text = element_text(face = "bold"),
+        panel.border = element_blank(),
+        legend.background = element_rect(fill = "transparent", color = "transparent"),
+        legend.key = element_rect(fill = "transparent"),
+        legend.key.size = unit(1, "lines"),
+        legend.margin = margin(0,0,0,0),
+        legend.title = element_blank(),
+        legend.text = element_text(margin = margin(l = 2)),
+        text = element_text(family = "Arial"))
+
+theme_line <- theme_bw() +
+  theme(legend.background = element_rect(fill = "transparent", color = "transparent"),
+        legend.key = element_rect(fill = "transparent"),
+        legend.text = element_text(margin = margin(l = 2)),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_line(color = "grey70", size = 0.1),
+        axis.ticks = element_blank(),
+        axis.text = element_text(face = "bold"),
+        panel.border = element_blank(),
+        legend.margin = margin(0,0,0,0),
+        legend.key.size = unit(1, "lines"),
+        text = element_text(family = "Arial"))
+
+
+theme_sf <- theme_bw() +
+  theme(axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks=element_blank(),
+        panel.background = element_blank(),
+        panel.grid.major = element_line(color = "white"),
+        panel.border = element_blank(),
+        plot.title = element_text(hjust = 0.5),
+        legend.title = element_blank(),
+        legend.text = element_text(margin = margin(l = 2)),
+        legend.margin = margin(0,0,0,0),
+        legend.key.size = unit(1, "lines"),
+        text = element_text(family = "Arial"))
+
+regions <- read_csv("Data/Join docs/county_regions.csv") %>%
+    select(5,6) %>%
+    unique() %>%
+    mutate(edr = str_replace(edr, "  ", " "),
+           planning.region = str_replace(planning.region, " Minnesota", ""),
+           planning.region = fct_relevel(planning.region, "Northwest", "Northeast", "Central", "Seven County Mpls-St Paul", "Southwest", "Southeast"),
+           edr = fct_relevel(edr, "EDR 1 - Northwest", "EDR 2 - Headwaters", "EDR 3 - Arrowhead", "EDR 4 - West Central", "EDR 5 - North Central", "EDR 6E- Southwest Central", "EDR 6W- Upper Minnesota Valley", "EDR 7E- East Central", "EDR 7W- Central", "EDR 8 - Southwest", "EDR 9 - South Central", "EDR 10 - Southeast", "EDR 11 - 7 County Twin Cities", "Minnesota"))
+
+counties.regions <- read_csv("Data/Join docs/county_regions.csv") %>%
+  rename(mif = `MIF Region`) %>%
+  mutate(countyfp = formatC(countyfp, width = 3, flag = "0"),
+         Name = str_to_title(Name),
+         Name = str_replace(Name, "Q", "q"),
+         Name = str_replace(Name, "Of The", "of the"),
+         Name = str_replace(Name, "Mcleod", "McLeod"),
+         Dem_Desc = ifelse(Name == "Minnesota", "Minnesota", Dem_Desc) ,
+         edr = str_replace(edr, "  ", " "),
+         planning.region = str_replace(planning.region, " Minnesota", ""),
+         planning.region = fct_relevel(planning.region, "Northwest", "Northeast", "Central", "Seven County Mpls-St Paul", "Southwest", "Southeast"),
+         edr = fct_relevel(edr, "EDR 1 - Northwest", "EDR 2 - Headwaters", "EDR 3 - Arrowhead", "EDR 4 - West Central", "EDR 5 - North Central", "EDR 6E- Southwest Central", "EDR 6W- Upper Minnesota Valley", "EDR 7E- East Central", "EDR 7W- Central", "EDR 8 - Southwest", "EDR 9 - South Central", "EDR 10 - Southeast", "EDR 11 - 7 County Twin Cities", "Minnesota"),
+         mif = ifelse(is.na(mif), "TC", mif),
+         mif = as.factor(mif),
+         mif = fct_relevel(mif, "NW", "NE", "WC", "EC", "SW", "SE", "TC"))
+
+color.ruca <- c("Entirely rural" = "#009933", "Town/rural mix" = "#99CC33", "Urban/town/rural mix" = "#CC9966", "Entirely urban" = "#754C29", "Minnesota" = "black")
+
+color.pr <- c("Northwest" = 	"#4575b4", "Northeast" = "#e0f3f8", "Central" = "#fee090", "Seven County Mpls-St Paul" = "#d73027", "Southwest" = "#91bfdb", "Southeast" = "#fc8d59", "Minnesota" = "black")
+
+color.edr <- c("EDR 1 - Northwest" = "#b3cde3", "EDR 2 - Headwaters" = "#8c96c6", "EDR 3 - Arrowhead" = "#fe9929", "EDR 4 - West Central" = "#8856a7", "EDR 5 - North Central" = "#810f7c", "EDR 6E- Southwest Central" = "#e5f5f9", "EDR 6W- Upper Minnesota Valley" = "#bdc9e1", "EDR 7E- East Central" = "#99d8c9", "EDR 7W- Central" = "#2ca25f", "EDR 8 - Southwest" = "#74a9cf", "EDR 9 - South Central" = "#0570b0", "EDR 10 - Southeast" = "#d7301f", "EDR 11 - 7 County Twin Cities" = "#d8b365", "Minnesota" = "black")
+
+color.pr.edr <- c ("Northwest" = "#4575b4","Northeast" = "#e0f3f8", "Central" = "#fee090", "Seven County Mpls-St Paul" = "#d73027", "Southwest" = "#91bfdb", "Southeast" = "#fc8d59", "Minnesota" = "black", "EDR 1 - Northwest" = "#b3cde3", "EDR 2 - Headwaters" = "#8c96c6", "EDR 3 - Arrowhead" = "#fe9929", "EDR 4 - West Central" = "#8856a7", "EDR 5 - North Central" = "#810f7c", "EDR 6E- Southwest Central" = "#e5f5f9", "EDR 6W- Upper Minnesota Valley" = "#bdc9e1", "EDR 7E- East Central" = "#99d8c9", "EDR 7W- Central" = "#2ca25f", "EDR 8 - Southwest" = "#74a9cf", "EDR 9 - South Central" = "#0570b0", "EDR 10 - Southeast" = "#d7301f", "EDR 11 - 7 County Twin Cities" = "#d8b365")
+
+mn_counties <- st_read("Data/Shapefiles/county shapefiles/MNCounties_MNDOT.shp", quiet = TRUE) %>%
+  ms_simplify(keep = .01, keep_shapes = TRUE) %>%
+  rename(countyfp = FIPS_CODE)
+
+```
+
+```{r master response, include=FALSE, cache=TRUE}
+master.responses <- read_csv("Data/Responses/Master-survey-responses.csv") %>%
+  mutate(region = fct_relevel(region, "Northeast", "Northwest", "West Central", "Central", "Southwest", "South Central", "Southeast"))
+
+```
+
+<br>
+
+This section of analysis examines whether the region at all influenced how an agency responded to questions in the survey. The region question was;
+
+**What is your local EMS service region according to the EMSRB?**
+
+Respondents were provided the following options, listed in order of most respondents on top;
+
+* Southwest (40, 22%)
+* Southeast (39, 21%)
+* South Central (27, 14.5%)
+* Central (22, 12%)
+* Northeast (20, 11%)
+* Northwest (17, 9%)
+* West Central (17, 9%)
+* Metro (1, 1%)
+
+The metro response was eliminated from analysis.
+
+The survey was broken into 7 different sections. The three sections in bold is what was included  in the analysis due to the MN Department of Health providing incomplete data. You can navigate to the analysis of any of these sections using the table of contents on the left-hand side. The sections are.
+
+1. **Characteristics questions**
+2. **Workforce sustainability questions**
+3. **Leadership questions**
+4. Education questions
+5. Medical direction questions
+6. Community relation questions
+7. Funding questions
+
+The analysis used for the cross tabs is the typical chi-square test with p-value.
+
+<br>
+
+# Summary of results{.tabset}
+
+The tabs below summarize which questions showed a relationship to an agency's region and combines the executive summary from the MN Department of Health's analysis with the relationships found in this analysis.
+
+<br>
+
+## Questions with relationships
+
+The following are the questions that showed a statistical significance indicating a relationship between an agency's region and how they responded. 
+
+* Characteristics section
+  + What type of ownership best describes your agency?
+  + Is your agency owned, managed or does it receive support from a corporate health system?
+  + What type of services do you provide?
+  + How are staff compensated, not including the agency director?
+
+* Workforce sustainability section
+  + Which of the following items are obstacles to recruiting EMS staff for your agency? - training requirements time consuming.
+  + Which of the following items are obstacles to retaining staff for your agency? - community is too isolated
+  
+* Leadership section
+  + Has the EMS manager of your agency had formal leadership or management training?
+  + Which areas are most difficult to manage? - medical direction
+  
+<br>
+
+## Addition to MN Department of Health Summary
+
+The following narrative combines the executive summary from the MN Department of Health's aggregate analysis of the survey with the relationships found in this analysis. Hopefully this will round out the results a bit better and point to more specific trends within the results.
+
+<br>
+
+### Characteristics section{.unnumbered .unlisted .toc-ignore}
+
+**Key Findings**
+
+Most rural EMS agencies provide basic life support services to relatively small populations spread across large geographic areas. Along with low daily call volumes, these realities exacerbate the inability to create sustainable business and staffing models.
+
+* The median call volume is nearly one call per day
+* Over half of the agencies cover more than 200 square miles; 37 percent cover more than 300
+square miles
+* Over half of the agencies serve populations of less than 5,000
+
+However, it is worth noting that there were some differences in responses depending on region. 
+
+
+* *Type of ownership:* although a majority of agencies indicated that they were publicly owned and managed (61% of total responses), this was largely driven by responses in Southwest (67% of responses), South Central (75% of responses) and Southeast (79% of responses). Agencies in Northwest and Central were actually more likely to indicate that they were privately owned or a non-profit at a significantly higher rate, 83% and 68% of responses, respectively. 
+* *Owned, managed or receive corporate health support:* although a small percentage of agencies indicated that they were owned, managed or receive support from a corporate health system (27% of total responses), agencies in the Northwest and Central regions did at a significantly higher rate - 53% and 55% of agencies, respectively.
+* *Types of services offered:* although a very large percentage of agencies responded that they provide basic life support (88.2% of total responses), this high percentage was driven by high percentages in Northeast (95% of responses), Southwest (95% of responses), South Central (100% of responses) and Southeast (100% of responses).  On the flip side, a majority of agencies in Northwest and Central regions responded that they provide advanced life support - 59% and 50%, respectively. 
+* *Staff compensation:* although a majority of agencies responded that they pay their staff using a volunteer / on call compensation structure (57% of total responses), this was driven by very high percentage of responses in the Southwest and South Central regions - 81% and 75% of their agencies, respectively. And although there was a very small percentage of total agencies responding that they pay their staff (20% of total responses), agencies in Northwest and Central responded that they pay their staff at a significantly higher rate - 35% and 46%, respectively.
+
+These relationships point to a few potential questions - what is it about agencies in Northwest and Central that leads them to be owned, managed, or receive support from a corporate healthcare system, more likely to offer advanced life support and more likely to pay their staff?
+
+<br>
+
+### Workforce sustainability section{.unnumbered .unlisted .toc-ignore}
+
+**Key Findings**
+
+Staffing shortages are a major challenge for rural EMS agencies. Eighty (80) percent utilize some version of volunteers to staff their operations. Roster sizes are decreasing, many staff are trained for multiple public functions and many call schedules are not covered 24 hours prior to the shifts.
+
+* The active staff roster decreased for half of the agencies from the previous year
+* Weekday daytime hours are the most difficult shifts to cover. However, all weekend and holiday
+shifts are also difficult to cover
+* About 60 percent of agencies have inadequate staff to cover their call schedule without undue
+burden to the agency.
+* Fifty-nine (59) percent of agencies do not have their shifts 100 percent covered at least 24 hours in
+advance
+
+Recruitment and retention of ambulance personnel continues to be a significant challenge even though:
+* Emergency Medical Responders (EMRs) are now widely used to actively staff rural EMS agencies
+* Most agencies cover the full cost of the continuing education courses for their staff
+* Most eligible recipients take advantage of state EMS training reimbursement
+
+However, it is worth noting that there were some differences in responses depending on region. 
+
+* *Obstacles to recruiting - training takes too much time:* Although a majority of agencies (58.1%) indicated that training requirements taking too much time was an obstacle to staff recruitment, agencies in Northeast and Central responded at a significantly lower rate than expected - 40% and 23% respectively. On the other hand Southwest responded that this was a barrier to staff retention at a significantly higher rate than other regions - 74%.
+* *Obstacles to retention - community is too isolated: * In the aggregate, this question received very few confirmations as being a barrier to staff retention (10% of responses). However, agencies in Northeast Minnesota did respond that it was a barrier at a significantly higher rate than other regions - 35%.
+
+Overall, there were not any big differences in the aggregate results from the regional breakdown. The MN Department of Health's summary of the results mostly align with all regions.
+
+<br>
+
+### Leadership section{.unnumbered .unlisted .toc-ignore}
+
+**Key Findings**
+
+The largest problems that rural EMS agency managers face today, as in the past, are recruitment of staff and filling call schedules. These two management tasks seem to form a Maslow’s Hierarchy of basic management needs (see Appendix C, Question 24). It may be that efforts to address other management issues will be fruitless and/or unwelcomed until these basic needs are addressed.
+
+* Sixty-nine (69) percent of rural EMS managers report difficulty recruiting staff despite the fact that 57.5 percent have a recruitment plan
+* Over half of rural EMS managers report difficulty staffing their schedule
+
+High leadership turnover was defined in this survey as an EMS agency having had three or more managers in the past five years. Using this definition, there is remarkably low turnover of rural EMS managers. A high majority of EMS managers have an active role in developing their budgets, but generally are not directly involved in billing.
+
+* Eighty-six (86) percent of services did not have high turnover of their managers
+* Eighty-one (81) percent of rural EMS managers have a role in developing their annual budgets
+* Eighty-one (81) percent use other resources to bill, with billing agencies as the most common at
+fifty-two (52) percent
+
+However, it is worth noting that there were a couple of differences in responses depending on region. 
+
+* *Leaders have been trained: * A slight majority of agencies in the aggregate indicated that their leadership has received management training (54%). However, agencies in Northeast and Central indicated that their leadership has received training at a significantly higher rate than other agencies - 70% and 77% respectively. On the flip side, agencies in Southwest and South Central indicated that their leadership received management training at a significantly lower rate - 33% and 36% respectively.
+* *Management challenge areas - medical direction: * Although there was very few agencies that indicated medical direction as a management challenge area in the aggregate (10% of total responses), agencies in Northwest and southwest did say it was a challenge at a significantly higher rate than expected 35% and 17% respectively. On the flip side, agencies in Southeast responded that it was a challenge at a significantly lower rate - 2%.
+
+Again, there were not many differences between the aggregate results from the regional breakdown. The MN Department of Health's summary of the results mostly align with all regions.
+
+<br>
+
+
+# Characteristics section analysis{.tabset}
+
+The questions in the demographic section of the survey are provided in tabs below along with the chi-square and p-value for the relationship between region and each question.
+
+The questions where region had a relationship in how an agency responded are summarized below.
+
+**Summary:** 
+
+*Type of ownership:* There was a relationship between region and the type of ownership that best described an agency. 
+
+* Northwest and Central had a higher percentage of responses indicating private or non-profit ownership than what was expected. 
+* Southeast had a lower percentage of responses indicating private or non-profit ownership than what was expected
+
+*Corporate health support:* There was a relationship between region and whether an EMS agency was owned, managed or receiving support from a corporate health system.
+
+* Northwest and Central agencies responded that they were owned, managed, or received support from a corporate health system at a higher rate than expected.
+* South Central and Southeast agencies responded that they were owned, managed or received support from a corporate health system at a lower rate than expected.
+
+*Types of services offered:* There was a relationship between region and a few of the services offered by the EMS agency.
+
+* Advanced life support and basic life support: In Northwest and Central a significantly higher than expected number of agencies responded they they offered advanced life support. This also means that they responded at a lower rate of offering basic life support. Vice versa for Southwest and South Central - lower rate than expected of offering advanced life support but higher for offering basic life support.
+
+*Staff compensation:* There is a relationship between region and how an agency responded to the type of compensation offered to their staff. 
+
+* Northwest had a significantly lower number than expected of agencies compensate using on-call stipends while also a significantly higher number than expected indicated they compensated through paid or a combination of paid and volunteer.
+* West Central was the same as Northwest in that it had a significantly lower number than expected of agencies compensate using on-call stipends, but unlike Northwest, had a significantly higher than expected number of agencies using a combination of paid and volunteer.
+* Central had a significantly lower number than expected of agencies using on-call stipends while also a significantly higher number of agencies paying their staff.
+* Southwest and South Central had a significantly higher number than expected of agencies using on-call stipends while also a lower number indicating they paid or used a combination of paid and volunteer.
+
+
+
+<br>
+
+## Type of ownership
+
+**Which type of ownership best describes your agency?**
+
+This question provided two options which are provided below and in order with top choice on top;
+
+* Public (61%)
+* Private (39%)
+
+There was a relationship between the region and how an agency responded to their type of ownership. 
+
+Agencies in the Northwest and Central regions responded that they were privately owned or a non-profit at a higher rate than expected.
+
+* Northwest: 15 responses (83%) vs. 7 expected (39%)
+* Central: 15 responses (68%) vs. 9 expected (39%)
+
+Agencies in the Southeast and South Central regions responded that they were privately owned or a non-profit at a lower rate than expected.
+
+* Southeast: 9 responses (21%) vs. 17 expected (39%)
+* South Central: 7 responses (25%) vs. 11 expected (39%)
+
+<br>
+
+```{r location and type of ownership}
+location.ownership <- master.responses %>%
+  select(2,4) %>%
+  rename(public.private = 2) %>%
+  drop_na() %>%
+  mutate(public.private = str_replace(public.private, "(e.g. city, county authority or joint powers board)", ""),
+         public.private = str_replace(public.private, "\\(\\)", ""),
+         public.private = str_replace(public.private, "Private or other non-profit owned or operated", "Private or non-profit"),
+         public.private = str_replace(public.private, "Public owned or operated", "Public"))
+
+CrossTable(location.ownership$region, location.ownership$public.private, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+## Corporate health support
+
+**Is your agency owned, managed or does it receive support from a corporate health system?**
+
+Respondents were provided two choices which are provided below and in order of the top one receiving the most responses;
+
+* No (72%)
+* Yes (27%)
+
+There is a relationship between region and whether their EMS received corporate health support.
+
+Agencies in the Northwest and Central regions are owned, managed or receive corporate health system support at a higher rate than expected.
+
+* Northwest: 9 responses (53%) vs. 5 expected (27%)
+* Central: 12 responses (55%) vs. 6 expected (27%)
+
+Agencies in the South Central and Southeast regions are owned, managed or receive corporate health system support at a lower rate than expected.
+
+* South Central: 4 responses (15%) vs. 8 expected (27%)
+* Southeast: 7 responses (17%) vs. 12 expected (27%)
+
+<br>
+
+```{r location and corporate health support}
+location.corp.health.support <- master.responses %>%
+  select(2,9) %>%
+  rename(corp.health.support = 2)
+
+
+CrossTable(location.corp.health.support$region, location.corp.health.support$corp.health.support, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+  
+
+```
+
+<br>
+
+## Services provided{.tabset}
+
+**What types of services do you provide?**
+
+This question provided 4 choices which are provided below in order of the top one receiving the most responses;
+
+* Basic Life Support (88%)
+* Advacned life support (27%)
+* Part-time advanced life support (17%)
+* Specialized advanced life support (9%)
+
+<br>
+
+```{r prep location and services provided}
+location.services <- master.responses %>%
+  select(2, 10:13) %>%
+  gather(key = "services", value = "provided", 2:5) %>%
+  mutate(provided = as_factor(provided),
+         services = str_replace(services, "ServicesProvided \\(Q11_1\\)", "Basic life support"),
+         services = str_replace(services, "ServicesProvided \\(Q11_2\\)", "Advanced life support"),
+         services = str_replace(services, "ServicesProvided \\(Q11_3\\)", "Part-time advanced life support"),
+         services = str_replace(services, "ServicesProvided \\(Q11_4\\)", "Specialized life support"),
+         services = as.factor(services),
+         provided = ifelse(provided == "-", "No", "Yes"))
+
+location.als <- location.services %>%
+  filter(services == "Advanced life support")
+
+location.bls <- location.services %>%
+  filter(services == "Basic life support")
+
+location.parttime.als <- location.services %>%
+  filter(services == "Part-time advanced life support")
+
+location.sls <- location.services %>%
+  filter(services == "Specialized life support")
+
+```
+
+### Advanced life support
+
+There is a relationship in whether an agency offers advanced lift support and the region they served.
+
+Agencies in the Northwest and Central offered advanced life support at a higher rate than expected.
+
+* Northwest: 10 responses (59%) vs. 5 expected (27%)
+* Central: 11 responses (50%) vs. 6 expected (27%)
+
+Agencies in Southwest and South Central offered advanced life support at a lower rate than expected.
+
+* Southwest: 7 responses (17%) vs. 12 expected (27%)
+* South Central: 1 response (4%) vs. 8 expected (27%)
+
+<br>
+
+```{r advanced life support contingency table}
+
+CrossTable(location.als$region, location.als$provided, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Basic life support
+
+There is a relationship in whether an agency offers basic life support and their region.
+
+Agencies in the Northwest and Central regions offered basic life support at a lower rate than expected (due to them offering advanced life support at a higher rate).
+
+* Northwest: 11 responses (65%) vs. 15 expected (88%)
+* Central: 14 responses (64%) vs. 20 expected (88%).
+
+Agencies in Southwest, South Central and Southeast offered basic life support at a higher rate than expected.
+
+* Southwest: 40 responses (95%) vs. 37 expected (88%)
+* South Central: 28 responses (100%) vs. 25 expected (88%)
+* Southeast: 42 responses (100%) vs. 37 expected (88%)
+
+<br>
+
+```{r basic life support contingency table}
+
+CrossTable(location.bls$region, location.bls$provided, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Part-time Advanced life support
+
+There is no relation in whether an agency offers part-time life support and their region.
+
+<br>
+
+```{r part-time advanced life support contingency table}
+
+CrossTable(location.parttime.als$region, location.parttime.als$provided, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Specialized life support
+
+There is no relationship in whether an agency offers specialized life support and their region.
+
+<br>
+
+```{r specialized life support contingency table}
+
+CrossTable(location.sls$region, location.sls$provided, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+
+
+
+## Staff compensation
+
+**How are staff compensated, not including the agency director?**
+
+Respondents were provided 4 choices which are provided below and ranked with top choice receiving the most responses;
+
+* Volunteer, on call compensation (57%)
+* Paid, hourly wage or salary (20%)
+* Combination, volunteer and paid (17%)
+* Volunteer, no compensation (5%)
+
+There is a relationship in the type of compensation provided and region.
+
+* Northwest - Agencies in this region paid or had a combination of paid and volunteers at a higher rate than expected.
+  + Paid - 6 responses (35%) vs. 3 expected (20%)
+  + Paid and volunteer - 6 responses (35%) vs. 3 expected (17%)
+
+* West Central - Agencies in this region had a combination of paid and volunteer staff at a higher rate than expected while compensating using an on-call structure at a lower rate than expected.
+  + On-call: 5 responses (29%) vs. 10 expected (57%)
+  + Paid and volunteer: 8 responses (47%) vs. 3 expected (17%)
+  
+* Central - Agencies in this region paid their staff at a higher rate than expected. 
+  + Paid: 10 responses (46%) vs. 4 expected (20%)
+
+* Southwest - Agencies in this region use on-call compensation structures at a higher rate than expected.
+  + On-call: 34 responses (81%) vs. 24 expected (57%)
+
+* South Central - Agencies in this region use on-call compensation structures at a higher rate than expected.
+  + On-call: 21 responses (75%) vs. 16 expected (57%)
+
+<br>
+
+```{r location and compensation}
+loc.comp <- master.responses %>%
+  select(2,14) %>%
+  rename(compensation = 2) %>%
+  mutate(compensation = str_replace(compensation, "Combination of volunteer and paid staff", "Paid and vol"),
+         compensation = str_replace(compensation, "Paid; hourly wage or salary", "Paid"),
+         compensation = str_replace(compensation, "Volunteer \\(receive no compensation at all\\)", "Vol"),
+         compensation = str_replace(compensation, "Volunteer/Paid; on-call compensation \\(on-call compensation\\); meets statutory definition of volunteer https://www.revisor.mn.gov/statutes/\\?id=144E.001#stat.144E.001.15", "On-call"),
+         compensation = as.factor(compensation))
+
+CrossTable(loc.comp$region, loc.comp$compensation, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE, max.width = 2)
+  
+
+```
+
+<br>
+
+## Using EMS to staff ambulances
+
+**Are you using Emergency Medical Responders (EMRs) to routinely staff your ambulance(s)?**
+
+Respondents were provided two choices which are provided below in order of the selection with the most responses on top;
+
+* Yes (59%)
+* No (41%)
+
+There is no significant relationship in whether an agency uses EMS to staff their ambulance and regions.
+
+<br>
+
+```{r location and ems for staffing}
+loc.ems <- master.responses %>%
+  select(2,21) %>%
+  rename(ems.use = 2) 
+  
+CrossTable(loc.ems$region, loc.ems$ems.use, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+  
+
+```
+
+<br>
+
+## Compensation comparison
+
+**How does you compensation for EMS staff compare with other public safety agencies in your community?**
+
+Respondents were provided 4 choices, which are listed below in order of the top choice on top;
+
+* Worse (33%)
+* Same (29%)
+* Unknown (24%)
+* Better (13%)
+
+There is no relationship in compensation comparison and region.
+
+<br>
+
+```{r location and compensation comparison for staffing}
+loc.comp.comp <- master.responses %>%
+  select(2,22) %>%
+  rename(comp.comp = 2) 
+
+CrossTable(loc.comp.comp$region, loc.comp.comp$comp.comp, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+  
+
+```
+
+<br>
+
+# Workforce sustainability section analysis{.tabset}
+
+The questions in the workforce sustainability section of the survey are provided in tabs below along with the chi-square and p-value for the relationship between region and each question.
+
+The questions where region had a relationship in how an agency responded are summarized below.
+
+**Summary:**
+
+There were actually very few questions in this section that seemed to be influenced by region. 
+
+*Obstacles to recruiting:* Out of all the obstacle choices provided, only one seemed to get a different response dependent on region.
+
+* Training takes too much time: Southwest had a significantly higher number than expected of agencies indicating that this was a major obstacle to workforce recruitment.
+
+*Obstacles to retention:* Thirteen obstacles to retention were provided for respondents to select all that apply. Out of those thirteen, only two had a relationship with region.
+
+* Community is too isolated: Northeast had a significantly larger number than expected of agencies indicate that a community being too isolated was an obstacle to workforce retainment.
+
+
+<br>
+
+## Cover call schedule
+
+**Do you have enough people to cover your call schedule with undur burden or excessive time commitments?**
+
+Respondents were provided with two choices which are provided below in order of top choice listed first;
+
+* No (60%)
+* Yes (40%)
+
+There is no relationship in whether an agency has their call schedule covered and region.
+
+<br>
+
+```{r location and covering all schedule}
+loc.schedule <- master.responses %>%
+  select(2,23) %>%
+  rename(cover.sched = 2) 
+
+CrossTable(loc.schedule$region, loc.schedule$cover.sched, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+  
+
+```
+
+<br>
+
+## Roster changes
+
+**Over the past year, has the number of actie staff on your roster changed?**
+
+Respondents were provided three choices which are provided below in order of top choice listed first;
+
+* Decreased (50%)
+* Same (29%)
+* Increased (21%)
+
+There is no relationship in changes to roster at an agency and their location.
+
+<br>
+
+```{r location and roster changes}
+
+loc.rost <- master.responses %>%
+  select(2,24) %>%
+  rename(rost.changes = 2) %>%
+  mutate(rost.changes = str_replace(rost.changes, "Size of the active staff has not changed", "No change"),
+         rost.changes = as.factor(rost.changes))
+
+CrossTable(loc.rost$region, loc.rost$rost.changes, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+  
+
+```
+
+<br>
+
+## Recruitment plan
+
+**Does you agency have a recruitment plan?**
+
+Respondents were provided two choices which are provided below in order of top choice listed first;
+
+* Yes (58%)
+* No (41%)
+
+There is no relationship in whether an agency has a recruitment plan and their region.
+
+<br>
+
+```{r location and recruitment plan}
+
+loc.rec.plan <- master.responses %>%
+  select(2,25) %>%
+  rename(rec.plan = 2) 
+
+CrossTable(loc.rec.plan$region, loc.rec.plan$rec.plan, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+  
+
+```
+
+<br>
+
+## Difficult to recruit?
+
+**Is it difficult to recruit new EMS staff?**
+
+Respondents were provided three choices which are list below with the top choice first;
+
+* Yes (63%)
+* No (4%)
+* Sometimes (33%)
+
+There is no relationship in whether an agency feels it's difficult to recruit new staff and their region.
+
+<br>
+
+```{r location and difficult to recruit}
+
+loc.dif.rec <- master.responses %>%
+  select(2,26) %>%
+  rename(dif.rec = 2) 
+
+CrossTable(loc.dif.rec$region, loc.dif.rec$dif.rec, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+  
+
+```
+
+<br>
+
+## Cross-training of staff
+
+**Are any EMS staff cross-trained to work in police, fire, or other public service functions?**
+
+Respondents were provided two choices which are listed below with the top choice first;
+
+* Yes (74%)
+* No (25%)
+
+There is no relationship in whether an agency has staff cross-trained in other public emergency agencies and region.
+
+<br>
+
+```{r location and cross-training}
+
+loc.cross.train <- master.responses %>%
+  select(2,27) %>%
+  rename(cross.train = 2) 
+
+CrossTable(loc.cross.train$region, loc.cross.train$cross.train, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+  
+
+```
+
+<br>
+
+## Obstacles to recruiting{.tabset .tabset-pills}
+
+**Which of the following items are obstacles to recruiting EMS staff for your agency?**
+
+Respondents were provided 10 choices of which they coud select all that applied. The choices are provided below and in order with top choice listed first;
+
+* Time commitment is too great (67%)
+* Lack of availability (62%)
+* Training requirements are too time consuming (58%)
+* Lack of trained candidates (50%)
+* inadequate pay or benefits (40%)
+* Child care responsibilities (38%)
+* Training requirements are too far away (23%)
+* Too few runs or transports (14%)
+* Too many runs or transports (9%)
+* Other (5%)
+
+Out of all these, only "training takes too much time" showed a relationship with region. The most severe case was in Southwest where there were a significantly higher number of agencies reporting that this was a major obstacle in workforce recruitment.
+
+<br>
+
+```{r prep location and obstables to recruiting, include=FALSE, cache=TRUE}
+
+loc.obs.rec <- master.responses %>%
+  select(2,28:38) %>%
+  rename(lack.interest = 2,
+         lack.availability = 3,
+         lack.trained.cand = 4,
+         training.too.time = 5,
+         training.too.exp = 6,
+         training.too.dist = 7,
+         inadequate.pay = 8,
+         too.few.runs = 9,
+         too.many.runs = 10,
+         too.time.commit = 11,
+         child.care = 12) %>%
+  gather(key = "obstacle", value = "response", 2:12) %>%
+  mutate(response = ifelse(response == "-", "No", "Yes"))
+```
+
+### Lack of interest
+
+There is no relationship between region and whether lack of interest is considered an obstable to recruitment.
+
+<br>
+
+```{r location and obstables to recruiting - lack of interest}
+loc.obs.rec.int <- loc.obs.rec %>%
+  filter(obstacle == "lack.interest")
+
+CrossTable(loc.obs.rec.int$region, loc.obs.rec.int$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Lack of availability
+
+There is no relationship between region and whether lack of availability was considered an obstable to recruitment.
+
+<br>
+
+```{r location and obstables to recruiting - lack of availability}
+loc.obs.rec.availability <- loc.obs.rec %>%
+  filter(obstacle == "lack.availability")
+
+CrossTable(loc.obs.rec.availability$region, loc.obs.rec.availability$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Lack of trained candidates
+
+There is no relationship between region and whether there is a lack of trained candidates acting as an obstacle to recruitment.
+
+<br>
+
+```{r location and obstables to recruiting - lack of candidates}
+loc.obs.rec.trained.cand <- loc.obs.rec %>%
+  filter(obstacle == "lack.trained.cand")
+
+CrossTable(loc.obs.rec.trained.cand$region, loc.obs.rec.trained.cand$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Training takes too much time
+
+There is a relationship between region and whether training takes too much time and acts as an obstacle to recruitment.
+
+Agencies in Northeast and Central felt that training takes too much time was an obstacle to staff recruitment at a lower rate than expected.
+
+* Northeast: 8 responses (40%) vs. 12 expected (58%)
+* Central: 5 responses (23%) vs. 13 expected (58%)
+
+Agencies in Southwest felt that training takes too much time was an obstacle to staff recruitment at a higher rate than expected - 31 responses (74%) vs. 24 expected (58%)
+
+
+<br>
+
+```{r location and obstables to recruiting - training too much time}
+loc.obs.rec.training.time <- loc.obs.rec %>%
+  filter(obstacle == "training.too.time")
+
+CrossTable(loc.obs.rec.training.time$region, loc.obs.rec.training.time$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Training too expensive
+
+There is no relationship between region and whether trainings being too expensive was an obstacle to recruitment.
+
+<br>
+
+```{r location and obstables to recruiting - training too expensive}
+loc.obs.rec.training.exp <- loc.obs.rec %>%
+  filter(obstacle == "training.too.exp")
+
+CrossTable(loc.obs.rec.training.exp$region, loc.obs.rec.training.exp$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Training locations too far
+
+There is no relationship between region and whether trainings were too far to travel were obstacles to recruitment.
+
+<br>
+
+```{r location and obstables to recruiting - training too far}
+loc.obs.rec.trainings.too.far <- loc.obs.rec %>%
+  filter(obstacle == "training.too.dist")
+
+CrossTable(loc.obs.rec.trainings.too.far$region, loc.obs.rec.trainings.too.far$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Inadequate pay
+
+There is no relationship between region and whether inadequate pay was an obstacle to recruitment.
+
+<br>
+
+```{r location and obstables to recruiting - inadequate pay}
+loc.obs.rec.inadequate.pay <- loc.obs.rec %>%
+  filter(obstacle == "inadequate.pay")
+
+CrossTable(loc.obs.rec.inadequate.pay$region, loc.obs.rec.inadequate.pay$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Too few runs
+
+There is no relationship between region and whether too few runs is an obstacle to recruitment.
+
+<br>
+
+```{r location and obstables to recruiting - too few runs}
+loc.obs.rec.too.few.runs <- loc.obs.rec %>%
+  filter(obstacle == "too.few.runs")
+
+CrossTable(loc.obs.rec.too.few.runs$region, loc.obs.rec.too.few.runs$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Too many runs
+
+There is no relationship between region and whether too many runs was an obstacle in recruitment.
+
+<br>
+
+```{r location and obstables to recruiting - too many runs}
+loc.obs.rec.too.many.runs <- loc.obs.rec %>%
+  filter(obstacle == "too.many.runs")
+
+CrossTable(loc.obs.rec.too.many.runs$region, loc.obs.rec.too.many.runs$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Too much time commitment
+
+There is no relationship between region and whether too much of a time commitment was an obstacle to recruitment.
+
+<br>
+
+```{r location and obstables to recruiting - too much time commitment}
+loc.obs.rec.too.much.time <- loc.obs.rec %>%
+  filter(obstacle == "too.time.commit")
+
+CrossTable(loc.obs.rec.too.much.time$region, loc.obs.rec.too.much.time$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Child care obligations
+
+There is no relationship between region and whether child care obligations were an obstacle to recruitment.
+
+<br>
+
+```{r location and obstables to recruiting - child care}
+loc.obs.rec.child.care <- loc.obs.rec %>%
+  filter(obstacle == "child.care")
+
+CrossTable(loc.obs.rec.child.care$region, loc.obs.rec.child.care$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+## Retention strategy
+
+**Does your EMS agency have a retention strategy?**
+
+Respondents were given two options which are provided below in order of top choice first;
+
+* Yes (50%)
+* No (49%)
+
+There is no relationship between region and whether an agency has a retention strategy. However, the numbers do seem pretty significantly different to me. In particular, Southwest.
+
+Southwest - A significantly fewer number of agencies responded that they had a retention strategy. All other agencies were about even or had slightly higher number.
+
+<br>
+
+```{r location and retention strategy}
+loc.retention.strat <- master.responses %>%
+  select(2,41) %>%
+  rename(retention.strat = 2)
+
+CrossTable(loc.retention.strat$region, loc.retention.strat$retention.strat, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+## Trouble retaining staff
+
+**Does your agency have difficulty retaining existing staff?**
+
+Respondents were provided three choices which are below in order of top choice listed first;
+
+* Sometimes (84%)
+* Always (10%)
+* Never (5%)
+
+There is no relationship between the region and their response to if they were having difficulty retaining staff. Sometimes was the predominant answer no matter location of the agency.
+
+<br>
+
+```{r location and difficulty retaining staff}
+loc.retaining.staff <- master.responses %>%
+  select(region, 42) %>%
+  rename(retaining.staff = 2)
+
+CrossTable(loc.retaining.staff$region, loc.retaining.staff$retaining.staff, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+
+## Obstacles to retaining{.tabset .tabset-pills}
+
+**Which of the following items are obstacles to retaining staff for your agency?**
+
+This question provided a number of choices for an agency to select and were allowed to check all that apply. The choices are provided below in order of the choice receiving the most responses at the top and working our way down. The value in parenthesis is the percentage of responses it received.
+
+* Excessive time commitment or scheduling conflicts (72%)
+* Age: older crew members retiring (60%)
+* Inadequate pay or benefits (39%)
+* Employer does not allow staff to leave work for a call (37%)
+* Certification is too difficult to maintain (26%)
+* Limited advancement opportunities (23%)
+* Lack of recognition (14%)
+* Too many runs or transports (11%)
+* Community is too isolated (10%)
+* Other (10%)
+* Too few runs or transports (10%)
+* Dissatisfaction with EMS administrator/owner (5%)
+* Dissatisfaction with job duties (3%)
+* Dissatisfaction with EMS manager (1%)
+
+As can be seen, the first four received the most responses by far.
+
+There were only one of these choices that showed a relationship to region - community is too isolated.
+
+<br>
+
+```{r prep location and obstacles to retention, include=FALSE, cache=TRUE}
+loc.retention.obstacles <- master.responses %>%
+  select(2,43:55)  %>%
+  rename(retirement = 2,
+         time.committment = 3,
+         certification.maintain = 4,
+         inadequate.pay = 5,
+         limited.advancement = 6,
+         lack.recognition = 7,
+         community.too.isolated = 8,
+         employer.flexibility = 9,
+         too.many.runs = 10,
+         too.few.runs = 11,
+         dissatisfaction.owner = 12,
+         dissatisfaction.manager = 13,
+         dissatisfaction.duties = 14) %>%
+  gather(key = "obstacles", value = "response", 2:14) %>% 
+  mutate(response = ifelse(response == "-", "No", "Yes"))
+```
+
+<br>
+
+### Retirement
+
+There is no relationship between region and an agency's response to retirement being an obstacle to retention. However, Southwest and South Central seemed to be a bit different with significantly higher number of agencies responding that retirement is an obstacle.
+
+<br>
+
+```{r location and retention - retirement}
+loc.retention.retirement <- loc.retention.obstacles %>%
+  filter(obstacles == "retirement")
+
+CrossTable(loc.retention.retirement$region, loc.retention.retirement$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Time committment
+
+There is no relationship between region and an agency's response to whether excessive time commitment was an obstacle to retainment.
+
+<br>
+
+```{r location and retention - time committment}
+loc.retention.time.commit <- loc.retention.obstacles %>%
+  filter(obstacles == "time.committment")
+
+CrossTable(loc.retention.time.commit$region, loc.retention.time.commit$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Difficult to maintain certification
+
+There is no relationship between region and whether an agency indicated that difficulty to maintain certification was an obstacle to retainment.
+
+<br>
+
+```{r location and retention - maintain certification}
+loc.retention.maintain.certification <- loc.retention.obstacles %>%
+  filter(obstacles == "certification.maintain")
+
+CrossTable(loc.retention.maintain.certification$region, loc.retention.maintain.certification$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Inadequate pay
+
+There is no relationship between region and whether an agency indicated that inadequate pay was an obstacle to retainment.
+
+<br>
+
+```{r location and retention - inadequate pay}
+loc.retention.inadequate.pay <- loc.retention.obstacles %>%
+  filter(obstacles == "inadequate.pay")
+
+CrossTable(loc.retention.inadequate.pay$region, loc.retention.inadequate.pay$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Limited advancement
+
+There is no relationship between region and whether an agency indicated that limited advancement opportunities was an obstacle to staff retainment.
+
+<br>
+
+```{r location and retention - limited advancement opportunities}
+loc.retention.limited.advancement <- loc.retention.obstacles %>%
+  filter(obstacles == "limited.advancement")
+
+CrossTable(loc.retention.limited.advancement$region, loc.retention.limited.advancement$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Lack of recognition
+
+There is no relationship between region and whether an agency indicated lack of recognition was an obstacle to retainment.
+
+<br>
+
+```{r location and retention - lack of recognition}
+loc.retention.recognition <- loc.retention.obstacles %>%
+  filter(obstacles == "lack.recognition")
+
+CrossTable(loc.retention.recognition$region, loc.retention.recognition$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Community is too isolated
+
+There is a relationship between region and whether an agency indicated that the community is too isolated and acts as an obstacle to staff retainment.
+
+Agencies in Northeast had significantly higher number of agencies respond that being isolated is an obstacle to staff retainment - 7 responses (35%) vs. 2 expected (10%)
+
+<br>
+
+```{r location and retention - isolated community}
+loc.retention.isolated.community <- loc.retention.obstacles %>%
+  filter(obstacles == "community.too.isolated")
+
+CrossTable(loc.retention.isolated.community$region, loc.retention.isolated.community$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Employer won't allow staff to leave work
+
+There is no relationship between region and whether an agency indicated that employers not allowing staff to respond to calls during work hours was an obstacle to staff retainment.
+
+<br>
+
+```{r location and retention - employer flexibility}
+loc.retention.employer.flexibility <- loc.retention.obstacles %>%
+  filter(obstacles == "employer.flexibility")
+
+CrossTable(loc.retention.employer.flexibility$region, loc.retention.employer.flexibility$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Too many runs
+
+There is no relationship between region and whether an agency indicated that too many runs or transports was an obstacle in retainment.
+
+<br>
+
+```{r location and retention - too many runs}
+loc.retention.too.many.runs <- loc.retention.obstacles %>%
+  filter(obstacles == "too.many.runs")
+
+CrossTable(loc.retention.too.many.runs$region, loc.retention.too.many.runs$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Too few runs
+
+There is no relationship between region and an agency's response to whether too few runs or transports was an obstacle in staff retainment.
+
+<br>
+
+```{r location and retention - too few runs}
+loc.retention.too.few.runs <- loc.retention.obstacles %>%
+  filter(obstacles == "too.few.runs")
+
+CrossTable(loc.retention.too.few.runs$region, loc.retention.too.few.runs$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Dissastisfaction with EMS owners
+
+There is no relationship between region and an agency's response to whether dissatisfaction with ownership was an obstacle to retainment.
+
+<br>
+
+```{r location and retention - dissatisfaction with owners}
+loc.retention.dissatisfaction.owners <- loc.retention.obstacles %>%
+  filter(obstacles == "dissatisfaction.owner")
+
+CrossTable(loc.retention.dissatisfaction.owners$region, loc.retention.dissatisfaction.owners$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Dissatisfaction with EMS manager
+
+There is no relationship between region and an agency's response to whether dissatisfaction was an obstacle to staff retainment.
+
+<br>
+
+```{r location and retention - dissatisfaction with manager}
+loc.retention.dissat.manager <- loc.retention.obstacles %>%
+  filter(obstacles == "dissatisfaction.manager")
+
+CrossTable(loc.retention.dissat.manager$region, loc.retention.dissat.manager$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Dissatisfaction with job duties
+
+There is no relationship between region and an agency's response to whether dissatisfaction with job duties is an obstacle to staff retainment.
+
+<br>
+
+```{r location and retention - dissatisfaction with job duties}
+loc.retention.dissat.duties <- loc.retention.obstacles %>%
+  filter(obstacles == "dissatisfaction.duties")
+
+CrossTable(loc.retention.dissat.duties$region, loc.retention.dissat.duties$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+# Leadership section analysis{.tabset}
+
+The questions in the leadership section of the survey are provided in tabs below along with the chi-square and p-value for the relationship between region and each question.
+
+The questions where region had a relationship in how an agency responded are summarized below.
+
+**Summary:**
+
+Only a few leadership questions had a relationship with region.
+
+*Leaders have training:* A region did have a relationship on how an agency responded to whether managers had management training.
+
+* Northeast and Central both had a higher number of agencies indicated that their management received management training.
+* Southwest and South Central had a significantly lower number of agencies indicate that their management has not received training.
+
+*Management challenge areas:* Out of all the challenges provided for agencies to choose, only one challenge area seemed to be related to region.
+
+* Medical direction: Both Northwest and Southwest had a significantly higher number of agencies indicate that medical direction was a management challenge area. Southeast had a lower number.
+
+<br>
+
+## Leaders have training?
+
+**Has the EMS manager of your agency had formal leadership or management training?**
+
+Respondents were provided two choices which are listed below in order of top choice first;
+
+* Yes (54%)
+* No (46%)
+
+There is a relationship between region and whether an agency indicated their managers received leadership and or management training.
+
+Agencies in Northeast and Central indicated that management has received training at a higher rate than expected.
+
+* Northeast - 14 responses (70%) vs. 11 expected (54%)
+* Central - 17 responses (77%) vs. 12 expected (54%)
+
+Agencies in Southwest and South Central indicated that managed has received training at a lower rate than expected.
+
+* Southwest - 13 responses (33%) vs. 22 expected (54%)
+* South Central - 10 responses (36%) vs. 15 expected (54%)
+
+<br>
+
+```{r location and leadership training}
+loc.leadership.training <- master.responses %>%
+  select(2, 58) %>%
+  rename(leadership.training = 2)
+
+CrossTable(loc.leadership.training$region, loc.leadership.training$leadership.training, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+## Leadership turnover
+
+**Has your agency had three or more managers in the past five years?**
+
+Respondents were provided two choices which are listed below in order of top choice first;
+
+* No (86%)
+* Yes (13%)
+
+There is no relationship between region and how an agency responded to management turnover.
+
+<br>
+
+```{r location and leadership turnover}
+loc.leadership.turnover <- master.responses %>%
+  select(2, 59) %>%
+  rename(leadership.turnover = 2)
+
+CrossTable(loc.leadership.turnover$region, loc.leadership.turnover$leadership.turnover, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+## Challenges to management areas{.tabset .tabset-pills}
+
+**Which areas are most difficult to manage?**
+
+Respondents were provided 13 choices and were told to check all that apply. The choices are listed below in order of top choice first;
+
+* Recruitment (69%)
+* Staffing the schedule (51%)
+* Retention (43%)
+* Continuing education requirements (32%)
+* Managing staff (31%)
+* Policy development and enforcement (25%)
+* Staff certification (20%)
+* Budget development (17%)
+* Billing and reimbursement (15%)
+* Maintaining equipment (11%)
+* Medical direction (10%)
+* None (9%)
+* Licensing requirements for the ambulance (5%)
+
+Out of all these questions there was only "medical direction" had a relationship with region. Northwest and Southwest had a significantly higher number than expected of agencies indicate that medical direction was a management challenge area. Southeast had a lower number than expected.
+
+
+
+<br>
+
+```{r prep location and leadership challenge areas}
+loc.leadership.challenges <- master.responses %>%
+  select(2, 60:74) %>%
+  rename(recruitment = 2,
+         retention = 3,
+         budget = 4,
+         staff = 5,
+         staffing.schedule = 6,
+         medical.direction = 7,
+         education.requirements = 8,
+         equipment = 9,
+         billing = 10,
+         licensing = 11,
+         staff.certification = 12,
+         technology = 13,
+         policy = 14,
+         technology.2 = 15,
+         none = 16) %>%
+  gather(key = "challenges", value = "response", 2:16) %>%
+  mutate(challenges = str_replace(challenges, "technology.2", "technology"),
+         response = ifelse(response == "-", "No", "Yes"))
+```
+
+<br>
+
+### Recruitment
+
+There is no relationship between region and an agencies response to recruitment being a management challenge.
+
+<br>
+
+```{r location and leadership challenge areas - recruitment}
+loc.leadership.challenges.recruitment <- loc.leadership.challenges %>%
+  filter(challenges == "recruitment")
+
+CrossTable(loc.leadership.challenges.recruitment$region, loc.leadership.challenges.recruitment$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Retention
+
+There is no relationship between region and an agency's response to retention being a management challenge area.
+
+<br>
+
+```{r location and leadership challenge areas - retention}
+loc.leadership.challenges.retention <- loc.leadership.challenges %>%
+  filter(challenges == "retention")
+
+CrossTable(loc.leadership.challenges.retention$region, loc.leadership.challenges.retention$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Budget
+
+There is no relationship between region and whether an agency identified budget development as a management challenge area.
+
+<br>
+
+```{r location and leadership challenge areas - budget}
+loc.leadership.challenges.budget <- loc.leadership.challenges %>%
+  filter(challenges == "budget")
+
+CrossTable(loc.leadership.challenges.budget$region, loc.leadership.challenges.budget$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Managing staff
+
+There is no relationship between region and whether an agency identified managing staff as a management challenge area.
+
+<br>
+
+```{r location and leadership challenge areas - manageing staff}
+loc.leadership.challenges.staff <- loc.leadership.challenges %>%
+  filter(challenges == "staff")
+
+CrossTable(loc.leadership.challenges.staff$region, loc.leadership.challenges.staff$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Staffing schedule
+
+There is no relationship between region and whether an agency identified staffing schedule as an management challenge area.
+
+<br>
+
+```{r location and leadership challenge areas - staffing schedule}
+loc.leadership.challenges.staffing.schedule <- loc.leadership.challenges %>%
+  filter(challenges == "staffing.schedule")
+
+CrossTable(loc.leadership.challenges.staffing.schedule$region, loc.leadership.challenges.staffing.schedule$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Medical direction
+
+There is a relationship between region and how an agency responded to medical direction as a management challenge area.
+
+Agencies in Northwest and Southwest indicated that medical direction was a challenging management area at a higher rate than expected.
+
+* Northwest - 6 response (35%) vs. 2 expected (10%)
+* Southwest - 7 responses (17%) vs. 4 expected (10%)
+
+Agencies in Southeast indicated that medical direction was a challenging management area at a lower rate than expected - 1 response (2%) vs. 4 expected (10%).
+
+<br>
+
+```{r location and leadership challenge areas - medical direction}
+loc.leadership.challenges.medical.direction <- loc.leadership.challenges %>%
+  filter(challenges == "medical.direction")
+
+CrossTable(loc.leadership.challenges.medical.direction$region, loc.leadership.challenges.medical.direction$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Education requirements
+
+There is no relationship between region and whether an agency indicated that keeping up with education requirements was a management challenge area.
+
+<br>
+
+```{r location and leadership challenge areas - education requirements}
+loc.leadership.challenges.education.req <- loc.leadership.challenges %>%
+  filter(challenges == "education.requirements")
+
+CrossTable(loc.leadership.challenges.education.req$region, loc.leadership.challenges.education.req$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Equipment
+
+There is no relationship between region and whether an agency indicated that updating equipment was a management challenge.
+
+<br>
+
+```{r location and leadership challenge areas - equipment}
+loc.leadership.challenges.equipment <- loc.leadership.challenges %>%
+  filter(challenges == "equipment")
+
+CrossTable(loc.leadership.challenges.equipment$region, loc.leadership.challenges.equipment$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Billing
+
+There is no relationship between region and whether an agency indicated that billing and reimbursement was a management challenge area.
+
+<br>
+
+```{r location and leadership challenge areas - billing}
+loc.leadership.challenges.billing <- loc.leadership.challenges %>%
+  filter(challenges == "billing")
+
+CrossTable(loc.leadership.challenges.billing$region, loc.leadership.challenges.billing$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Licensing
+
+There is no relationship between region and whether an agency indicated that licensing was a management challenge area.
+
+<br>
+
+```{r location and leadership challenge areas - licensing}
+loc.leadership.challenges.licensing <- loc.leadership.challenges %>%
+  filter(challenges == "licensing")
+
+CrossTable(loc.leadership.challenges.licensing$region, loc.leadership.challenges.licensing$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Staff certficiation
+
+There is no relationship between region and whether an agency indicated that keeping up on staff certification was a management challenge area.
+
+<br>
+
+```{r location and leadership challenge areas - staff certification}
+loc.leadership.challenges.staff.certification <- loc.leadership.challenges %>%
+  filter(challenges == "staff.certification")
+
+CrossTable(loc.leadership.challenges.staff.certification$region, loc.leadership.challenges.staff.certification$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Technology updates
+
+There is no relationship between region and whether an agency indicated that maintaining technology was a management challenge area.
+
+<br>
+
+```{r location and leadership challenge areas - technology}
+loc.leadership.challenges.technology <- loc.leadership.challenges %>%
+  filter(challenges == "technology")
+
+CrossTable(loc.leadership.challenges.technology$region, loc.leadership.challenges.technology$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Policy and enforcement
+
+There is no relationship between region and whether an agency indicated that policy and enforcement was a management challenge area.
+
+<br>
+
+```{r location and leadership challenge areas - policy}
+loc.leadership.challenges.policy <- loc.leadership.challenges %>%
+  filter(challenges == "policy")
+
+CrossTable(loc.leadership.challenges.policy$region, loc.leadership.challenges.policy$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### None
+
+There is no relationship between region and whether an agency indicated that there were no management challenge areas.
+
+<br>
+
+```{r location and leadership challenge areas - none}
+loc.leadership.challenges.none <- loc.leadership.challenges %>%
+  filter(challenges == "none")
+
+CrossTable(loc.leadership.challenges.none$region, loc.leadership.challenges.none$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+## Shift Coverage
+
+**What percent of your shifts are fully covered at least 24 hours in advance?**
+
+Respondents were provided 5 choices which are provided below with the top choice listed first;
+
+* 75% - 99% (43%)
+* 100% (41%)
+* 25% - 49% (3%)
+* 0% - 24% (2%)
+
+<br>
+
+There is a relationship between region and how an agency responded to the percentage of shifts covered 24 hours in advance.
+
+* Northeast - had a higher than expected number of agencies indicating they had 0% to 24% of their shifts covered 24 hours in advance as well as a lower than expected number indicating they had 100% covered.
+* West Central, Southeast and Central- had a higher than expected number of agencies indicating they had 100% of their shifts covered in advance.
+* Southeast - had a higher than expected number of agencies indicating they had 75% to 99% of their shifts covered 24 hours in advance.
+* South Central - had a higher than expected number of agencies indicating they had 50% to 74% of their shifts covered.
+
+
+```{r location percent shifts covered}
+loc.shifts.covered <- master.responses %>%
+  select(2,75) %>%
+  rename(pct.shifts.covered = 2)
+
+CrossTable(loc.shifts.covered$region, loc.shifts.covered$pct.shifts.covered, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+
+

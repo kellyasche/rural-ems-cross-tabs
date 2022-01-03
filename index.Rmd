@@ -1,0 +1,54 @@
+---
+title: "Summary and data overview"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 4
+runtime: shiny
+resource_files:
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.cpg
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.dbf
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.prj
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.sbn
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.sbx
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.shp.xml
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.shx
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(sf)
+library(ggrepel)
+library(scales)
+library(shiny)
+library(shinycssloaders)
+library(ggiraph)
+library(kableExtra)
+library(rmapshaper)
+library(cowplot)
+library(DT)
+```
+
+<br>
+
+The following narrative combines the executive summary written by the MN Department of Health with a summary of the results found in this analysis.
+
+# Characteristics section
+
+Most rural EMS agencies provide basic life support services to relatively small populations spread across large geographic areas. Along with low daily call volumes, these realities exacerbate the inability to create sustainable business and staffing models.
+
+* The median call volume is nearly one call per day
+* Over half of the agencies cover more than 200 square miles; 37 percent cover more than 300
+square miles
+* Over half of the agencies serve populations of less than 5,000
+
+However, it is worth noting that there were some differences in responses depending on region. 
+
+
+* *Type of ownership:* although a majority of agencies indicated that they were publicly owned and managed (61% of total responses), this was largely driven by responses in Southwest (67% of responses), South Central (75% of responses) and Southeast (79% of responses). Agencies in Northwest and Central were actually more likely to indicate that they were privately owned or a non-profit at a significantly higher rate, 83% and 68% of responses, respectively. 
+* *Owned, managed or receive corporate health support:* although a small percentage of agencies indicated that they were owned, managed or receive support from a corporate health system (27% of total responses), agencies in the Northwest and Central regions did at a significantly higher rate - 53% and 55% of agencies, respectively.
+* *Types of services offered:* although a very large percentage of agencies responded that they provide basic life support (88.2% of total responses), this high percentage was driven by high percentages in Northeast (95% of responses), Southwest (95% of responses), South Central (100% of responses) and Southeast (100% of responses).  On the flip side, a majority of agencies in Northwest and Central regions responded that they provide advanced life support - 59% and 50%, respectively. 
+* *Staff compensation:* although a majority of agencies responded that they pay their staff using a volunteer / on call compensation structure (57% of total responses), this was driven by very high percentage of responses in the Southwest and South Central regions - 81% and 75% of their agencies, respectively. And although there was a very small percentage of total agencies responding that they pay their staff (20% of total responses), agencies in Northwest and Central responded that they pay their staff at a significantly higher rate - 35% and 46%, respectively.
+

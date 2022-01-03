@@ -1,0 +1,329 @@
+---
+title: "Staff Compensation Cross-tabs"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 4
+runtime: shiny
+resource_files:
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.cpg
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.dbf
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.prj
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.sbn
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.sbx
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.shp.xml
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.shx
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(sf)
+library(ggrepel)
+library(scales)
+library(shiny)
+library(shinycssloaders)
+library(ggiraph)
+library(kableExtra)
+library(rmapshaper)
+library(cowplot)
+library(DT)
+library(htmlwidgets)
+library(RColorBrewer)
+library(extrafont)
+library(readxl)
+library(janitor)
+library(lubridate)
+library(gmodels)
+library(infer)
+library(broom)
+library(crosstable)
+
+loadfonts()
+```
+
+```{r loading jon docs and shapefiles, cache=TRUE, include=FALSE}
+theme_bar <- theme_bw() +
+  theme(panel.grid.major = element_line(color = "grey70", size = 0.1),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text = element_text(face = "bold"),
+        panel.border = element_blank(),
+        legend.background = element_rect(fill = "transparent", color = "transparent"),
+        legend.key = element_rect(fill = "transparent"),
+        legend.key.size = unit(1, "lines"),
+        legend.margin = margin(0,0,0,0),
+        legend.title = element_blank(),
+        legend.text = element_text(margin = margin(l = 2)),
+        text = element_text(family = "Arial"))
+
+theme_line <- theme_bw() +
+  theme(legend.background = element_rect(fill = "transparent", color = "transparent"),
+        legend.key = element_rect(fill = "transparent"),
+        legend.text = element_text(margin = margin(l = 2)),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_line(color = "grey70", size = 0.1),
+        axis.ticks = element_blank(),
+        axis.text = element_text(face = "bold"),
+        panel.border = element_blank(),
+        legend.margin = margin(0,0,0,0),
+        legend.key.size = unit(1, "lines"),
+        text = element_text(family = "Arial"))
+
+
+theme_sf <- theme_bw() +
+  theme(axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks=element_blank(),
+        panel.background = element_blank(),
+        panel.grid.major = element_line(color = "white"),
+        panel.border = element_blank(),
+        plot.title = element_text(hjust = 0.5),
+        legend.title = element_blank(),
+        legend.text = element_text(margin = margin(l = 2)),
+        legend.margin = margin(0,0,0,0),
+        legend.key.size = unit(1, "lines"),
+        text = element_text(family = "Arial"))
+
+regions <- read_csv("Data/Join docs/county_regions.csv") %>%
+    select(5,6) %>%
+    unique() %>%
+    mutate(edr = str_replace(edr, "  ", " "),
+           planning.region = str_replace(planning.region, " Minnesota", ""),
+           planning.region = fct_relevel(planning.region, "Northwest", "Northeast", "Central", "Seven County Mpls-St Paul", "Southwest", "Southeast"),
+           edr = fct_relevel(edr, "EDR 1 - Northwest", "EDR 2 - Headwaters", "EDR 3 - Arrowhead", "EDR 4 - West Central", "EDR 5 - North Central", "EDR 6E- Southwest Central", "EDR 6W- Upper Minnesota Valley", "EDR 7E- East Central", "EDR 7W- Central", "EDR 8 - Southwest", "EDR 9 - South Central", "EDR 10 - Southeast", "EDR 11 - 7 County Twin Cities", "Minnesota"))
+
+counties.regions <- read_csv("Data/Join docs/county_regions.csv") %>%
+  rename(mif = `MIF Region`) %>%
+  mutate(countyfp = formatC(countyfp, width = 3, flag = "0"),
+         Name = str_to_title(Name),
+         Name = str_replace(Name, "Q", "q"),
+         Name = str_replace(Name, "Of The", "of the"),
+         Name = str_replace(Name, "Mcleod", "McLeod"),
+         Dem_Desc = ifelse(Name == "Minnesota", "Minnesota", Dem_Desc) ,
+         edr = str_replace(edr, "  ", " "),
+         planning.region = str_replace(planning.region, " Minnesota", ""),
+         planning.region = fct_relevel(planning.region, "Northwest", "Northeast", "Central", "Seven County Mpls-St Paul", "Southwest", "Southeast"),
+         edr = fct_relevel(edr, "EDR 1 - Northwest", "EDR 2 - Headwaters", "EDR 3 - Arrowhead", "EDR 4 - West Central", "EDR 5 - North Central", "EDR 6E- Southwest Central", "EDR 6W- Upper Minnesota Valley", "EDR 7E- East Central", "EDR 7W- Central", "EDR 8 - Southwest", "EDR 9 - South Central", "EDR 10 - Southeast", "EDR 11 - 7 County Twin Cities", "Minnesota"),
+         mif = ifelse(is.na(mif), "TC", mif),
+         mif = as.factor(mif),
+         mif = fct_relevel(mif, "NW", "NE", "WC", "EC", "SW", "SE", "TC"))
+
+color.ruca <- c("Entirely rural" = "#009933", "Town/rural mix" = "#99CC33", "Urban/town/rural mix" = "#CC9966", "Entirely urban" = "#754C29", "Minnesota" = "black")
+
+color.pr <- c("Northwest" = 	"#4575b4", "Northeast" = "#e0f3f8", "Central" = "#fee090", "Seven County Mpls-St Paul" = "#d73027", "Southwest" = "#91bfdb", "Southeast" = "#fc8d59", "Minnesota" = "black")
+
+color.edr <- c("EDR 1 - Northwest" = "#b3cde3", "EDR 2 - Headwaters" = "#8c96c6", "EDR 3 - Arrowhead" = "#fe9929", "EDR 4 - West Central" = "#8856a7", "EDR 5 - North Central" = "#810f7c", "EDR 6E- Southwest Central" = "#e5f5f9", "EDR 6W- Upper Minnesota Valley" = "#bdc9e1", "EDR 7E- East Central" = "#99d8c9", "EDR 7W- Central" = "#2ca25f", "EDR 8 - Southwest" = "#74a9cf", "EDR 9 - South Central" = "#0570b0", "EDR 10 - Southeast" = "#d7301f", "EDR 11 - 7 County Twin Cities" = "#d8b365", "Minnesota" = "black")
+
+color.pr.edr <- c ("Northwest" = "#4575b4","Northeast" = "#e0f3f8", "Central" = "#fee090", "Seven County Mpls-St Paul" = "#d73027", "Southwest" = "#91bfdb", "Southeast" = "#fc8d59", "Minnesota" = "black", "EDR 1 - Northwest" = "#b3cde3", "EDR 2 - Headwaters" = "#8c96c6", "EDR 3 - Arrowhead" = "#fe9929", "EDR 4 - West Central" = "#8856a7", "EDR 5 - North Central" = "#810f7c", "EDR 6E- Southwest Central" = "#e5f5f9", "EDR 6W- Upper Minnesota Valley" = "#bdc9e1", "EDR 7E- East Central" = "#99d8c9", "EDR 7W- Central" = "#2ca25f", "EDR 8 - Southwest" = "#74a9cf", "EDR 9 - South Central" = "#0570b0", "EDR 10 - Southeast" = "#d7301f", "EDR 11 - 7 County Twin Cities" = "#d8b365")
+
+mn_counties <- st_read("Data/Shapefiles/county shapefiles/MNCounties_MNDOT.shp", quiet = TRUE) %>%
+  ms_simplify(keep = .01, keep_shapes = TRUE) %>%
+  rename(countyfp = FIPS_CODE)
+
+```
+
+```{r master response, include=FALSE, cache=TRUE}
+master.responses <- read_csv("Data/Responses/Master-survey-responses.csv") %>%
+  mutate(region = fct_relevel(region, "Northeast", "Northwest", "West Central", "Central", "Southwest", "South Central", "Southeast")) %>%
+  rename(public.or.private = 4,
+         comp = 14) %>%
+  mutate(public.or.private = str_replace(public.or.private, "Public owned or operated \\(e.g. city, county authority or joint powers board\\)", "Public owned or operated"),
+         public.or.private = str_replace(public.or.private, "Private or other non-profit owned or operated", "Private or non-profit"),
+         public.or.private = as.factor(public.or.private),
+         comp = str_replace(comp, "Paid; hourly wage or salary", "Paid"),
+         comp = str_replace(comp, "Combination of volunteer and paid staff", "Combination"),
+         comp = str_replace(comp, "Volunteer \\(receive no compensation at all\\)", "Volunteer"),
+         comp = str_replace(comp, "Volunteer/Paid; on-call compensation \\(on-call compensation\\); meets statutory definition of volunteer https://www.revisor.mn.gov/statutes/\\?id=144E.001#stat.144E.001.15", "On-call"),
+         comp = as.factor(comp)) %>%
+  rename(corp.sup = 9)
+
+names(master.responses)
+levels(master.responses$comp)
+```
+
+This section of analysis examines whether how staff was compensated  influenced how an agency responded to questions in the survey. The region question was;
+
+**How are staff compensated, not including the agency director?**
+
+Respondents were provided the following options, listed in order of most respondents on top;
+
+* Volunteer, on call compensation (57.0a%, 106)
+* Paid, hourly wage or salary (20.3%, 38)
+* Combination, volunteer and paid (17.2%, 32)
+* Volunteer, no compensation (5.4%, 10)
+
+The metro response was eliminated from analysis.
+
+I only analyzed the relationship of a few questions here. They all within the workforce sustainability section.
+
+The analysis used for the cross tabs is the typical chi-square test with p-value.
+
+<br>
+
+# Summary of results{.tabset}
+
+The tabs below lists which questions showed a relationship to whether or not an agency paid their staff and combines the executive summary from the MN Department of Health's analysis with the relationships found in this analysis.
+
+<br>
+
+## Questions with relationships
+
+The following are the questions that showed a statistical significance indicating a relationship were; 
+
+* Workforce sustainability section
+  + Do you have enough people to cover your call schedule without undue burden or excessive time commitments?
+  + Over the past year, has the number of active staff on your roster changed?
+  + Is it difficult to recruit new EMS staff?
+  
+<br>
+
+## Addition to MN Department of Health Summary
+
+The following narrative combines the executive summary from the MN Department of Health's aggregate analysis of the survey with the relationships found in this analysis. Hopefully this will round out the results a bit better and point to more specific trends within the results.
+
+### Workforce sustainability section{.unnumbered .unlisted .toc-ignore}
+
+**Key Findings**
+
+Staffing shortages are a major challenge for rural EMS agencies. Eighty (80) percent utilize some version of volunteers to staff their operations. Roster sizes are decreasing, many staff are trained for multiple public functions and many call schedules are not covered 24 hours prior to the shifts.
+
+* The active staff roster decreased for half of the agencies from the previous year
+* Weekday daytime hours are the most difficult shifts to cover. However, all weekend and holiday
+shifts are also difficult to cover
+* About 60 percent of agencies have inadequate staff to cover their call schedule without undue
+burden to the agency.
+* Fifty-nine (59) percent of agencies do not have their shifts 100 percent covered at least 24 hours in
+advance
+
+Recruitment and retention of ambulance personnel continues to be a significant challenge even though:
+* Emergency Medical Responders (EMRs) are now widely used to actively staff rural EMS agencies
+* Most agencies cover the full cost of the continuing education courses for their staff
+* Most eligible recipients take advantage of state EMS training reimbursement
+
+However, it is worth noting that there were some differences in responses depending on whether or not an agency paid it's staff.
+
+* *Covering call schedule: * Although a majority of agencies responded that they do not have enough people to cover the call schedule, agencies that pay their staff responded that they had enough people at a significantly higher rate than agencies using other compensation structures (68% vs. 32% - combination, 30% on-call, and 50% volunteer only). 
+* *Number of active roster changes: * Although half of agencies responded that the number of active roster has decreased, agencies that pay their staff responded that their active staff has INCREASED at a significantly higher rate than agencies using other compensation structures (48% vs. 12% - combination, 14% on-call, 20% - volunteer only).
+* *Difficulty in recruiting new staff: * Although a large majority of agencies (63%) responded that it's difficult to recruit new EMS staff, agencies that pay their staff responded this way at a significantly LOWER rate than agencies using other types of compensation structures (32% vs. 59% - combination, 74% - on-call, 80% volunteer only).
+
+<br>
+
+# Workforce sustainability section analysis{.tabset}
+
+The questions in the workforce sustainability section of the survey where how staff was paid had a relationship in how an agency responded are summarized below.
+
+**Summary:**
+
+*Covering the call schedule:*
+Agencies that pay their staff responded that their call schedule was covered at a higher rate than expected. The opposite was true for agencies that compensate based on on-call shifts.
+
+*Roster changes:*
+Agencies that pay their staff responded that their active roster has increased at a higher rate than expected. The opposite was true for agencies that pay based on on-call shifts or had a combination of paid and volunteer staff.
+
+*Difficult to recruit:*
+Agencies that pay their staff responded that it's difficult to recruit new staff at a lower rate than expected. The opposite was true for agencies that compensate based on on-call shifts.
+
+
+
+<br>
+
+**Analysis:**
+
+The questions in the workforce sustainability section of the survey are provided in tabs below along with the chi-square and p-value for the relationship between region and each question.
+
+<br>
+
+## Cover call schedule
+
+**Do you have enough people to cover your call schedule without undue burden or excessive time commitments?**
+
+Respondents were provided with two choices which are provided below in order of top choice listed first;
+
+* No (60%)
+* Yes (40%)
+
+There is a relationship in how an agency pays it's staff and whether their call schedule is covered.
+
+Agencies that pay their staff responded that their call schedule was covered at a significantly higher rate than expected - 26 responses (68%) vs. 15 expected (40%).
+
+Agencies that compensate using on-call responded that their call schedule was covered at a significantly lower rate than expected - 32 responses (30%) vs, 42 expected (40%).
+
+There wasn't much difference in the other types of compensation structures and whether their call schedule was covered.
+
+<br>
+
+```{r how staff paid and covering all schedule}
+comp.schedule <- master.responses %>%
+  select(14,23) %>%
+  rename(cover.sched = 2) 
+
+CrossTable(comp.schedule$comp, comp.schedule$cover.sched, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+## Roster changes
+
+**Over the past year, has the number of active staff on your roster changed?**
+
+Respondents were provided three choices which are provided below in order of top choice listed first;
+
+* Decreased (50%)
+* Same (29%)
+* Increased (21%)
+
+There is a relationship in how an agency compensates it's staff and in changes to roster at an agency.
+
+Agencies that pay their staff responded that their active staff has increased at a higher rate than expected - 17 responses (45%) vs. 8 expected (21%).
+
+Agencies that pay on-call or combination responded that their roster decreased at a higher rate than expected.
+
+<br>
+
+```{r staff paid and roster changes}
+
+comp.rost <- master.responses %>%
+  select(14, 24) %>%
+  rename(rost.changes = 2) %>%
+  mutate(rost.changes = str_replace(rost.changes, "Size of the active staff has not changed", "No change"),
+         rost.changes = as.factor(rost.changes))
+
+CrossTable(comp.rost$comp, comp.rost$rost.changes, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+  
+
+```
+
+<br>
+
+## Difficult to recruit?
+
+**Is it difficult to recruit new EMS staff?**
+
+Respondents were provided three choices which are list below with the top choice first;
+
+* Yes (63%)
+* No (4%)
+* Sometimes (33%)
+
+There is a relationship in whether an agency feels it's difficult to recruit new staff and how they compensate their staff.
+
+Agencies that pay their staff responded that it's difficult to recruit staff at a significantly lower rate than expected - 12 responses (32%) vs. 24 expected (63%).
+
+Agencies that compensate using on-call structure responded that it's difficult to recruit staff at a significantly higher rate than expected - 78 responses (74%) bs. 67 expected (63%).
+
+<br>
+
+```{r staff paid and difficult to recruit}
+
+comp.dif.rec <- master.responses %>%
+  select(14,26) %>%
+  rename(dif.rec = 2) 
+
+CrossTable(comp.dif.rec$comp, comp.dif.rec$dif.rec, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+  
+```
+
+<br>

@@ -1,0 +1,18 @@
+name: "2016 Rural EMS Sustainability Survey Crosstabs"
+output_dir: docs
+navbar:
+  title: "Crosstabs"
+  left:
+    - text: "Summary and data overview"
+      href: index.html
+    - text: "Location crosstabs"
+      href: location.html
+    - text: "Type of ownership crosstabs"
+      href: ownership_type.html
+    - text: "Corporate health support"
+      href: corporate_support.html
+    - text: "Staff compensation crosstabs"
+      href: staff_compensation.html
+output:
+  html_document:
+    css: "styles.css"
