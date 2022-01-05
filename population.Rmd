@@ -179,6 +179,7 @@ The tabs below lists which questions showed a relationship to the size of the po
 The following are the questions that showed a statistical significance indicating a relationship were; 
 
 * Characteristics section
+  + Is your agency owned, managed or receive support from a corporate health system?
   + What type of services do you provide?
   + How are staff compensated, not including the agency director?
   + Are you using Emergency Medical Responders (EMRs) to routinely staff your ambulance(s)?
@@ -226,6 +227,7 @@ square miles
 
 However, it is worth noting that there were some differences in responses depending on whether they were owned, managed or received support from a corporate health system. 
 
+* *Receives corp health system support: * although only 27% of agencies responded that they are owned, managed or receive support from a corporate health system, agencies that serve larger populations were significantly more likely to respond this way - 42% of responses serving 10,000 - 14,999 and 77% of responses serving 15,000 people or more.
 * *Types of services provided: * although a very large percentage of agencies responded that they provide basic life support (88.2% of total responses), agencies that serve small populations responded that they provide basic life support at a significantly higher rate than other agencies - 96% of responses (Less than 2,500) and 98% of responses (2,500 - 4,999). On the flip side, agencies that serve large populations were significantly more likely to provide advanced life support - 63% of responses (10,000 - 14,999) and 92% of responses (greater than 15,000). Agencies that serve moderately sized populations (5,000 - 9,999) were significantly more likely to respond that they provided part-time advanced life support - 47% of responses.
 * *Staff compensation: * although a majority of agencies responded that they pay their staff using a volunteer / on call compensation structure (57% of total responses), agencies that serve larger populations were significantly more likely to pay their staff - 84% of responses from agencies serving greater than 15,000.
 * *Using EMRs to staff ambulance: * Although a majority of agencies (59% of total responses) responded that they do NOT use EMRs to staff their ambulance(s), agencies that serve small populations were significantly more likely to use EMRs to staff ambulances - 65% of agencies serving less than 2,500 and 51% of agencies serving 2,500 - 4,999.
@@ -289,7 +291,7 @@ However, it is worth noting that there was one difference in responses depending
 
 * *Management received training: * Although a majority of agencies (54%) responded that their management has received formal leadership or management training, agencies that are owned, managed or receive support from a corporate health system responded this way at a significantly higher rate than other agencies (77% vs. 46%).
 * *Management challenge areas - recruitment: * Although a majority of agencies (69%) responded that recruitment was a management challenge area, agencies that serve low to moderate sized populations responded this way at a significantly higher rate - 72% of responses serving less than 2,500, 84% of responses serving 2,500 - 4,999 and 77% of responses serving 5,000 - 9,999.
-* *Management challenge areas - retention: * Although only 43% of all agencies responded that retention was a management challenge area, agencies serving moderate sized populations were significantly more likely to respond this way - 51% of responses serving 2,500 - 4,999 and 60% of responses serving 5,000 - 9,999.
+* *Management challenge areas - retention: *e Although only 43% of all agencies responded that retention was a management challenge area, agencies serving moderate sized populations were significantly more likely to respond this way - 51% of responses serving 2,500 - 4,999 and 60% of responses serving 5,000 - 9,999.
 * *Management challenge areas - staffing the schedule: * Although just over half of all agencies (51%) responded that staffing the schedule was a management challenge area, agencies that serve moderate size populations were significantly more likely to respond this way - 61% of responses serving 2,500 - 4,999 and 70% of responses serving 5,000 - 9,999. 
 * *Management challenge areas - none: * Although only 9% of all agencies responded that there were "none" management challenge areas, agencies that serve larger populations were significantly more likely to respond this way - 17% of responses serving 10,000 - 14,999 and 27% of responses serving greater than 15,000.
 
@@ -312,6 +314,36 @@ Agencies that serve smaller population sizes were significantly more likely to u
 
 
 <br>
+
+## Corp support
+
+**Is your agency owned, managed or does it receive support from a corporate health system?**
+
+This question provided 2 choices which are provided below in order of the top one receiving the most responses;
+
+* No (72%)
+* Yes (27%)
+
+There is a relationship between the size of the population served by an agency and whether they are owned, managed or receive support from a corporate health system.
+
+As the population served by an agency increases so does the likelihood that it is owned, managed, or receives support from a corporate health system.
+
+* Less than 2,500: 6 responses (13%) vs. 12 expected (27%)
+* 2,500 - 4,999: 7 responses (12%) vs. 15 expected (27%)
+* 5,000 - 9,999: 5 responses (17%) vs. 8 expected (27%)
+* 10,000 - 14,999: 10 responses (42%) vs. 6 expected (27%)
+* Greater than 15,000: 20 responses (77%) vs. 7 expected (27%)
+
+```{r pop served and corp support}
+pop.corp.support <- master.responses %>%
+  select(3,9) 
+
+CrossTable(pop.corp.support$pop, pop.corp.support$corp.sup, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE, max.width = 2)
+
+```
+
+<br>
+
 
 ## Services provided{.tabset .tabset-pills}
 

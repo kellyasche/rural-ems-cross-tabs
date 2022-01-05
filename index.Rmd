@@ -44,11 +44,25 @@ Most rural EMS agencies provide basic life support services to relatively small 
 square miles
 * Over half of the agencies serve populations of less than 5,000
 
-However, it is worth noting that there were some differences in responses depending on region. 
+However, when we dig a bit deeper we tend to see that agencies that are more rural (serve smaller population sizes) follow the above narrative more so than agencies that are not as rural (serve large population sizes).
 
+**Owned, managed, or receive support from a corporate health system**
 
-* *Type of ownership:* although a majority of agencies indicated that they were publicly owned and managed (61% of total responses), this was largely driven by responses in Southwest (67% of responses), South Central (75% of responses) and Southeast (79% of responses). Agencies in Northwest and Central were actually more likely to indicate that they were privately owned or a non-profit at a significantly higher rate, 83% and 68% of responses, respectively. 
-* *Owned, managed or receive corporate health support:* although a small percentage of agencies indicated that they were owned, managed or receive support from a corporate health system (27% of total responses), agencies in the Northwest and Central regions did at a significantly higher rate - 53% and 55% of agencies, respectively.
-* *Types of services offered:* although a very large percentage of agencies responded that they provide basic life support (88.2% of total responses), this high percentage was driven by high percentages in Northeast (95% of responses), Southwest (95% of responses), South Central (100% of responses) and Southeast (100% of responses).  On the flip side, a majority of agencies in Northwest and Central regions responded that they provide advanced life support - 59% and 50%, respectively. 
-* *Staff compensation:* although a majority of agencies responded that they pay their staff using a volunteer / on call compensation structure (57% of total responses), this was driven by very high percentage of responses in the Southwest and South Central regions - 81% and 75% of their agencies, respectively. And although there was a very small percentage of total agencies responding that they pay their staff (20% of total responses), agencies in Northwest and Central responded that they pay their staff at a significantly higher rate - 35% and 46%, respectively.
+Although only 27% of agencies responded that they were owned, managed or receive support from a corporate health care system,  
+
+**Types of services provided** 
+
+Although a very large majority of all agencies (88.2%) offer basic life support, agencies that serve a small population size were significantly more likely to provide this service - 96% of responses serving less than 2,500 and 98% of responses serving 2,500 - 4,999.
+
+In addition, although only 27% of all agencies offer advanced life support, agencies that serve a large population size were significantly more likely to offer this service - 63% of responses serving 10,000 - 14,999 and 92% of responses serving 15,000 or more people.
+
+Lastly, only 17% of all agencies responded that they offer part-time advanced life support. However, agencies serving moderate size populations were significantly more likely to offer this service - 47% of responses serving 5,000 - 9,999.
+
+**Staff compensation**
+
+A majority of agencies (57%) responded that they use a volunteer/on-call compensation structure for their staff. However, agencies that serve smaller sized populations were significantly more likely to use this framework for their staff compensation - 76% of responses serving less than 2,500 people and 77% of responses serving 2,500 - 4,999. On the flip side, only 20% of agencies responded that they paid their staff but it was much higher for agencies serving larger populations - 38% of responses serving 10,000 - 14,9999 and 84% of responses serving 15,000 people or more. 
+
+**Using EMRs to staff ambulances**
+
+Although a majority of agencies responded that they do NOT use EMRs to staff their ambulances, agencies that serve small populations DO staff their ambulances using EMRs - 65% of responses serving less than 2,500 people and 51% of responses serving 2,500 - 4,999 people.
 
