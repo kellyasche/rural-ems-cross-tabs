@@ -7,6 +7,8 @@ navbar:
       href: index.html
     - text: "Location crosstabs"
       href: location.html
+    - text: "Size of population served"
+      href: population.html
     - text: "Type of ownership crosstabs"
       href: ownership_type.html
     - text: "Corporate health support"
