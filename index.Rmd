@@ -37,6 +37,8 @@ The following narrative combines the executive summary written by the MN Departm
 
 # Characteristics section
 
+**Key Findings (MDH)**
+
 Most rural EMS agencies provide basic life support services to relatively small populations spread across large geographic areas. Along with low daily call volumes, these realities exacerbate the inability to create sustainable business and staffing models.
 
 * The median call volume is nearly one call per day
@@ -44,39 +46,79 @@ Most rural EMS agencies provide basic life support services to relatively small 
 square miles
 * Over half of the agencies serve populations of less than 5,000
 
-However, when we dig a bit deeper we tend to see that agencies that are more rural (serve smaller population sizes) follow the above narrative more so than agencies that are not as rural (serve large population sizes).
+However, when we dig a bit deeper we tend to see that agencies that are more rural (serve smaller population sizes) or are not owned, managed or receive support from a corporate health system follow the above narrative more so than agencies that are not as rural (serve large population sizes).
 
-**Owned, managed, or receive support from a corporate health system**
+**1. Owned, managed, or receive support from a corporate health system**
 
-Although only 27% of agencies responded that they were owned, managed or receive support from a corporate health care system, agencies that serve large population sizes were significantly more likely to respond this way.
+Although only 27% of agencies responded that they were owned, managed or receive support from a corporate health care system, agencies that serve large population sizes were significantly more likely to respond this way - 42% of responses serving 10,000 - 14,999 and 77% of responses serving 15,000 or more people. The percent of agencies responding this way from the other population groups ranged from 17% to 13%. 
 
-* Less than 2,500: 13% of responses
-* 2,500 - 4,999: 12% of responses
-* 5,000 - 9,999: 17% of responses
-* 10,000 - 14,999: 42% of responses
-* 15,000 or more: 77% of responses
+The questions raised from this relationship;
 
-**Types of services provided** 
+* Why are EMS agencies that serve larger populations more involved with corporate health care and vice versa?
+  + More financially sustainable?
+  + Large corporate healthcare systems are more likely to be located in a larger population center?
 
-Although a very large majority of all agencies (88.2%) offer basic life support, agencies that serve a small population size were significantly more likely to provide this service - 96% of responses serving less than 2,500 and 98% of responses serving 2,500 - 4,999.
+**2. Types of services provided**
 
-In addition, although only 27% of all agencies offer advanced life support, agencies that serve a large population size were significantly more likely to offer this service - 63% of responses serving 10,000 - 14,999 and 92% of responses serving 15,000 or more people.
+*Basic life support: * Although a very large majority of all agencies (88.2%) offer basic life support, agencies that serve a small population size were significantly more likely to provide this service - 96% of responses serving less than 2,500 and 98% of responses serving 2,500 - 4,999. A large majority of agencies serving other population sizes also provide basic life support, just not at the same rate. 
 
-Lastly, only 17% of all agencies responded that they offer part-time advanced life support. However, agencies serving moderate size populations were significantly more likely to offer this service - 47% of responses serving 5,000 - 9,999.
+*Advanced life support: * Although only 27% of all agencies offer advanced life support, agencies that serve a large population size were significantly more likely to offer this service - 63% of responses serving 10,000 - 14,999 and 92% of responses serving 15,000 or more people. The percent of agencies that responded this way were significantly lower for other population sizes - 20% of responses serving 5,000 - 9,999, 4% of responses serving 2,500 - 4,999 and 4% of responses serving less than 2,500 people.
 
-**Staff compensation**
+In addition to population sizes, offering advanced life support was also related to whether an agency was owned, managed or received support from a corporate health care system - 58% of these agencies responded that they offer ALS compared to only 16% of agencies that are not owned, managed or receive support from a corporate health system.
+
+*Part-time advanced life support: * Lastly, only 17% of all agencies responded that they offer part-time advanced life support. However, agencies serving moderate size populations were significantly more likely to offer this service - 47% of responses serving 5,000 - 9,999.
+
+The questions raised from this relationship are;
+
+* Why are agencies that serve a larger population more likely to offer advanced life support?
+  + Are these services very expensive to offer?
+  + Are there just too few instances where this type of service is necessary when the population served is small?
+  + Does offering advanced life support significantly improve the odds of someone surviving a health crisis in transport? If so, does this mean that our most rural areas are essentially not receiving the same level of care due to a business model?
+
+* What are agencies that are owned, managed or receive support from a corporate health system more likely to provide advanced life support?
+  + Because these agencies are more likely to serve larger population sizes and has the revenue to provide this service?
+  + Do these systems already have the equipment available?
+  + Is offering advanced life support a significant capital investment and can only be attained by systems with access to resources?
+  + Do healthcare systems see offering this service as a competitive advantage in the marketplace?
+  
+**3. Staff compensation**
 
 A majority of agencies (57%) responded that they use a volunteer/on-call compensation structure for their staff. However, agencies that serve smaller sized populations were significantly more likely to use this framework for their staff compensation - 76% of responses serving less than 2,500 people and 77% of responses serving 2,500 - 4,999. On the flip side, only 20% of agencies responded that they paid their staff but it was much higher for agencies serving larger populations - 38% of responses serving 10,000 - 14,9999 and 84% of responses serving 15,000 people or more. 
 
-**Using EMRs to staff ambulances**
+In addition, agencies that were owned, managed or receive support from a corporate health care system were significantly more likely to pay their EMS staff - 48% of responses from these agencies compared to 10% of responses from agencies that are not owned, managed or receive support from a corporate health system.
+
+The questions raised from these relationships are;
+
+* Why are agencies that serve large populations more likely to pay their staff?
+  + Obviously there are going to be a lot more calls for their service so it is demand to have full-time employees to respond to the calls.
+  + The larger volume of calls means more revenue to pay their staff - business model.
+
+* Why are agencies that are owned, managed or receive support from a health care system more likely to pay their staff?
+  + Because most of these agencies serve larger populations which likely have a better business model for hiring and paying staff.
+  + They have the flexibility to move staff from their hospital services to EMS services on the fly?
+
+**4. Using EMRs to staff ambulances**
 
 Although a majority of agencies responded that they do NOT use EMRs to staff their ambulances, agencies that serve small populations DO staff their ambulances using EMRs - 65% of responses serving less than 2,500 people and 51% of responses serving 2,500 - 4,999 people.
+
+In addition, agencies that are NOT owned, managed or receive support from a corporate health system more likely DO staff their ambulances using EMRs - 50% of these agencies compared to 17% of agencies that are owned, managed, or receive support from a corporate health system.
+
+The questions these relationships raise are;
+
+* Why are agencies that serve smaller populations more likely to use EMRs to staff their ambulances?
+  + Lack of volunteers/workforce?
+  + Since these agencies are more likely to not offer advanced life support it would make sense to utilize these staff to also staff ambulances? 
+  + Training requirements are too challenging and act as a barrier?
+  
+* Why are agencies that are NOT owned, managed or receive support from a corporate health care system more likely to use EMRs to staff ambulances?
+  + Because these agencies are more likely to serve smaller populations?
+  + These agencies are more likely to not pay their staff and are likely not as specialized?
 
 <br>
 
 # Workforce section
 
-**Key Findings**
+**Key Findings (MDH)**
 
 Staffing shortages are a major challenge for rural EMS agencies. Eighty (80) percent utilize some version of volunteers to staff their operations. Roster sizes are decreasing, many staff are trained for multiple public functions and many call schedules are not covered 24 hours prior to the shifts.
 
@@ -93,20 +135,81 @@ Recruitment and retention of ambulance personnel continues to be a significant c
 * Most agencies cover the full cost of the continuing education courses for their staff
 * Most eligible recipients take advantage of state EMS training reimbursement
 
-However, it is worth noting that there were some differences in responses depending on the size of the population served by an agency.
+However, it is worth noting that there were some differences in responses depending on the size of the population served by an agency and whether an agency is owned, managed or receives support from a corporate health system.
 
-* *Covering the call schedule: * Although a majority of agencies (60%) don't have enough people to cover the call schedule without undue burden or excessive time commitments, agencies that serve moderately sized populations (2,500 - 10,000) were significantly more likely to respond this way compared to the other agencies - 74% of responses serving 2,500 - 4,999 and 73% of responses serving 5,000 - 9,999. Agencies serving large populations were significantly more likely to have enough people - 67% serving 10,000 - 14,999 and 62% serving 15,000 or greater.
-* *Difficult to recruit new staff: * Although a majority of agencies (63%) said that staff recruitment was difficult, agencies that serve low population sizes (less than 5,000) were significantly more likely to say that recruitment was difficult - 70% serving less than 2,500 and 77% of responses serving 2,500 - 4,999.
-* *Cross-training of EMS staff: * Although a large majority of agencies (74%) said that their EMS staff were cross-trained in other publicly safety positions, agencies that serve the smallest population size were significantly more likely to respond this way - 91% of responses serving less than 2,500. The percentage decreases as the population size increases.
-* *Obstacles to recruiting - lack of availability: * Although a majority of agencies (62%) responded that lack of availability was an obstacle to staff recruitment, agencies that serve moderate size populations (2,500 - 10,000) were significantly more likely to respond this way - 74% of responses serving 2,500 - 4,999 and 87% of responses serving 5,000 - 9,999.
-* *Obstacles to recruiting - training requirements: * Although a majority of agencies (58%) responded that training requirements being too time consuming was a barrier to staff recruitment, the likeliness that an agency responded this way increases significantly as the size of the population decreases - 78% of responses serving less than 2,500 and 72% of responses serving 2,500 - 4,999. The other agencies ranged from 47% of responses serving 5,000 - 9,999 and 8% of responses serving greater than 15,000.
-* *Obstacles to recruiting - inadequate pay: * Although 40% of all agencies responded that inadequate pay was a a barrier to staff recruitment, agencies that serve moderate size populations responded this way at a significantly higher rate - 53% of responses serving 2,500 - 4,999 and 53% of responses serving 5,000 - 9,999. The other agencies were below 40% of responses.
-* *Obstacles to recruiting - time commitment is too great: * Although a majority of all agencies (67%) responded that the time commitment being too great as a barrier to staff recruitment, agencies that serve low to moderate size populations were significantly more likely to respond this way - 70% of responses serving less than 2,500, 77% of responses serving 2,500 - 4,999, and 87% of responses serving 5,000 - 9,999. The responses from other population groups were below 67%. 
-* *Obstacles to recruiting - child care responsibilities: * Although only 38% of all agencies said that child care responsibilities were a barrier to staff recruitment, agencies that serve 5,000 - 9,999 population size were significantly more likely to respond this way - 67% of responses in this population category. The remaining percentages were 40% or lower in the other population categories.
-* *Agency have a retention strategy: * Half of all agencies responded that they have a retention strategy, however agencies that serve large population sizes were significantly more likely to have a retention strategy - 71% of responses serving 10,000 - 14,999 and 81% of responses serving more than 15,000. The other population groups had 44% of responses or lower.
-* *Obstacles to retention - retirements: * Although a large majority of agencies responded that age/retirements was a barrier to staff retention, the likelihood that this was the case for an agency increased as the size of the population served decreased - 75% of responses serving less than 2,500, 65% of responses serving 2,500 - 4,999 and 67% of responses serving 5,000 - 9,999. 
-* *Obstacles to retention - excessive time commitment: * Although a large majority (72%) of all agencies said that the excessive time commitment or scheduling conflicts were a barrier to staff retention, agencies that serve low to moderate size populations were significantly more likely to respond this way - 80% of responses serving less than 2,500, 83% of responses serving 2,500 - 4,999, and 83% of responses serving 5,000 - 9,999.
-* *Obstacles to retention - limited advancement opportunities: * Although only 23% of all agencies said that limited advancement opportunities were a barrier to staff retention, agencies that serve large population sizes were significantly more likely to respond this way - 50% of responses serving 10,000 - 14,999 and 62% of responses serving 15,000 or great. The responses from the other population categories ranged from 30% to 0%.
-* *Obstacles to retention - employer not allowing staff to leave: * Although only 37% of all agencies said that employers not allowing staff to leave work for a call was a barrier to staff retention, agencies that serve moderately sized populations (2,500 - 10,000) were significantly more likely to respond this way - 49% of responses serving 2,500 - 4,999 and 60% of responses serving 5,000 - 9,999.
+**1. Covering the call schedule**
+
+Although a majority of agencies (60%) don't have enough people to cover the call schedule without undue burden or excessive time commitments, agencies that serve moderately sized populations (2,500 - 10,000) were significantly more likely to respond this way compared to the other agencies - 74% of responses serving 2,500 - 4,999 and 73% of responses serving 5,000 - 9,999. Agencies serving large populations were significantly more likely to have enough people - 67% serving 10,000 - 14,999 and 62% serving 15,000 or greater.
+
+In addition, agencies that are owned, managed or receive support from a corporate health system were significantly more likely to respond that they had enough people to cover the call schedule - 56% of responses from these agencies vs. 33% of responses from agencies that are NOT owned, managed or receive support from a corporate health system.
+
+Questions that these relationships raise are;
+
+* Why are agencies that serve moderate size populations more likely to not have enough people to cover the call schedule?
+  + Perhaps there is a sweet spot here. Agencies that serve populations these size aren't busy enough to generate the revenue to hire and pay staff so rely on volunteers, yet are busier (more call volume) than an agency serving very small population sizes that it's a heavier burden on the volunteers?
+  + Agencies that serve larger populations are more likely to pay their staff and have full-time employees and do not have the tension of covering the call schedule with people volunteering their time like agencies serving moderate to small population sizes.
+  
+* Why are agencies that are owned, managed, or receive support from a corporate health system more likely to have enough people to cover the call schedule?
+  + These agencies are more likely to serve larger population sizes thus are able to pay staff and have full-time employees rather than reliant on people to volunteer their time?
+
+**2. Difficult to recruit new staff** 
+
+Although a majority of agencies (63%) said that staff recruitment was difficult, agencies that serve low population sizes (less than 5,000) were significantly more likely to say that recruitment was difficult - 70% serving less than 2,500 and 77% of responses serving 2,500 - 4,999.
+
+In addition, agencies that are NOT owned, managed or receive support from a corporate health system are significantly more likely to respond that recruiting new staff was difficult - 68% of responses from these agencies vs. 48% of responses from agencies that are owned, managed or receive support from a corporate health system.
+
+On top of these is the relationship with compensation structure. 99% of agencies that compensate their staff other than pay said that staff recruitment was difficult compared to 84% of agencies that paid their staff.
+
+The questions these relationships raise are;
+
+* Why are agencies that serve lower population sizes more likely to find that recruiting staff is difficult?
+  + Is it related to whether they pay staff or not? 
+  + Career vs. volunteering?
+  + Smaller pool to draw from?
+  + Workforce shortages are worse in rural areas making finding volunteers doubling challenging?
+  
+* Why are agencies that are NOT owned, managed or receive support from a corporate health care system more likely to find staff recruitment challenging?
+  + Because they are more likely to serve smaller populations thus they have all of those same challenges?
+  + They don't have the flexibility to draw staff from the hospital?
+    
+* Why are agencies that compensate their staff other than pay say that staff recruitment is difficult?
+  + More likely to serve smaller population sizes thus they have all of those same challenges?
+  + More likely to be owned, managed or receive support from a corporate health system thus they have all of the same challenges?
+  + Because they don't pay?
+  
+
+**3. Cross-training of EMS staff** 
+
+Although a large majority of agencies (74%) said that their EMS staff were cross-trained in other publicly safety positions, agencies that serve the smallest population size were significantly more likely to respond this way - 91% of responses serving less than 2,500. The percentage decreases as the population size increases.
+
+
+
+**4. Obstacles to recruiting**
+
+* *Lack of availability: * 
+  + Although a majority of agencies (62%) responded that lack of availability was an obstacle to staff recruitment, agencies that serve moderate size populations (2,500 - 10,000) were significantly more likely to respond this way - 74% of responses serving 2,500 - 4,999 and 87% of responses serving 5,000 - 9,999.
+* *Training requirements: * 
+  + Although a majority of agencies (58%) responded that training requirements being too time consuming was a barrier to staff recruitment, the likeliness that an agency responded this way increases significantly as the size of the population decreases - 78% of responses serving less than 2,500 and 72% of responses serving 2,500 - 4,999. The other agencies ranged from 47% of responses serving 5,000 - 9,999 and 8% of responses serving greater than 15,000.
+* *Inadequate pay: * 
+  + Although 40% of all agencies responded that inadequate pay was a a barrier to staff recruitment, agencies that serve moderate size populations responded this way at a significantly higher rate - 53% of responses serving 2,500 - 4,999 and 53% of responses serving 5,000 - 9,999. The other agencies were below 40% of responses.
+* *Time commitment is too great: * 
+  + Although a majority of all agencies (67%) responded that the time commitment being too great as a barrier to staff recruitment, agencies that serve low to moderate size populations were significantly more likely to respond this way - 70% of responses serving less than 2,500, 77% of responses serving 2,500 - 4,999, and 87% of responses serving 5,000 - 9,999. The responses from other population groups were below 67%. 
+* *Child care responsibilities: *
+  + Although only 38% of all agencies said that child care responsibilities were a barrier to staff recruitment, agencies that serve 5,000 - 9,999 population size were significantly more likely to respond this way - 67% of responses in this population category. The remaining percentages were 40% or lower in the other population categories.
+
+**5. Agency have a retention strategy** 
+
+Half of all agencies responded that they have a retention strategy, however agencies that serve large population sizes were significantly more likely to have a retention strategy - 71% of responses serving 10,000 - 14,999 and 81% of responses serving more than 15,000. The other population groups had 44% of responses or lower.
+
+**6. Obstacles to retention**
+
+* *Retirements: * 
+  + Although a large majority of agencies responded that age/retirements was a barrier to staff retention, the likelihood that this was the case for an agency increased as the size of the population served decreased - 75% of responses serving less than 2,500, 65% of responses serving 2,500 - 4,999 and 67% of responses serving 5,000 - 9,999. 
+* *Excessive time commitment: * 
+  + Although a large majority (72%) of all agencies said that the excessive time commitment or scheduling conflicts were a barrier to staff retention, agencies that serve low to moderate size populations were significantly more likely to respond this way - 80% of responses serving less than 2,500, 83% of responses serving 2,500 - 4,999, and 83% of responses serving 5,000 - 9,999.
+* *Limited advancement opportunities: * 
+  + Although only 23% of all agencies said that limited advancement opportunities were a barrier to staff retention, agencies that serve large population sizes were significantly more likely to respond this way - 50% of responses serving 10,000 - 14,999 and 62% of responses serving 15,000 or great. The responses from the other population categories ranged from 30% to 0%.
+* *Employer not allowing staff to leave: * 
+  + Although only 37% of all agencies said that employers not allowing staff to leave work for a call was a barrier to staff retention, agencies that serve moderately sized populations (2,500 - 10,000) were significantly more likely to respond this way - 49% of responses serving 2,500 - 4,999 and 60% of responses serving 5,000 - 9,999.
 
 <br>
