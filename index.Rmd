@@ -48,7 +48,13 @@ However, when we dig a bit deeper we tend to see that agencies that are more rur
 
 **Owned, managed, or receive support from a corporate health system**
 
-Although only 27% of agencies responded that they were owned, managed or receive support from a corporate health care system,  
+Although only 27% of agencies responded that they were owned, managed or receive support from a corporate health care system, agencies that serve large population sizes were significantly more likely to respond this way.
+
+* Less than 2,500: 13% of responses
+* 2,500 - 4,999: 12% of responses
+* 5,000 - 9,999: 17% of responses
+* 10,000 - 14,999: 42% of responses
+* 15,000 or more: 77% of responses
 
 **Types of services provided** 
 
@@ -66,3 +72,41 @@ A majority of agencies (57%) responded that they use a volunteer/on-call compens
 
 Although a majority of agencies responded that they do NOT use EMRs to staff their ambulances, agencies that serve small populations DO staff their ambulances using EMRs - 65% of responses serving less than 2,500 people and 51% of responses serving 2,500 - 4,999 people.
 
+<br>
+
+# Workforce section
+
+**Key Findings**
+
+Staffing shortages are a major challenge for rural EMS agencies. Eighty (80) percent utilize some version of volunteers to staff their operations. Roster sizes are decreasing, many staff are trained for multiple public functions and many call schedules are not covered 24 hours prior to the shifts.
+
+* The active staff roster decreased for half of the agencies from the previous year
+* Weekday daytime hours are the most difficult shifts to cover. However, all weekend and holiday
+shifts are also difficult to cover
+* About 60 percent of agencies have inadequate staff to cover their call schedule without undue
+burden to the agency.
+* Fifty-nine (59) percent of agencies do not have their shifts 100 percent covered at least 24 hours in
+advance
+
+Recruitment and retention of ambulance personnel continues to be a significant challenge even though:
+* Emergency Medical Responders (EMRs) are now widely used to actively staff rural EMS agencies
+* Most agencies cover the full cost of the continuing education courses for their staff
+* Most eligible recipients take advantage of state EMS training reimbursement
+
+However, it is worth noting that there were some differences in responses depending on the size of the population served by an agency.
+
+* *Covering the call schedule: * Although a majority of agencies (60%) don't have enough people to cover the call schedule without undue burden or excessive time commitments, agencies that serve moderately sized populations (2,500 - 10,000) were significantly more likely to respond this way compared to the other agencies - 74% of responses serving 2,500 - 4,999 and 73% of responses serving 5,000 - 9,999. Agencies serving large populations were significantly more likely to have enough people - 67% serving 10,000 - 14,999 and 62% serving 15,000 or greater.
+* *Difficult to recruit new staff: * Although a majority of agencies (63%) said that staff recruitment was difficult, agencies that serve low population sizes (less than 5,000) were significantly more likely to say that recruitment was difficult - 70% serving less than 2,500 and 77% of responses serving 2,500 - 4,999.
+* *Cross-training of EMS staff: * Although a large majority of agencies (74%) said that their EMS staff were cross-trained in other publicly safety positions, agencies that serve the smallest population size were significantly more likely to respond this way - 91% of responses serving less than 2,500. The percentage decreases as the population size increases.
+* *Obstacles to recruiting - lack of availability: * Although a majority of agencies (62%) responded that lack of availability was an obstacle to staff recruitment, agencies that serve moderate size populations (2,500 - 10,000) were significantly more likely to respond this way - 74% of responses serving 2,500 - 4,999 and 87% of responses serving 5,000 - 9,999.
+* *Obstacles to recruiting - training requirements: * Although a majority of agencies (58%) responded that training requirements being too time consuming was a barrier to staff recruitment, the likeliness that an agency responded this way increases significantly as the size of the population decreases - 78% of responses serving less than 2,500 and 72% of responses serving 2,500 - 4,999. The other agencies ranged from 47% of responses serving 5,000 - 9,999 and 8% of responses serving greater than 15,000.
+* *Obstacles to recruiting - inadequate pay: * Although 40% of all agencies responded that inadequate pay was a a barrier to staff recruitment, agencies that serve moderate size populations responded this way at a significantly higher rate - 53% of responses serving 2,500 - 4,999 and 53% of responses serving 5,000 - 9,999. The other agencies were below 40% of responses.
+* *Obstacles to recruiting - time commitment is too great: * Although a majority of all agencies (67%) responded that the time commitment being too great as a barrier to staff recruitment, agencies that serve low to moderate size populations were significantly more likely to respond this way - 70% of responses serving less than 2,500, 77% of responses serving 2,500 - 4,999, and 87% of responses serving 5,000 - 9,999. The responses from other population groups were below 67%. 
+* *Obstacles to recruiting - child care responsibilities: * Although only 38% of all agencies said that child care responsibilities were a barrier to staff recruitment, agencies that serve 5,000 - 9,999 population size were significantly more likely to respond this way - 67% of responses in this population category. The remaining percentages were 40% or lower in the other population categories.
+* *Agency have a retention strategy: * Half of all agencies responded that they have a retention strategy, however agencies that serve large population sizes were significantly more likely to have a retention strategy - 71% of responses serving 10,000 - 14,999 and 81% of responses serving more than 15,000. The other population groups had 44% of responses or lower.
+* *Obstacles to retention - retirements: * Although a large majority of agencies responded that age/retirements was a barrier to staff retention, the likelihood that this was the case for an agency increased as the size of the population served decreased - 75% of responses serving less than 2,500, 65% of responses serving 2,500 - 4,999 and 67% of responses serving 5,000 - 9,999. 
+* *Obstacles to retention - excessive time commitment: * Although a large majority (72%) of all agencies said that the excessive time commitment or scheduling conflicts were a barrier to staff retention, agencies that serve low to moderate size populations were significantly more likely to respond this way - 80% of responses serving less than 2,500, 83% of responses serving 2,500 - 4,999, and 83% of responses serving 5,000 - 9,999.
+* *Obstacles to retention - limited advancement opportunities: * Although only 23% of all agencies said that limited advancement opportunities were a barrier to staff retention, agencies that serve large population sizes were significantly more likely to respond this way - 50% of responses serving 10,000 - 14,999 and 62% of responses serving 15,000 or great. The responses from the other population categories ranged from 30% to 0%.
+* *Obstacles to retention - employer not allowing staff to leave: * Although only 37% of all agencies said that employers not allowing staff to leave work for a call was a barrier to staff retention, agencies that serve moderately sized populations (2,500 - 10,000) were significantly more likely to respond this way - 49% of responses serving 2,500 - 4,999 and 60% of responses serving 5,000 - 9,999.
+
+<br>
