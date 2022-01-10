@@ -180,36 +180,203 @@ The questions these relationships raise are;
 
 **3. Cross-training of EMS staff** 
 
-Although a large majority of agencies (74%) said that their EMS staff were cross-trained in other publicly safety positions, agencies that serve the smallest population size were significantly more likely to respond this way - 91% of responses serving less than 2,500. The percentage decreases as the population size increases.
+Although a large majority of agencies (74%) said that their EMS staff were cross-trained in other publicly safety positions, agencies that serve the smallest population size were significantly more likely to respond this way - 91% of responses serving less than 2,500. The percentage decreases as the population size increases - all the way down to 40% of responses for agencies serving 15,000 or more people. 
 
+The questions this relationship raises are;
 
+* Why are the staff of agencies that serve smaller populations more likely to be cross-trained in other public safety agencies?
+  + Lack of people means folks typically wear multiple hats. And to stretch resources, it may make sense that public safety staff and volunteers be trained in multiple roles.
+  
 
 **4. Obstacles to recruiting**
 
-* *Lack of availability: * 
-  + Although a majority of agencies (62%) responded that lack of availability was an obstacle to staff recruitment, agencies that serve moderate size populations (2,500 - 10,000) were significantly more likely to respond this way - 74% of responses serving 2,500 - 4,999 and 87% of responses serving 5,000 - 9,999.
-* *Training requirements: * 
-  + Although a majority of agencies (58%) responded that training requirements being too time consuming was a barrier to staff recruitment, the likeliness that an agency responded this way increases significantly as the size of the population decreases - 78% of responses serving less than 2,500 and 72% of responses serving 2,500 - 4,999. The other agencies ranged from 47% of responses serving 5,000 - 9,999 and 8% of responses serving greater than 15,000.
-* *Inadequate pay: * 
-  + Although 40% of all agencies responded that inadequate pay was a a barrier to staff recruitment, agencies that serve moderate size populations responded this way at a significantly higher rate - 53% of responses serving 2,500 - 4,999 and 53% of responses serving 5,000 - 9,999. The other agencies were below 40% of responses.
-* *Time commitment is too great: * 
-  + Although a majority of all agencies (67%) responded that the time commitment being too great as a barrier to staff recruitment, agencies that serve low to moderate size populations were significantly more likely to respond this way - 70% of responses serving less than 2,500, 77% of responses serving 2,500 - 4,999, and 87% of responses serving 5,000 - 9,999. The responses from other population groups were below 67%. 
-* *Child care responsibilities: *
-  + Although only 38% of all agencies said that child care responsibilities were a barrier to staff recruitment, agencies that serve 5,000 - 9,999 population size were significantly more likely to respond this way - 67% of responses in this population category. The remaining percentages were 40% or lower in the other population categories.
+*Lack of availability: * 
+Although a majority of agencies (62%) responded that lack of availability was an obstacle to staff recruitment, agencies that serve moderate size populations (2,500 - 10,000) were significantly more likely to respond this way - 74% of responses serving 2,500 - 4,999 and 87% of responses serving 5,000 - 9,999.
+
+The question this relationship raises are;
+
+* Why are agencies that serve moderate sized populations (2,500 - 10,000) the most likely to say that lack of availability is a barrier to recruitment? 
+  + Do these agencies face an issue where their call volume isn't large enough to hire staff but also large enough that it stretches volunteers thin?
+
+*Training requirements: * 
+Although a majority of agencies (58%) responded that training requirements being too time consuming was a barrier to staff recruitment, the likeliness that an agency responded this way increases significantly as the size of the population decreases - 78% of responses serving less than 2,500 and 72% of responses serving 2,500 - 4,999. The other agencies ranged from 47% of responses serving 5,000 - 9,999 to 8% of responses serving greater than 15,000.
+
+In addition, agencies that are NOT owned, managed or receive support from a corporate health system were significantly more likely to respond that training requirements taking too much time was a barrier to staff recruitment - 67% of responses for these agencies vs. only 35% of responses from agencies that ARE owned, managed or receive support from a corporate health system.
+
+The questions these relationships raise are;
+
+* Why does a decreasing size of the population impact whether training requirements are too time consuming and act as a barrier to staff recruitment? 
+  + It's more likely that agencies that serve smaller populations also rely on volunteers, thus making training requirements a bit of burden for folks that already have full-time jobs?
+  + Do the training requirements apply? These agencies typically have lower call volumes so maybe much of the training doesn't apply to volunteers for rural EMS?
+* Why does an agency that is NOT owned, managed or receive support from a corporate health system more likely to say that training requirements are too time consuming and act as a barrier to staff recruitment?
+  + These agencies are also more likely to serve small population sizes therefore they also have the same challenges?
+  + An agency that does have some form of relationship with a health system may be able to provide more in-house training and reduces the burden that other agencies may encounter?
+
+*Inadequate pay: *
+Although 40% of all agencies responded that inadequate pay was a a barrier to staff recruitment, agencies that serve moderate size populations responded this way at a significantly higher rate - 53% of responses serving 2,500 - 4,999 and 53% of responses serving 5,000 - 9,999. The other agencies were below 40% of responses.
+
+The questions this relationship raises are;
+
+* Why are agencies that serve moderate sized populations more likely to say that inadequate pay is a barrier to staff recruitment?
+  + These agencies may be in a sweet spot - they have a low enough call volume that they don't generate enough revenue to hire any staff yet their call volume is high enough to burden volunteers?
+
+*Time commitment is too great: * 
+Although a majority of all agencies (67%) responded that the time commitment being too great as a barrier to staff recruitment, agencies that serve low to moderate size populations were significantly more likely to respond this way - 70% of responses serving less than 2,500, 77% of responses serving 2,500 - 4,999, and 87% of responses serving 5,000 - 9,999. The responses from other population groups were below 67%.
+
+In addition, agencies that are NOT owned, managed or receive support from a corporate health system are significantly more likely to say that the time  commitment is a barrier to staff recruitment - 77% of these agencies responded this way vs. 44% of agencies that are owned, managed or receive support from a corporate health system.
+
+The questions this relationship raises are;
+
+* Why are agencies that serve moderate sized populations more likely to that the time commitment is a barrier to staff recruitment?
+  + These agencies may be in a sweet spot - they have a low enough call volume that they don't generate enough revenue to hire any staff yet their call volume is high enough to burden volunteers?
+* Why are agencies that are NOT owned, managed, or receive support from a corporate health system more likely to say that time commitment is a barrier to staff recruitment?
+  + These agencies typically serve small to moderate sized populations therefore face the same challenges?
+  + These agencies are less likely to pay their staff?
+  
+*Child care responsibilities: *
+Although only 38% of all agencies said that child care responsibilities were a barrier to staff recruitment, agencies that serve 5,000 - 9,999 population size were significantly more likely to respond this way - 67% of responses in this population category. The remaining percentages were 40% or lower in the other population categories.
+
+In addition, agencies that are NOT owned, managed, or receive support from a corporate health system are significantely more likely to say that child care responsibilities are a barrier to staff recruitment - 48% of these agencies vs. 21% of agencies that are owned, managed or receive support.
+
+The questions this relationship raises are;
+
+* Why are agencies that serve moderate sized populations more likely to that the child care obligations act as a barrier to staff recruitment?
+  + These agencies may be in a sweet spot - they have a low enough call volume that they don't generate enough revenue to hire any staff yet their call volume is high enough to burden volunteers?
+* Why are agencies that are NOT owned, managed, or receive support from a corporate health system more likely to say that time commitment is a barrier to staff recruitment?
+  + These agencies typically serve small to moderate sized populations therefore face the same challenges?
+  + These agencies are less likely to pay their staff?
+
 
 **5. Agency have a retention strategy** 
 
 Half of all agencies responded that they have a retention strategy, however agencies that serve large population sizes were significantly more likely to have a retention strategy - 71% of responses serving 10,000 - 14,999 and 81% of responses serving more than 15,000. The other population groups had 44% of responses or lower.
 
+In addition, agencies that are owned, managed or receive support from a corporate health system are significantly more likely to respond that they had developed a retention strategy - 69% of these agencies vs. 44% of agencies that are NOT owned, managed or receive support from a corporate health system.
+
+The questions these relationships raise are;
+
+* Why are agencies that serve large sized populations more likely to have a retention strategy?
+  + These agencies have access to resources to help pay for and develop a retention strategy?
+* Why are agencies that are owned, managed, or receive support from a corporate health system more likely to have developed a retention strategy?
+  + These agencies typically serve large sized populations therefore have access to the same resources?
+  
 **6. Obstacles to retention**
 
-* *Retirements: * 
-  + Although a large majority of agencies responded that age/retirements was a barrier to staff retention, the likelihood that this was the case for an agency increased as the size of the population served decreased - 75% of responses serving less than 2,500, 65% of responses serving 2,500 - 4,999 and 67% of responses serving 5,000 - 9,999. 
-* *Excessive time commitment: * 
-  + Although a large majority (72%) of all agencies said that the excessive time commitment or scheduling conflicts were a barrier to staff retention, agencies that serve low to moderate size populations were significantly more likely to respond this way - 80% of responses serving less than 2,500, 83% of responses serving 2,500 - 4,999, and 83% of responses serving 5,000 - 9,999.
-* *Limited advancement opportunities: * 
-  + Although only 23% of all agencies said that limited advancement opportunities were a barrier to staff retention, agencies that serve large population sizes were significantly more likely to respond this way - 50% of responses serving 10,000 - 14,999 and 62% of responses serving 15,000 or great. The responses from the other population categories ranged from 30% to 0%.
-* *Employer not allowing staff to leave: * 
-  + Although only 37% of all agencies said that employers not allowing staff to leave work for a call was a barrier to staff retention, agencies that serve moderately sized populations (2,500 - 10,000) were significantly more likely to respond this way - 49% of responses serving 2,500 - 4,999 and 60% of responses serving 5,000 - 9,999.
+*Retirements: * 
+Although a large majority of agencies responded that age/retirements was a barrier to staff retention, the likelihood that this was the case for an agency increased as the size of the population served decreased - 75% of responses serving less than 2,500, 65% of responses serving 2,500 - 4,999 and 67% of responses serving 5,000 - 9,999. Less than 50% of agencies in the remaining population groups responded this way.
+
+In addition, agencies that are NOT owned, managed or receive support from a corporate health system were significantly more likely to say that age and retirements were a barrier to staff retention - 68% of these agencies vs. 44% of agencies that were owned, managed or receive support from a corporate health system.
+
+The questions these relationships raise are;
+
+* Why do agencies that serve small population sizes more likely to deal with older workforce and retirements?
+  + Small populations means that there may not be enough younger people.
+  + Small populations typically have an older workforce already, thus any replacements are likely to be older.
+  + The need for volunteers in our most rural areas is already high, thus there is a small pool to draw from.
+* Why do agencies that are NOT owned, managed or receive support from a corporate health system more likely to say that age and retirements are an issue for staff retention?
+  + These agencies typically serve small population sizes therefore they deal with those issues.
+  + A corporate health system may have a healthier pool of staff to draw from and shift compared to these agencies.
+  + These agencies are more likely to not pay their staff, making their positions not very attractive compared to other positions and volunteer opportunities.
+
+*Excessive time commitment: * 
+Although a large majority (72%) of all agencies said that the excessive time commitment or scheduling conflicts were a barrier to staff retention, agencies that serve low to moderate size populations were significantly more likely to respond this way - 80% of responses serving less than 2,500, 83% of responses serving 2,500 - 4,999, and 83% of responses serving 5,000 - 9,999.
+
+In addition, agencies that are NOT owned, managed or receive support from a corporate health system are more likely to say that excessive time commitment is a barrier to staff retention - 82% of these agencies vs. 50% of agencies that are owned, managed or receive support from a corporate health system.
+
+The questions these relationships raise are;
+
+* Why is excessive time commitment such a larger issue to staff retention for agencies serving small to moderate sized populations compared to other agencies?
+  + These agencies are less likely to pay their staff, making the time commitment unreasonable for volunteers.
+* Why is excessive time commitment such a larger issue to staff retention for agencies that are NOT owned, managed or receive support from a corporate health system?
+  + These agencies typically serve small to moderate populations thus they deal with the same issues?
+
+*Limited advancement opportunities: * 
+Although only 23% of all agencies said that limited advancement opportunities were a barrier to staff retention, agencies that serve large population sizes were significantly more likely to respond this way - 50% of responses serving 10,000 - 14,999 and 62% of responses serving 15,000 or great. The responses from the other population categories ranged from 30% to 0%.
+
+In addition, agencies that are owned, managed or receive support from a corporate health system are more likely to say that limited advancement opportunities is a barrier to staff retention - 44% of these agencies vs. 16% of agencies that are NOT owned, managed or receive support.
+
+The questions these relationships raise are;
+
+* Why do agencies that serve larger populations respond that limited advancement opportunities acts as a barrier to staff retention?
+  + These agencies are more likely to pay and be career oriented for employees?
+  + These agencies deal more with staff turnover due to them being poached by larger, more urgan agencies that can offer advancement.
+
+
+*Employer not allowing staff to leave: * 
+Although only 37% of all agencies said that employers not allowing staff to leave work for a call was a barrier to staff retention, agencies that serve moderately sized populations (2,500 - 10,000) were significantly more likely to respond this way - 49% of responses serving 2,500 - 4,999 and 60% of responses serving 5,000 - 9,999.
+
+The questions this relationship raises are;
+
+* Why are agencies that serve moderate sized populations more likely to say employers not allowing staff to leave acts as a barrier to staff retention?
+  + These agencies may be in a sweet spot - they have a low enough call volume that they don't generate enough revenue to hire any staff yet their call volume is high enough to burden volunteers and employers?
+  
+<br>
+
+# Leadership section
+
+**Key Findings (MDH)**
+
+The largest problems that rural EMS agency managers face today, as in the past, are recruitment of staff and filling call schedules. These two management tasks seem to form a Maslow’s Hierarchy of basic management needs (see Appendix C, Question 24). It may be that efforts to address other management issues will be fruitless and/or unwelcomed until these basic needs are addressed.
+
+* Sixty-nine (69) percent of rural EMS managers report difficulty recruiting staff despite the fact that 57.5 percent have a recruitment plan
+* Over half of rural EMS managers report difficulty staffing their schedule
+
+High leadership turnover was defined in this survey as an EMS agency having had three or more managers in the past five years. Using this definition, there is remarkably low turnover of rural EMS managers. A high majority of EMS managers have an active role in developing their budgets, but generally are not directly involved in billing.
+
+* Eighty-six (86) percent of services did not have high turnover of their managers
+* Eighty-one (81) percent of rural EMS managers have a role in developing their annual budgets
+* Eighty-one (81) percent use other resources to bill, with billing agencies as the most common at
+fifty-two (52) percent
+
+However, it is worth noting that there was one difference in responses depending on whether or not an agency was owned, managed or receives support from a corporate health system. 
+
+**Management received training** 
+
+Although a majority of agencies (54%) responded that their management has received formal leadership or management training, agencies that are owned, managed or receive support from a corporate health system responded this way at a significantly higher rate than other agencies (77% vs. 46%).
+
+In addition, agencies that are owned, managed or receive support from a corporate health system were significantly more likely to say that their management has received training - 77% of these agencies vs. 46% of agencies that are NOT owned, managed or receive support from a corporate health system.
+
+The questions these relationship raise are;
+
+* Why do agencies that serve large populations increase the likelihood that their leadership is trained?
+  + These agencies have more revenue thus can afford to send their leadership to trainings?
+  + These are agencies are more likely to be affiliated with a corporate health system who can provide the training in-house?
+  + These agencies aren't so tight on scheduling and can allow staff to be trained without burdening others?
+
+**Management challenge areas**
+
+*Recruitment: * 
+Although a majority of agencies (69%) responded that recruitment was a management challenge area, agencies that serve low to moderate sized populations responded this way at a significantly higher rate - 72% of responses serving less than 2,500, 84% of responses serving 2,500 - 4,999 and 77% of responses serving 5,000 - 9,999.
+
+The questions this relationship raises are;
+
+* Why do agencies that serve low to moderate sized populations more likely to say that recruitment was a challenge area?
+  + Because these agencies are also more likely to say that staff recruitment is a challenge, besides just being a management challenge?
+  + Because these agencies are more likely to lack leadership training?
+  
+
+*Retention: *
+Although only 43% of all agencies responded that retention was a management challenge area, agencies serving moderate sized populations were significantly more likely to respond this way - 51% of responses serving 2,500 - 4,999 and 60% of responses serving 5,000 - 9,999.
+
+The questions this relationship raises are;
+
+* Why is staff retention such a larger management challenge for agencies that serve moderate sized populations?
+  + These agencies fall in that sweet spot - not being able to pay but having enough busy to burden volunteers and burning them out.
+
+*Staffing the schedule: * 
+Although just over half of all agencies (51%) responded that staffing the schedule was a management challenge area, agencies that serve moderate size populations were significantly more likely to respond this way - 61% of responses serving 2,500 - 4,999 and 70% of responses serving 5,000 - 9,999. 
+
+The questions this relationship raises are;
+
+* Why is staffing the schedule such a larger management challenge for agencies that serve moderate sized populations?
+  + These agencies fall in that sweet spot - not being able to pay but having enough busy to burden volunteers and burning them out.
+
+*None: * 
+Although only 9% of all agencies responded that there were "none" management challenge areas, agencies that serve larger populations were significantly more likely to respond this way - 17% of responses serving 10,000 - 14,999 and 27% of responses serving greater than 15,000.
+
+* Why are agencies that serve larger sized populations more likely to say that they didn't have any management challenges?
+  + These agencies are more likely to have enough revenue that their business model just works better and eliminates any challenges with trying to find staff?
+  
 
 <br>
+
