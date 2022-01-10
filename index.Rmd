@@ -33,11 +33,46 @@ library(DT)
 
 <br>
 
+# The data
+
+
+
+The survey was broken into 7 different sections. The three sections in bold is what was included in the analysis due to the MN Department of Health providing incomplete data. The sections are.
+
+1. **Characteristics questions**
+2. **Workforce sustainability questions**
+3. **Leadership questions**
+4. Education questions
+5. Medical direction questions
+6. Community relation questions
+7. Funding questions
+
+The analysis used for the cross tabs is the typical chi-square test with p-value. All of the relationships provided in the summaries below had a relationship with a p-value < .01. 
+
+To review the survey, refer to the [analysis done by the MN Department of Health](https://ruralmn-my.sharepoint.com/:b:/g/personal/kasche_ruralmn_org/EfL_amH-NhdGnvawv2a1SFkBufjvMMFUwXarzuJwCXl8Ag?e=XRIUgo).
+
+The following are two sections. The first provides very brief summaries of the main statistically significant relationships found between the survey questions and the size of the population served.
+
+The remaining section is another summary but provides the additional summary written by the MN Department of Health provided in their report along with the relationships found in this analysis. It also provides a bit more of the numbers behind the relationships. 
+
 # Main themes
 
-The variable that seemed to have the most significant impact on how an agency responded to questions in this survey was the population size served. 
+This analysis assessed the relationships of 4 questions with many of the other questions in the three sections of the survey (characteristics section, workforce sustainability section, and leadership section). The four questions on which we assess relationships with many of the other questions were;
 
-*What is the estimated total population that you serve?*
+1. What is the estimated total population that you serve?
+2. Which type of ownership best describes your agency?
+3. Is your agency owned, managed or does it receive support from a corporate health system?
+4. What is your local EMS service region according to the EMSRB?
+
+The variable that seemed to have the most significant impact on how an agency responded to questions in this survey was the population size served. There were many questions where the size of the population served was related to how an agency responded.
+
+The questions assessing the type of ownership and whether an agency had a relationship with a corporate health system were closely related - if they were privately owned or a non-profit then it was highly likely they were also owned, managed or receive support from a corporate health system. In addition, these were also highly related to the size of the population served - the larger the population served the more likely the agency was owned, managed or receive support from a corporate health system.
+
+The question regarding the region an agency served did not indicate many relationships.
+
+Due to all of this correlation, this brief summary will focus on the population size as the main relationship foundational question.
+
+**What is the estimated total population that you serve?**
 
 * Less than 2,500 (46 responses, 24.7%)
 * 2,500 - 4,999 (57 responses, 30.7%)
@@ -45,37 +80,134 @@ The variable that seemed to have the most significant impact on how an agency re
 * 10,000 - 14,999 (22 responses, 11.8%)
 * Greater than 15,000 (27 responses, 14.5%)
 
-The main themes based on population were;
-
-*Characteristic section*
-
-* Compared to agencies serving larger populations, the smaller the population served (1 - 5,000 people) the....
-  + significantly less likely the agency was owned, managed or receives support from a corporate health system,
-  + significantly more likely to offer basic life support,
-  + significantly less likely to pay staff and rely on on-call compensation or volunteers, and
-  + significantly more likely to use EMRs to staff their ambulances.
-  
-* Compared to agencies serving small populations, the large the population served (10,000 or more) the.....
-  + significantly more likely the agency was owned, managed or receives support from a corporate health system,
-  + significantly more likely to provide advanced life support,
-  + significantly more likely to pay staff, and
-  + significantly less likely to use EMRs to staff their ambulances.
-  
-In addition to this bifurcation in the relationship (larger vs smaller) there was one way in which agencies serving more "moderate" sized populations (2,500 - 10,000) differed. These agencies were significantly more likely to offer part-time advanced life support than other agencies.
-
-*Workforce section*
-
-* Compared to agencies serving larger populations, the smaller the population served (1 - 5,000 people) the...
-  + significantly less likely the agency could cover the call schedule without undue burden or excessive time commitments,
-  + significantly more likely the agency found recruiting new staff to be difficult,
-  + 
+The main themes where the size of the population served played a statistically significant role in how an agency responded were;
 
 <br>
 
+**Characteristic section**
+
+Compared to agencies serving larger populations, the smaller the population served (1 - 5,000 people) the....
+
+* significantly less likely the agency was owned, managed or receives support from a corporate health system,
+* significantly more likely to offer basic life support,
+* significantly less likely to pay staff and rely on on-call compensation or volunteers, and
+* significantly more likely to use EMRs to staff their ambulances.
+  
+Compared to agencies serving small populations, the large the population served (10,000 or more) the.....
+
+* significantly more likely the agency was owned, managed or receives support from a corporate health system,
+* significantly more likely to provide advanced life support,
+* significantly more likely to pay staff, and
+* significantly less likely to use EMRs to staff their ambulances.
+  
+In addition to this bifurcation in the relationship (larger vs smaller) there was one way in which agencies serving more "moderate" sized populations (2,500 - 10,000) differed. These agencies were significantly more likely to offer part-time advanced life support than other agencies.
+
+<br>
+
+**Workforce section**
+
+Compared to agencies serving larger populations, the smaller the population served (1 - 5,000 people) the...
+
+* significantly less likely the agency could cover the call schedule without undue burden or excessive time commitments,
+* significantly more likely the agency found recruiting new staff to be difficult,
+* significantly more likely the agency had staff cross-trained in other public safety positions,
+* significantly more likely they found the following to be obstacles in staff recruitment;
+  + lack of availability,
+  + training requirements are too time consuming,
+  + inadequate pay,
+  + time commitment is too great, and
+  + child care responsibilities.
+* significantly less likely to have developed a staff retention strategy,
+* significantly more likely to have found the following to be obstacles in staff retention;
+  + age of their workforce/retirements,
+  + excessive time commitment, and
+  + employers not allowing staff to leave work for calls.
+* significantly less likely to have found the following to be obstacles in staff retention;
+  + limited advancement opportunities.
+    
+Compared to agencies serving smaller populations, the larger the populations served (10,000 or more people) the...
+
+* significantly more likely the agency could cover the call schedule without undue burden or excessive time commitments,
+* significantly less likely the agency had staff cross-trained in other public safety positions,
+* significantly less likely the agency found the following to be obstacles in staff recruitment;
+  + lack of availability,
+  + training requirements being too time consuming,
+  + inadequate pay,
+  + time commitment being too great, and
+  + child care responsibilities.
+* significantly more likely to have developed a staff retention strategy, and
+* significantly less likely to have found the following to be obstacles in staff retention;
+  + age of their workforce/retirements,
+  + excessive time commitment, and
+  + employers not allowing staff to leave work for calls.
+* significantly more likely to have found the following to be obstacles in staff retention;
+  + limited advancement opportunities.
+    
+Besides the bifurcation of large vs small size populations, there were also a number of questions where serving a more "moderate" size population (2,500 - 10,000 people) seemed to have an outsized impact on responses, even more than agencies serving our smallest size population.
+
+Agencies serving more moderate sized populations were significantly more likely to respond that;
+
+* they couldn't cover the call schedule without undue burden or excessive time commitment,
+* lack of availability was an obstacle to staff recruitment,
+* inadequate pay was an obstacle to staff recruitment,
+* time commitment being too great was an obstacle to staff recruitment and retention,
+* child care responsibilities was an obstacle to staff recruitment, and
+* employers not allowing staff to leave work for calls was an obstacle to staff retention.
+
+<br>
+
+**Leadership section**
+
+Compared to agencies that serve larger population sizes, the smaller the populations (1 - 5,000 people) the...
+
+* significantly less likely management has received formal training,
+* significantly more likely the agency found the following to be management challenges;
+  + staff recruitment,
+  + staff retention, and
+  + staff the schedule.
+* significantly less likely the agency found the following to be management challenges;
+  + none.
+    
+Compared to agencies that serve smaller population sizes, the larger the population (10,000 or greater) the...
+
+* significantly more likely management has received formal training,
+* significantly less likely the agency found the following to be management challenges;
+  + staff recruitment,
+  + staff retention, and
+  + staffing the schedule.
+* significantly more likely the agency found the following to be management challenges;
+  + none.
+    
+In addition, agencies that serve moderate size populations (2,500 - 10,000 people) responded differently compared to other agencies, even more than agencies serving the smallest population size.
+
+* These agencies were significantly more likely to say that staff recruitment was a management challenge area.
+* These agencies were significantly more likely to say that staff retention was a management challenge area.
+* These agencies were significantly more likely to say that staffing the schedule was a management challenge area.
+
+<br>
+
+**Questions to consider**
+
+There are a number of questions that these relationships raise. The main themes being;
+
+* Is this a business model problem? Low call volumes means less money which also means inability to pay staff and having to rely on volunteers which then leads to all of the obstacles in staff recruitment and retention
+* How big of a role does ownership/collaboration with a corporate health system play? Although not mentioned in this summary, many of the same relationships exist between agencies that are and are not owned, managed or receive support from a corporate healthy system and agencies that are not. 
+* What role does the high job vacancy rate play? Our more rural areas have some of the higher job vacancy rate meaning the labor force pool is very competitive among employers.
+* What role does the change in volunteerism play? The "opportunities/obligations" for young parents to volunteer at schools and in their communities has increased significantly over the last few decades. In addition, there is research that shows people are more likely to volunteer for things they enjoy doing rather than out of civic obligation.
+* Is there a disconnect in the training requirements and what's actually needed? Agencies with significantly lower call volume perhaps don't see the types of emergencies that need more advanced training therefore staff in these agencies find the training to be more burdensome since it doesn't apply?
+
+The differences between agencies serving moderate sized populations and agencies serving our smallest and largest population sizes is interesting and raises a couple of unique questions.
+
+* Perhaps there is a sweet spot here. Agencies that serve populations these size aren’t busy enough to generate the revenue to hire and pay staff so rely on volunteers, yet are busier than an agency serving very small population sizes that it’s a heavier burden on the volunteers?
+
+
+<br>
+
+# Summary - a bit more detail
 
 The following narrative combines the executive summary written by the MN Department of Health with a summary of the results found in this analysis.
 
-# Characteristics section
+## Characteristics section
 
 **Key Findings (MDH)**
 
@@ -156,7 +288,7 @@ The questions these relationships raise are;
 
 <br>
 
-# Workforce section
+## Workforce section
 
 **Key Findings (MDH)**
 
@@ -352,7 +484,7 @@ The questions this relationship raises are;
   
 <br>
 
-# Leadership section
+## Leadership section
 
 **Key Findings (MDH)**
 
@@ -372,7 +504,7 @@ However, it is worth noting that there was one difference in responses depending
 
 **Management received training** 
 
-Although a majority of agencies (54%) responded that their management has received formal leadership or management training, agencies that are owned, managed or receive support from a corporate health system responded this way at a significantly higher rate than other agencies (77% vs. 46%).
+Although a majority of agencies (54%) responded that their management has received formal leadership or management training, agencies that serve a larger population size were significantly more likely to respond this way - 65% of responses serving 10,000 - 14,999 people and 92% of responses serving 15,000 or more people.
 
 In addition, agencies that are owned, managed or receive support from a corporate health system were significantly more likely to say that their management has received training - 77% of these agencies vs. 46% of agencies that are NOT owned, managed or receive support from a corporate health system.
 
