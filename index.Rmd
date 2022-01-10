@@ -33,6 +33,46 @@ library(DT)
 
 <br>
 
+# Main themes
+
+The variable that seemed to have the most significant impact on how an agency responded to questions in this survey was the population size served. 
+
+*What is the estimated total population that you serve?*
+
+* Less than 2,500 (46 responses, 24.7%)
+* 2,500 - 4,999 (57 responses, 30.7%)
+* 5,000 - 9,999 (28 responses, 15.1%)
+* 10,000 - 14,999 (22 responses, 11.8%)
+* Greater than 15,000 (27 responses, 14.5%)
+
+The main themes based on population were;
+
+*Characteristic section*
+
+* Compared to agencies serving larger populations, the smaller the population served (1 - 5,000 people) the....
+  + significantly less likely the agency was owned, managed or receives support from a corporate health system,
+  + significantly more likely to offer basic life support,
+  + significantly less likely to pay staff and rely on on-call compensation or volunteers, and
+  + significantly more likely to use EMRs to staff their ambulances.
+  
+* Compared to agencies serving small populations, the large the population served (10,000 or more) the.....
+  + significantly more likely the agency was owned, managed or receives support from a corporate health system,
+  + significantly more likely to provide advanced life support,
+  + significantly more likely to pay staff, and
+  + significantly less likely to use EMRs to staff their ambulances.
+  
+In addition to this bifurcation in the relationship (larger vs smaller) there was one way in which agencies serving more "moderate" sized populations (2,500 - 10,000) differed. These agencies were significantly more likely to offer part-time advanced life support than other agencies.
+
+*Workforce section*
+
+* Compared to agencies serving larger populations, the smaller the population served (1 - 5,000 people) the...
+  + significantly less likely the agency could cover the call schedule without undue burden or excessive time commitments,
+  + significantly more likely the agency found recruiting new staff to be difficult,
+  + 
+
+<br>
+
+
 The following narrative combines the executive summary written by the MN Department of Health with a summary of the results found in this analysis.
 
 # Characteristics section
