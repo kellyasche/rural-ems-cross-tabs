@@ -1,0 +1,320 @@
+---
+title: "Management training cross-tabs"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 4
+runtime: shiny
+resource_files:
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.cpg
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.dbf
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.prj
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.sbn
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.sbx
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.shp.xml
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.shx
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(sf)
+library(ggrepel)
+library(scales)
+library(shiny)
+library(shinycssloaders)
+library(ggiraph)
+library(kableExtra)
+library(rmapshaper)
+library(cowplot)
+library(DT)
+library(htmlwidgets)
+library(RColorBrewer)
+library(extrafont)
+library(readxl)
+library(janitor)
+library(lubridate)
+library(gmodels)
+library(infer)
+library(broom)
+library(crosstable)
+
+loadfonts()
+```
+
+```{r loading jon docs and shapefiles, cache=TRUE, include=FALSE}
+theme_bar <- theme_bw() +
+  theme(panel.grid.major = element_line(color = "grey70", size = 0.1),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text = element_text(face = "bold"),
+        panel.border = element_blank(),
+        legend.background = element_rect(fill = "transparent", color = "transparent"),
+        legend.key = element_rect(fill = "transparent"),
+        legend.key.size = unit(1, "lines"),
+        legend.margin = margin(0,0,0,0),
+        legend.title = element_blank(),
+        legend.text = element_text(margin = margin(l = 2)),
+        text = element_text(family = "Arial"))
+
+theme_line <- theme_bw() +
+  theme(legend.background = element_rect(fill = "transparent", color = "transparent"),
+        legend.key = element_rect(fill = "transparent"),
+        legend.text = element_text(margin = margin(l = 2)),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_line(color = "grey70", size = 0.1),
+        axis.ticks = element_blank(),
+        axis.text = element_text(face = "bold"),
+        panel.border = element_blank(),
+        legend.margin = margin(0,0,0,0),
+        legend.key.size = unit(1, "lines"),
+        text = element_text(family = "Arial"))
+
+
+theme_sf <- theme_bw() +
+  theme(axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks=element_blank(),
+        panel.background = element_blank(),
+        panel.grid.major = element_line(color = "white"),
+        panel.border = element_blank(),
+        plot.title = element_text(hjust = 0.5),
+        legend.title = element_blank(),
+        legend.text = element_text(margin = margin(l = 2)),
+        legend.margin = margin(0,0,0,0),
+        legend.key.size = unit(1, "lines"),
+        text = element_text(family = "Arial"))
+
+regions <- read_csv("Data/Join docs/county_regions.csv") %>%
+    select(5,6) %>%
+    unique() %>%
+    mutate(edr = str_replace(edr, "  ", " "),
+           planning.region = str_replace(planning.region, " Minnesota", ""),
+           planning.region = fct_relevel(planning.region, "Northwest", "Northeast", "Central", "Seven County Mpls-St Paul", "Southwest", "Southeast"),
+           edr = fct_relevel(edr, "EDR 1 - Northwest", "EDR 2 - Headwaters", "EDR 3 - Arrowhead", "EDR 4 - West Central", "EDR 5 - North Central", "EDR 6E- Southwest Central", "EDR 6W- Upper Minnesota Valley", "EDR 7E- East Central", "EDR 7W- Central", "EDR 8 - Southwest", "EDR 9 - South Central", "EDR 10 - Southeast", "EDR 11 - 7 County Twin Cities", "Minnesota"))
+
+counties.regions <- read_csv("Data/Join docs/county_regions.csv") %>%
+  rename(mif = `MIF Region`) %>%
+  mutate(countyfp = formatC(countyfp, width = 3, flag = "0"),
+         Name = str_to_title(Name),
+         Name = str_replace(Name, "Q", "q"),
+         Name = str_replace(Name, "Of The", "of the"),
+         Name = str_replace(Name, "Mcleod", "McLeod"),
+         Dem_Desc = ifelse(Name == "Minnesota", "Minnesota", Dem_Desc) ,
+         edr = str_replace(edr, "  ", " "),
+         planning.region = str_replace(planning.region, " Minnesota", ""),
+         planning.region = fct_relevel(planning.region, "Northwest", "Northeast", "Central", "Seven County Mpls-St Paul", "Southwest", "Southeast"),
+         edr = fct_relevel(edr, "EDR 1 - Northwest", "EDR 2 - Headwaters", "EDR 3 - Arrowhead", "EDR 4 - West Central", "EDR 5 - North Central", "EDR 6E- Southwest Central", "EDR 6W- Upper Minnesota Valley", "EDR 7E- East Central", "EDR 7W- Central", "EDR 8 - Southwest", "EDR 9 - South Central", "EDR 10 - Southeast", "EDR 11 - 7 County Twin Cities", "Minnesota"),
+         mif = ifelse(is.na(mif), "TC", mif),
+         mif = as.factor(mif),
+         mif = fct_relevel(mif, "NW", "NE", "WC", "EC", "SW", "SE", "TC"))
+
+color.ruca <- c("Entirely rural" = "#009933", "Town/rural mix" = "#99CC33", "Urban/town/rural mix" = "#CC9966", "Entirely urban" = "#754C29", "Minnesota" = "black")
+
+color.pr <- c("Northwest" = 	"#4575b4", "Northeast" = "#e0f3f8", "Central" = "#fee090", "Seven County Mpls-St Paul" = "#d73027", "Southwest" = "#91bfdb", "Southeast" = "#fc8d59", "Minnesota" = "black")
+
+color.edr <- c("EDR 1 - Northwest" = "#b3cde3", "EDR 2 - Headwaters" = "#8c96c6", "EDR 3 - Arrowhead" = "#fe9929", "EDR 4 - West Central" = "#8856a7", "EDR 5 - North Central" = "#810f7c", "EDR 6E- Southwest Central" = "#e5f5f9", "EDR 6W- Upper Minnesota Valley" = "#bdc9e1", "EDR 7E- East Central" = "#99d8c9", "EDR 7W- Central" = "#2ca25f", "EDR 8 - Southwest" = "#74a9cf", "EDR 9 - South Central" = "#0570b0", "EDR 10 - Southeast" = "#d7301f", "EDR 11 - 7 County Twin Cities" = "#d8b365", "Minnesota" = "black")
+
+color.pr.edr <- c ("Northwest" = "#4575b4","Northeast" = "#e0f3f8", "Central" = "#fee090", "Seven County Mpls-St Paul" = "#d73027", "Southwest" = "#91bfdb", "Southeast" = "#fc8d59", "Minnesota" = "black", "EDR 1 - Northwest" = "#b3cde3", "EDR 2 - Headwaters" = "#8c96c6", "EDR 3 - Arrowhead" = "#fe9929", "EDR 4 - West Central" = "#8856a7", "EDR 5 - North Central" = "#810f7c", "EDR 6E- Southwest Central" = "#e5f5f9", "EDR 6W- Upper Minnesota Valley" = "#bdc9e1", "EDR 7E- East Central" = "#99d8c9", "EDR 7W- Central" = "#2ca25f", "EDR 8 - Southwest" = "#74a9cf", "EDR 9 - South Central" = "#0570b0", "EDR 10 - Southeast" = "#d7301f", "EDR 11 - 7 County Twin Cities" = "#d8b365")
+
+mn_counties <- st_read("Data/Shapefiles/county shapefiles/MNCounties_MNDOT.shp", quiet = TRUE) %>%
+  ms_simplify(keep = .01, keep_shapes = TRUE) %>%
+  rename(countyfp = FIPS_CODE)
+
+```
+
+```{r master response, include=FALSE, cache=TRUE}
+master.responses <- read_csv("Data/Responses/Master-survey-responses.csv") %>%
+  mutate(region = fct_relevel(region, "Northeast", "Northwest", "West Central", "Central", "Southwest", "South Central", "Southeast")) %>%
+  rename(public.or.private = 4) %>%
+  mutate(public.or.private = str_replace(public.or.private, "Public owned or operated \\(e.g. city, county authority or joint powers board\\)", "Public owned or operated"),
+         public.or.private = str_replace(public.or.private, "Private or other non-profit owned or operated", "Private or non-profit"),
+         public.or.private = as.factor(public.or.private)) %>%
+  rename(corp.sup = 9,
+         manager.train = 58) 
+levels(master.responses$public.or.private)
+```
+
+This section of analysis examines whether or not an agency's manager received formal training at all influenced how an agency responded to questions in the survey. The management training question was;
+
+**Has the EMS manager of your agency had formal leadership or management training?**
+
+Respondents were provided the following options, listed in order of most respondents on top;
+
+* Yes (53.8%, 100)
+* No (45.7%, 85)
+
+The metro response was eliminated from analysis.
+
+The survey was broken into 7 different sections. The three sections in bold is what was included  in the analysis due to the MN Department of Health providing incomplete data. You can navigate to the analysis of any of these sections using the table of contents on the left-hand side. The sections are.
+
+1. **Characteristics questions**
+2. **Workforce sustainability questions**
+3. **Leadership questions**
+4. Education questions
+5. Medical direction questions
+6. Community relation questions
+7. Funding questions
+
+The analysis used for the cross tabs is the typical chi-square test with p-value.
+
+<br>
+
+# Summary of results{.tabset}
+
+The tabs below lists which questions showed a relationship to whether or not an agency's manager received formal management or leadership training and combines the executive summary from the MN Department of Health's analysis with the relationships found in this analysis.
+
+<br>
+
+## Questions with relationships
+
+The following are the questions that showed a statistical significance indicating a relationship were; 
+
+## Addition to MN Department of Health Summary
+
+The following narrative combines the executive summary from the MN Department of Health's aggregate analysis of the survey with the relationships found in this analysis. Hopefully this will round out the results a bit better and point to more specific trends within the results.
+
+<br>
+
+### Characteristics section{.unnumbered .unlisted .toc-ignore}
+
+**Key Findings**
+
+Most rural EMS agencies provide basic life support services to relatively small populations spread across large geographic areas. Along with low daily call volumes, these realities exacerbate the inability to create sustainable business and staffing models.
+
+* The median call volume is nearly one call per day
+* Over half of the agencies cover more than 200 square miles; 37 percent cover more than 300
+square miles
+* Over half of the agencies serve populations of less than 5,000
+
+However, it is worth noting that there were some differences in responses depending on whether their manager received formal leadership or management training. 
+
+<br>
+
+### Workforce sustainability section{.unnumbered .unlisted .toc-ignore}
+
+**Key Findings**
+
+Staffing shortages are a major challenge for rural EMS agencies. Eighty (80) percent utilize some version of volunteers to staff their operations. Roster sizes are decreasing, many staff are trained for multiple public functions and many call schedules are not covered 24 hours prior to the shifts.
+
+* The active staff roster decreased for half of the agencies from the previous year
+* Weekday daytime hours are the most difficult shifts to cover. However, all weekend and holiday
+shifts are also difficult to cover
+* About 60 percent of agencies have inadequate staff to cover their call schedule without undue
+burden to the agency.
+* Fifty-nine (59) percent of agencies do not have their shifts 100 percent covered at least 24 hours in
+advance
+
+Recruitment and retention of ambulance personnel continues to be a significant challenge even though:
+* Emergency Medical Responders (EMRs) are now widely used to actively staff rural EMS agencies
+* Most agencies cover the full cost of the continuing education courses for their staff
+* Most eligible recipients take advantage of state EMS training reimbursement
+
+However, it is worth noting that there were some differences in responses depending on whether their manager received formal leadership or management training. 
+
+<br>
+
+### Leadership section{.unnumbered .unlisted .toc-ignore}
+
+**Key Findings**
+
+The largest problems that rural EMS agency managers face today, as in the past, are recruitment of staff and filling call schedules. These two management tasks seem to form a Maslow’s Hierarchy of basic management needs (see Appendix C, Question 24). It may be that efforts to address other management issues will be fruitless and/or unwelcomed until these basic needs are addressed.
+
+* Sixty-nine (69) percent of rural EMS managers report difficulty recruiting staff despite the fact that 57.5 percent have a recruitment plan
+* Over half of rural EMS managers report difficulty staffing their schedule
+
+High leadership turnover was defined in this survey as an EMS agency having had three or more managers in the past five years. Using this definition, there is remarkably low turnover of rural EMS managers. A high majority of EMS managers have an active role in developing their budgets, but generally are not directly involved in billing.
+
+* Eighty-six (86) percent of services did not have high turnover of their managers
+* Eighty-one (81) percent of rural EMS managers have a role in developing their annual budgets
+* Eighty-one (81) percent use other resources to bill, with billing agencies as the most common at
+fifty-two (52) percent
+
+However, it is worth noting that there was one difference in responses depending on whether or not an their manager received formal leadership or management training. 
+
+<br>
+
+# Characteristics section analysis{.tabset}
+
+The questions whether management received formal training had a relationship with responses to the questions in the demographic section of the survey are summarized below.
+
+**Summary:** 
+
+*Services:*
+Agencies that are owned, managed or receive support from a corporate health system responded that they offered advanced life support at a significantly higher rate than expected while agencies that did NOT receive support offered basic life support at a significantly higher rate than expected.
+
+*Staff compensation:* 
+Agencies that are owned, managed or receive support from a corporate health system responded that they paid their staff vs other compensation structures at a significantly higher rate than expected. Agencies that do NOT receive support responded that they pay on-call vs. other compensation structures at a significantly higher rate than expected.
+
+*Using EMS to staff ambulances:* 
+Agencies that are owned, managed or receive support from a corporate health system responded that they use EMS to staff ambulances at a LOWER rate than expected while the opposite was true for agencies that do NOT receive support - they use EMS to staff ambulances at a higher rate than expected.
+
+*Compensation comparison:* 
+Agencies that are owned, managed or receive support from a corporate health system responded that their compensation was better than other public safety positions at a higher rate than expected. Agencies that do NOT receive corporate health support responded that they pay their staff worse than other public safety positions at a higher rate than expected.
+
+<br>
+
+**Analysis:**
+
+The questions in the demographic section of the survey are provided in tabs below along with the chi-square and p-value for the relationship between region and each question.
+
+<br>
+
+## Services provided{.tabset .tabset-pills}
+
+**What types of services do you provide?**
+
+This question provided 4 choices which are provided below in order of the top one receiving the most responses;
+
+* Basic Life Support (88%)
+* Advacned life support (27%)
+* Part-time advanced life support (17%)
+* Specialized advanced life support (9%)
+
+<br>
+
+```{r prep mananagement training and services provided}
+names(master.responses)
+manager.train <- master.responses %>%
+  select(58, 10:13) %>%
+  gather(key = "services", value = "provided", 2:5) %>%
+  mutate(provided = as_factor(provided),
+         services = str_replace(services, "ServicesProvided \\(Q11_1\\)", "Basic life support"),
+         services = str_replace(services, "ServicesProvided \\(Q11_2\\)", "Advanced life support"),
+         services = str_replace(services, "ServicesProvided \\(Q11_3\\)", "Part-time advanced life support"),
+         services = str_replace(services, "ServicesProvided \\(Q11_4\\)", "Specialized life support"),
+         services = as.factor(services),
+         provided = ifelse(provided == "-", "No", "Yes"))
+
+manager.train.als <- manager.train %>%
+  filter(services == "Advanced life support")
+
+manager.train.bls <- manager.train %>%
+  filter(services == "Basic life support")
+
+manager.train.parttime.als <- manager.train %>%
+  filter(services == "Part-time advanced life support")
+
+manager.train.sls <- manager.train %>%
+  filter(services == "Specialized life support")
+
+```
+
+### Advanced life support
+
+There is a relationship in whether an agency is owned, managed or receives support from a corporate health system and whether they offer advanced life support.
+
+Agencies that did receive support provide advanced life support at a higher rate than expected - 30 responses (58%) vs. 14 expected (27%).
+
+The opposite is true for the agencies that do not receive support - 22 responded (16%) they did vs. the 38 expected (27%).
+
+<br>
+
+```{r advanced life support contingency table}
+
+CrossTable(corp.als$corp.sup, corp.als$provided, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>

@@ -11,6 +11,8 @@ navbar:
       href: ownership_type.html
     - text: "Corporate health support"
       href: corporate_support.html
+    - text: "Management training"
+      href: management_training.html
     - text: "Location crosstabs"
       href: location.html
     - text: "Staff compensation crosstabs"
