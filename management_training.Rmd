@@ -171,6 +171,8 @@ The tabs below lists which questions showed a relationship to whether or not an 
 
 The following are the questions that showed a statistical significance indicating a relationship were; 
 
+<br>
+
 ## Addition to MN Department of Health Summary
 
 The following narrative combines the executive summary from the MN Department of Health's aggregate analysis of the survey with the relationships found in this analysis. Hopefully this will round out the results a bit better and point to more specific trends within the results.
@@ -189,6 +191,7 @@ square miles
 * Over half of the agencies serve populations of less than 5,000
 
 However, it is worth noting that there were some differences in responses depending on whether their manager received formal leadership or management training. 
+
 
 <br>
 
@@ -242,16 +245,11 @@ The questions whether management received formal training had a relationship wit
 **Summary:** 
 
 *Services:*
-Agencies that are owned, managed or receive support from a corporate health system responded that they offered advanced life support at a significantly higher rate than expected while agencies that did NOT receive support offered basic life support at a significantly higher rate than expected.
+Agencies that had managers that received formal leadership or management training were significantly more likely to offer advanced life support - 41% of these agencies vs. 12% of agencies with managers that have NOT received training.
 
 *Staff compensation:* 
-Agencies that are owned, managed or receive support from a corporate health system responded that they paid their staff vs other compensation structures at a significantly higher rate than expected. Agencies that do NOT receive support responded that they pay on-call vs. other compensation structures at a significantly higher rate than expected.
+Agencies that had managers that received formal leadership or management training were significantly more likely to pay their staff - 32% of these agencies vs. 7% of agencies with managers that have NOT received training.
 
-*Using EMS to staff ambulances:* 
-Agencies that are owned, managed or receive support from a corporate health system responded that they use EMS to staff ambulances at a LOWER rate than expected while the opposite was true for agencies that do NOT receive support - they use EMS to staff ambulances at a higher rate than expected.
-
-*Compensation comparison:* 
-Agencies that are owned, managed or receive support from a corporate health system responded that their compensation was better than other public safety positions at a higher rate than expected. Agencies that do NOT receive corporate health support responded that they pay their staff worse than other public safety positions at a higher rate than expected.
 
 <br>
 
@@ -275,7 +273,6 @@ This question provided 4 choices which are provided below in order of the top on
 <br>
 
 ```{r prep mananagement training and services provided}
-names(master.responses)
 manager.train <- master.responses %>%
   select(58, 10:13) %>%
   gather(key = "services", value = "provided", 2:5) %>%
@@ -303,17 +300,546 @@ manager.train.sls <- manager.train %>%
 
 ### Advanced life support
 
-There is a relationship in whether an agency is owned, managed or receives support from a corporate health system and whether they offer advanced life support.
+There is a relationship in whether the manager has had leadership or management training and whether they offer advanced life support.
 
-Agencies that did receive support provide advanced life support at a higher rate than expected - 30 responses (58%) vs. 14 expected (27%).
+Agencies with managers that received training  provide advanced life support at a higher rate than expected - 41 responses (41%%) vs. 28 expected (27%).
 
-The opposite is true for the agencies that do not receive support - 22 responded (16%) they did vs. the 38 expected (27%).
+The opposite is true for the agencies with managers that have not received training - 10 responded (12%) they did vs. the 23 expected (27%).
 
 <br>
 
 ```{r advanced life support contingency table}
 
-CrossTable(corp.als$corp.sup, corp.als$provided, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+CrossTable(manager.train.als$manager.train, manager.train.als$provided, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Basic life support
+
+There is no relationship in whether an agency's manager received formal leadership or management training and whether an agency provides basic life support.
+
+<br>
+
+```{r basic life support contingency table}
+
+CrossTable(manager.train.bls$manager.train, manager.train.bls$provided, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Part-time Advanced life support
+
+There is no relationship in whether an agency's manager has received forma leadership or management training and if it offers part-time advanced life support.
+
+
+<br>
+
+```{r part-time advanced life support contingency table}
+
+CrossTable(manager.train.parttime.als$manager.train, manager.train.parttime.als$provided, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+## Staff compensation
+
+**How are staff compensated, not including the agency director?**
+
+Respondents were provided 4 choices which are provided below and ranked with top choice receiving the most responses;
+
+* Volunteer, on call compensation (57%)
+* Paid, hourly wage or salary (20%)
+* Combination, volunteer and paid (17%)
+* Volunteer, no compensation (5%)
+
+There is a relationship between whether an agency's manager has received formal leadership or management training and the type of compensation provided.
+
+Agencies with a manager that has received leadership or management training paid their staff at a significantly higher rate than expected - 32 responses (32%) vs. 21 expected (20%).
+
+Agencies with a manager that has not received leadership or management training compensated using an "on-call" format at a significantely higher rate than expected - 59 responses (69%) vs. 48 expected (57%).
+
+
+<br>
+
+```{r management training and compensation}
+man.train.comp <- master.responses %>%
+  select(58,14) %>%
+  rename(man = 1) %>%
+  rename(comp = 2) %>%
+  mutate(comp = str_replace(comp, "Combination of volunteer and paid staff", "Paid and vol"),
+         comp = str_replace(comp, "Paid; hourly wage or salary", "Paid"),
+         comp = str_replace(comp, "Volunteer \\(receive no compensation at all\\)", "Vol"),
+         comp = str_replace(comp, "Volunteer/Paid; on-call compensation \\(on-call compensation\\); meets statutory definition of volunteer https://www.revisor.mn.gov/statutes/\\?id=144E.001#stat.144E.001.15", "On-call"),
+         comp = as.factor(comp))
+
+CrossTable(man.train.comp$man, man.train.comp$comp, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE, max.width = 2)
+  
+
+```
+
+<br>
+
+## Using EMS to staff ambulances
+
+**Are you using Emergency Medical Responders (EMRs) to routinely staff your ambulance(s)?**
+
+Respondents were provided two choices which are provided below in order of the selection with the most responses on top; note: it was incorrect in their report. The answers were flipped.
+
+* Yes (41%)
+* No (59%)
+
+There is no significant relationship in whether an agency has a manager that received formal leadership or management training and uses EMRs to staff their ambulance. 
+
+<br>
+
+```{r management training and ems for staffing}
+man.training.ems <- master.responses %>%
+  select(58,21) %>% 
+  rename(ems.use = 2) 
+  
+CrossTable(man.training.ems$manager.train, man.training.ems$ems.use, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+  
+
+```
+
+<br>
+
+## Compensation comparison
+
+**How does you compensation for EMS staff compare with other public safety agencies in your community?**
+
+Respondents were provided 4 choices, which are listed below in order of the top choice on top;
+
+* Worse (33%)
+* Same (29%)
+* Unknown (24%)
+* Better (13%)
+
+There is no relationship in compensation comparison and whether an agency has a manager that's received formal leadership or management training.
+
+
+<br>
+
+```{r management training and compensation comparison for staffing}
+man.comp.comp <- master.responses %>%
+  select(58,22) %>%
+  rename(comp.comp = 2) 
+
+CrossTable(man.comp.comp$manager.train, man.comp.comp$comp.comp, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+  
+
+```
+
+<br>
+
+# Workforce sustainability section analysis{.tabset}
+
+The questions in the workforce sustainability section of the survey where the size of the population served by an agency had a relationship in how an agency responded are summarized below.
+
+**Summary:**
+
+*Covering the call schedule:*
+Agencies that serve are larger population were significantly more likely to have their call schedule covered. Agencies serving moderate size populations were least likely.
+
+*Difficult to staff recruitment:* 
+The smaller the population served by an agency the significantly more likely it has trouble recruiting staff.
+
+*Cross-training of staff*
+Agencies that serve a smaller population were significantly more likely to have staff cross-trained in other public safety agencies.
+
+*Obstacles to recruiting:* 
+The following obstacles showed a relationship.
+
+* Lack of availability: Agencies that serve a more moderate sized population (2,500 - 10,000) were significantly more likely to say that lack of availability was a barrier to staff recruitment.
+
+* Training takes too much time: As the size of the population served decreases it's significantly more likely that an agency says training requirements taking too much time are a barrier to staff recruitment.
+
+* Inadequate pay: Agencies that serve a moderate population size (2,500 - 10,000) were significantly more likely to say that inadequate pay is a barrier to staff recruitment.
+
+* Too much time commitment: Agencies that serve a moderate size population (2,000 - 10,000) were significantly more likely to say that time commitment was a barrier to staff recruitment.
+
+* Child care obligations: Agencies that serve the largest size population (greater than 15,000) were significantly LESS likely to say that child care obligations were a barrier to staff recruitment.
+
+
+*Retention strategy:*
+Agencies that serve large populations are significantly more likely to have developed a staff retention strategy.
+
+*Obstacles to retention:* 
+The following obstacles shows a relationship.
+
+* Age: older crew members retiring: As an agency serves a smaller population the likelihood of are and retirement being a barrier to staff retention increase significantly.
+
+* Time commitment: Agencies that serve small or moderate sized populations were significantly more likely to say that the excessive time commitment was a barrier to staff retention.
+
+* Limited advancement: As the population served increases so does the likeliness that an agency says limited advancement is a barrier to staff retention.
+
+* Employer won't allow staff to leave work: Agencies that serve moderately sized populations (2,500 - 10,000) were significantly more likely to respond that employers not allowing staff to leave work was a barrier to staff retention.
+
+<br>
+
+**Analysis:**
+
+The questions in the workforce sustainability section of the survey are provided in tabs below along with the chi-square and p-value for the relationship between region and each question.
+
+<br>
+
+## Cover call schedule
+
+**Do you have enough people to cover your call schedule without undue burden or excessive time commitments?**
+
+Respondents were provided with two choices which are provided below in order of top choice listed first;
+
+* No (60%)
+* Yes (40%)
+
+There is no relationship in whether an agency's manager has received formal leadership or management training and whether their call schedule is covered.
+
+<br>
+
+```{r management training and covering all schedule}
+man.train.schedule <- master.responses %>%
+  select(58,23) %>%
+  rename(cover.sched = 2) 
+
+CrossTable(man.train.schedule$manager.train, man.train.schedule$cover.sched, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+## Roster changes
+
+**Over the past year, has the number of actie staff on your roster changed?**
+
+Respondents were provided three choices which are provided below in order of top choice listed first;
+
+* Decreased (50%)
+* Same (29%)
+* Increased (21%)
+
+There is no relationship in changes to roster at an agency and whether their manager has received training.
+
+<br>
+
+```{r management training and roster changes}
+
+man.train.rost <- master.responses %>%
+  select(58,24) %>%
+  rename(rost.changes = 2) %>%
+  mutate(rost.changes = str_replace(rost.changes, "Size of the active staff has not changed", "No change"),
+         rost.changes = as.factor(rost.changes))
+
+CrossTable(man.train.rost$manager.train, man.train.rost$rost.changes, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+  
+
+```
+
+<br>
+
+## Recruitment plan
+
+**Does you agency have a recruitment plan?**
+
+Respondents were provided two choices which are provided below in order of top choice listed first;
+
+* Yes (58%)
+* No (41%)
+
+There is a relationship in whether an agency has a recruitment plan and if their manager has received formal training.
+
+Agencies with a manager that has received leadership or management training have a recruitment plan at a significantly higher rate than expected - 71 responses (71%) vs. 59 expected (58%). 
+
+Agencies with a manager that has NOT received leadership or management training do NOT have a recruitment plan at a significantly lower rate than expected - 37 responses (49%) vs. 49 expected (58%).
+
+<br>
+
+```{r management training and recruitment plan}
+
+man.train.rec.plan <- master.responses %>%
+  select(58,25) %>%
+  rename(rec.plan = 2) 
+
+CrossTable(man.train.rec.plan$manager.train, man.train.rec.plan$rec.plan, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+  
+
+```
+
+<br>
+
+## Difficult to recruit?
+
+**Is it difficult to recruit new EMS staff?**
+
+Respondents were provided three choices which are list below with the top choice first;
+
+* Yes (63%)
+* No (4%)
+* Sometimes (33%)
+
+There is a relationship in whether an agency feels it's difficult to recruit new staff and if they have a manager that's received formal leadership or management training.
+
+Agencies that do have a manager with training  responded that it is difficult to recruit staff at a significantly lower rate than expected - 52 responses (51%) vs. 63 expected (63%).
+
+Agencies that do not have a manager with training responded that it is difficult to recruit staff at a higher rate than expected - 64 responses (75%) vs. 53 expected (63%).
+
+<br>
+
+```{r management training and difficult to recruit}
+
+man.train.dif.rec <- master.responses %>%
+  select(58,26) %>%
+  rename(dif.rec = 2) 
+
+CrossTable(man.train.dif.rec$manager.train, man.train.dif.rec$dif.rec, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+  
+```
+
+<br>
+
+## Cross-training of staff
+
+**Are any EMS staff cross-trained to work in police, fire, or other public service functions?**
+
+Respondents were provided two choices which are listed below with the top choice first;
+
+* Yes (74%)
+* No (25%)
+
+There is no relationship in whether an agency has staff cross-trained in other public emergency agencies and if their manager has formally received leadership or management training.
+
+<br>
+
+```{r management training and cross-training}
+
+man.train.cross.train <- master.responses %>%
+  select(58,27) %>%
+  rename(cross.train = 2) 
+
+CrossTable(man.train.cross.train$manager.train, man.train.cross.train$cross.train, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+## Obstacles to recruiting{.tabset .tabset-pills}
+
+**Which of the following items are obstacles to recruiting EMS staff for your agency?**
+
+Respondents were provided 10 choices of which they coud select all that applied. The choices are provided below and in order with top choice listed first;
+
+* Time commitment is too great (67%)
+* Lack of availability (62%)
+* Training requirements are too time consuming (58%)
+* Lack of trained candidates (50%)
+* inadequate pay or benefits (40%)
+* Child care responsibilities (38%)
+* Training requirements are too far away (23%)
+* Too few runs or transports (14%)
+* Too many runs or transports (9%)
+* Other (5%)
+
+There was a relationship between type of ownership and the following barriers to recruitment;
+
+* Training takes too much time
+* Too much time commitment
+* Child care obligations
+
+<br>
+
+```{r prep corp support and obstables to recruiting, include=FALSE, cache=TRUE}
+
+man.train.obs.rec <- master.responses %>%
+  select(58,28:38) %>%
+  rename(lack.interest = 2,
+         lack.availability = 3,
+         lack.trained.cand = 4,
+         training.too.time = 5,
+         training.too.exp = 6,
+         training.too.dist = 7,
+         inadequate.pay = 8,
+         too.few.runs = 9,
+         too.many.runs = 10,
+         too.time.commit = 11,
+         child.care = 12) %>%
+  gather(key = "obstacle", value = "response", 2:12) %>%
+  mutate(response = ifelse(response == "-", "No", "Yes"))
+```
+
+
+### Lack of availability
+
+There is no relationship between an agency having a manager who has received formal leadership or management training and whether lack of availability was considered an obstacle to recruitment.
+
+<br>
+
+```{r management training and obstables to recruiting - lack of availability}
+man.train.obs.rec.availability <- man.train.obs.rec %>%
+  filter(obstacle == "lack.availability")
+
+CrossTable(man.train.obs.rec.availability$manager.train, man.train.obs.rec.availability$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Lack of trained candidates
+
+There is no relationship between if an agency has a manager that received formal leadership or management training and whether there is a lack of trained candidates acting as an obstacle to recruitment.
+
+<br>
+
+```{r management training and obstables to recruiting - lack of candidates}
+man.train.obs.rec.trained.cand <- man.train.obs.rec %>%
+  filter(obstacle == "lack.trained.cand")
+
+CrossTable(man.train.obs.rec.trained.cand$manager.train, man.train.obs.rec.trained.cand$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Training takes too much time
+
+There is a relationship between if an agency has a manager that received formal leadership or management training and whether training takes too much time and acts as an obstacle to recruitment.
+
+Agencies that do have a manager that received training responded that training takes too much time as an obstacle to staff recruitment at a lower rate than expected - 49 responses (49%) vs. 59 expected (58%).
+
+Agencies with a manager that has NOT received training responsed that training takes too much time and is an obstacle to staff recruitment at a higher rate than expected - 59 responses (69%) vs. 49 expected (58%)
+
+
+
+
+<br>
+
+```{r management training and obstables to recruiting - training too much time}
+man.train.obs.rec.training.time <- man.train.obs.rec %>%
+  filter(obstacle == "training.too.time")
+
+CrossTable(man.train.obs.rec.training.time$manager.train, man.train.obs.rec.training.time$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Training too expensive
+
+There is no relationship between if an agency has a manager that received formal leadership or management training and whether trainings being too expensive was an obstacle to recruitment.
+
+<br>
+
+```{r management training and obstables to recruiting - training too expensive}
+man.train.obs.rec.training.exp <- man.train.obs.rec %>%
+  filter(obstacle == "training.too.exp")
+
+CrossTable(man.train.obs.rec.training.exp$manager.train, man.train.obs.rec.training.exp$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Training locations too far
+
+There is no relationship between if an agency has a manager that received formal leadership or management training and whether trainings were too far to travel were obstacles to recruitment.
+
+<br>
+
+```{r management training and obstables to recruiting - training too far}
+man.train.obs.rec.trainings.too.far <- man.train.obs.rec %>%
+  filter(obstacle == "training.too.dist")
+
+CrossTable(man.train.obs.rec.trainings.too.far$manager.train, man.train.obs.rec.trainings.too.far$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Inadequate pay
+
+There is no relationship between if an agency has a manager that received formal leadership or management training and whether inadequate pay was an obstacle to recruitment.
+
+<br>
+
+```{r management training and obstables to recruiting - inadequate pay}
+man.train.obs.rec.inadequate.pay <- man.train.obs.rec %>%
+  filter(obstacle == "inadequate.pay")
+
+CrossTable(man.train.obs.rec.inadequate.pay$manager.train, man.train.obs.rec.inadequate.pay$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Too few runs
+
+There is no relationship between if an agency has a manager that received formal leadership or management training and whether too few runs is an obstacle to recruitment.
+
+<br>
+
+```{r management training and obstables to recruiting - too few runs}
+man.train.obs.rec.too.few.runs <- man.train.obs.rec %>%
+  filter(obstacle == "too.few.runs")
+
+CrossTable(man.train.obs.rec.too.few.runs$manager.train, man.train.obs.rec.too.few.runs$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Too many runs
+
+There is no relationship between if an agency has a manager that received formal leadership or management training and whether too many runs was an obstacle in recruitment.
+
+<br>
+
+```{r management training and obstables to recruiting - too many runs}
+man.train.obs.rec.too.many.runs <- man.train.obs.rec %>%
+  filter(obstacle == "too.many.runs")
+
+CrossTable(man.train.obs.rec.too.many.runs$manager.train, man.train.obs.rec.too.many.runs$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Too much time commitment
+
+There is a relationship between if an agency has a manager that received formal leadership or management training and whether too much of a time commitment was an obstacle to recruitment.
+
+Agencies that do receive support responded that time commitment was a barrier to recruitment at a much lower rate than expected - 23 responses (44%) vs. 35 expected (67%).
+
+Agencies that do NOT receive support responded that time commitment was a barrier to recruitment at a higher rate than expected - 104 responses (77%) vs. 92 expected (67%).
+
+<br>
+
+```{r management training and obstables to recruiting - too much time commitment}
+man.train.obs.rec.too.much.time <- man.train.obs.rec %>%
+  filter(obstacle == "too.time.commit")
+
+CrossTable(man.train.obs.rec.too.much.time$manager.train, man.train.obs.rec.too.much.time$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Child care obligations
+
+There is a relationship between if an agency is owned, managed or receives support from a corporate health system and whether child care obligations were an obstacle to recruitment.
+
+Agencies that do receive support responded that child care obligations were a barrier to recruitment at a lower rate than expected - 11 responses (21%) vs. 21 expected (38%). 
+
+Agencies that do NOT receive support responded that child care obligations were a barrier to recruitment at a higher rate than expected - 65 responses (48%) vs. 55 expected (38%).
+
+<br>
+
+```{r management training and obstables to recruiting - child care}
+man.train.obs.rec.child.care <- man.train.obs.rec %>%
+  filter(obstacle == "child.care")
+
+CrossTable(man.train.obs.rec.child.care$manager.train, man.train.obs.rec.child.care$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
 
 ```
 
