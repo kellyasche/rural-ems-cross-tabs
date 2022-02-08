@@ -39,7 +39,6 @@ vignettes/*.pdf
 .Renviron
 
 # folders to ignore
-Data/
 corporate_support_cache/
 location_cache/
 ownership_type_cache/
