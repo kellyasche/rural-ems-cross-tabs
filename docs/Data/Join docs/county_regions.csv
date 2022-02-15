@@ -1,0 +1,89 @@
+countyfp,Name,Dem_RUCA,Dem_Desc,edr,planning.region,MIF Region
+001,Aitkin,A,Entirely rural,EDR 3 - Arrowhead,Northeast,NE
+003,Anoka,D,Entirely urban,EDR 11 - 7 County Twin Cities,Seven County Mpls-St Paul,NA
+005,Becker,C,Urban/town/rural mix,EDR 4 - West Central,Northwest,WC
+007,Beltrami,B,Town/rural mix,EDR 2 - Headwaters,Northwest,NW
+009,Benton,C,Urban/town/rural mix,EDR 7W- Central,Central,EC
+011,Big Stone,A,Entirely rural,EDR 6W- Upper Minnesota Valley,Southwest,SW
+013,Blue Earth,D,Entirely urban,EDR 9 - South Central,Southwest,SE
+015,Brown,B,Town/rural mix,EDR 9 - South Central,Southwest,SE
+017,Carlton,C,Urban/town/rural mix,EDR 3 - Arrowhead,Northeast,NE
+019,Carver,D,Entirely urban,EDR 11 - 7 County Twin Cities,Seven County Mpls-St Paul,NA
+021,Cass,B,Town/rural mix,EDR 5 - North Central,Northwest,EC
+023,Chippewa,B,Town/rural mix,EDR 6W- Upper Minnesota Valley,Southwest,SW
+025,Chisago,D,Entirely urban,EDR 7E- East Central,Central,EC
+027,Clay,D,Entirely urban,EDR 4 - West Central,Northwest,WC
+029,Clearwater,B,Town/rural mix,EDR 2 - Headwaters,Northwest,NW
+031,Cook,A,Entirely rural,EDR 3 - Arrowhead,Northeast,NE
+033,Cottonwood,B,Town/rural mix,EDR 8 - Southwest,Southwest,SW
+035,Crow Wing,B,Town/rural mix,EDR 5 - North Central,Northwest,EC
+037,Dakota,D,Entirely urban,EDR 11 - 7 County Twin Cities,Seven County Mpls-St Paul,NA
+039,Dodge,D,Entirely urban,EDR 10 - Southeast,Southeast,SE
+041,Douglas,B,Town/rural mix,EDR 4 - West Central,Northwest,WC
+043,Faribault,B,Town/rural mix,EDR 9 - South Central,Southwest,SE
+045,Fillmore,C,Urban/town/rural mix,EDR 10 - Southeast,Southeast,SE
+047,Freeborn,B,Town/rural mix,EDR 10 - Southeast,Southeast,SE
+049,Goodhue,C,Urban/town/rural mix,EDR 10 - Southeast,Southeast,SE
+051,Grant,A,Entirely rural,EDR 4 - West Central,Northwest,WC
+053,Hennepin,D,Entirely urban,EDR 11 - 7 County Twin Cities,Seven County Mpls-St Paul,NA
+055,Houston,C,Urban/town/rural mix,EDR 10 - Southeast,Southeast,SE
+057,Hubbard,B,Town/rural mix,EDR 2 - Headwaters,Northwest,NW
+059,Isanti,C,Urban/town/rural mix,EDR 7E- East Central,Central,EC
+061,Itasca,B,Town/rural mix,EDR 3 - Arrowhead,Northeast,NE
+063,Jackson,B,Town/rural mix,EDR 8 - Southwest,Southwest,SW
+065,Kanabec,C,Urban/town/rural mix,EDR 7E- East Central,Central,EC
+067,Kandiyohi,B,Town/rural mix,EDR 6E- Southwest Central,Central,SW
+069,Kittson,A,Entirely rural,EDR 1 - Northwest,Northwest,NW
+071,Koochiching,B,Town/rural mix,EDR 3 - Arrowhead,Northeast,NE
+073,Lac qui Parle,A,Entirely rural,EDR 6W- Upper Minnesota Valley,Southwest,SW
+075,Lake,B,Town/rural mix,EDR 3 - Arrowhead,Northeast,NE
+077,Lake of the Woods,A,Entirely rural,EDR 2 - Headwaters,Northwest,NW
+079,Le Sueur,C,Urban/town/rural mix,EDR 9 - South Central,Southwest,SE
+081,Lincoln,A,Entirely rural,EDR 8 - Southwest,Southwest,SW
+083,Lyon,B,Town/rural mix,EDR 8 - Southwest,Southwest,SW
+087,Mahnomen,A,Entirely rural,EDR 2 - Headwaters,Northwest,NW
+089,Marshall,C,Urban/town/rural mix,EDR 1 - Northwest,Northwest,NW
+091,Martin,B,Town/rural mix,EDR 9 - South Central,Southwest,SE
+085,McLeod,C,Urban/town/rural mix,EDR 6E- Southwest Central,Central,SW
+093,Meeker,B,Town/rural mix,EDR 6E- Southwest Central,Central,SW
+095,Mille Lacs,C,Urban/town/rural mix,EDR 7E- East Central,Central,EC
+097,Morrison,B,Town/rural mix,EDR 5 - North Central,Northwest,EC
+099,Mower,C,Urban/town/rural mix,EDR 10 - Southeast,Southeast,SE
+101,Murray,A,Entirely rural,EDR 8 - Southwest,Southwest,SW
+103,Nicollet,C,Urban/town/rural mix,EDR 9 - South Central,Southwest,SE
+105,Nobles,B,Town/rural mix,EDR 8 - Southwest,Southwest,SW
+107,Norman,A,Entirely rural,EDR 1 - Northwest,Northwest,NW
+109,Olmsted,D,Entirely urban,EDR 10 - Southeast,Southeast,SE
+111,Otter Tail,B,Town/rural mix,EDR 4 - West Central,Northwest,WC
+113,Pennington,B,Town/rural mix,EDR 1 - Northwest,Northwest,NW
+115,Pine,C,Urban/town/rural mix,EDR 7E- East Central,Central,EC
+117,Pipestone,B,Town/rural mix,EDR 8 - Southwest,Southwest,SW
+119,Polk,C,Urban/town/rural mix,EDR 1 - Northwest,Northwest,NW
+121,Pope,B,Town/rural mix,EDR 4 - West Central,Northwest,WC
+123,Ramsey,D,Entirely urban,EDR 11 - 7 County Twin Cities,Seven County Mpls-St Paul,NA
+125,Red Lake,A,Entirely rural,EDR 1 - Northwest,Northwest,NW
+127,Redwood,B,Town/rural mix,EDR 8 - Southwest,Southwest,SW
+129,Renville,A,Entirely rural,EDR 6E- Southwest Central,Central,SW
+131,Rice,C,Urban/town/rural mix,EDR 10 - Southeast,Southeast,SE
+133,Rock,C,Urban/town/rural mix,EDR 8 - Southwest,Southwest,SW
+135,Roseau,B,Town/rural mix,EDR 1 - Northwest,Northwest,NW
+139,Scott,D,Entirely urban,EDR 11 - 7 County Twin Cities,Seven County Mpls-St Paul,NA
+141,Sherburne,D,Entirely urban,EDR 7W- Central,Central,EC
+143,Sibley,C,Urban/town/rural mix,EDR 9 - South Central,Southwest,SE
+137,St. Louis,C,Urban/town/rural mix,EDR 3 - Arrowhead,Northeast,NE
+145,Stearns,C,Urban/town/rural mix,EDR 7W- Central,Central,EC
+147,Steele,B,Town/rural mix,EDR 10 - Southeast,Southeast,SE
+149,Stevens,B,Town/rural mix,EDR 4 - West Central,Northwest,WC
+151,Swift,B,Town/rural mix,EDR 6W- Upper Minnesota Valley,Southwest,SW
+153,Todd,B,Town/rural mix,EDR 5 - North Central,Northwest,EC
+155,Traverse,A,Entirely rural,EDR 4 - West Central,Northwest,WC
+157,Wabasha,C,Urban/town/rural mix,EDR 10 - Southeast,Southeast,SE
+159,Wadena,B,Town/rural mix,EDR 5 - North Central,Northwest,EC
+161,Waseca,C,Urban/town/rural mix,EDR 9 - South Central,Southwest,SE
+163,Washington,D,Entirely urban,EDR 11 - 7 County Twin Cities,Seven County Mpls-St Paul,NA
+165,Watonwan,B,Town/rural mix,EDR 9 - South Central,Southwest,SE
+167,Wilkin,B,Town/rural mix,EDR 4 - West Central,Northwest,WC
+169,Winona,C,Urban/town/rural mix,EDR 10 - Southeast,Southeast,SE
+171,Wright,C,Urban/town/rural mix,EDR 7W- Central,Central,EC
+173,Yellow Medicine,B,Town/rural mix,EDR 6W- Upper Minnesota Valley,Southwest,SW
+000,Minnesota,NA,Minnesota,Minnesota,Minnesota,NA

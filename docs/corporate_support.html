@@ -1,0 +1,3364 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Corporate Health Support Cross-tabs</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#section-TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#section-TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="section-TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Crosstabs</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Summary and data overview</a>
+</li>
+<li>
+  <a href="population.html">Size of population served</a>
+</li>
+<li>
+  <a href="ownership_type.html">Type of ownership crosstabs</a>
+</li>
+<li>
+  <a href="corporate_support.html">Corporate health support</a>
+</li>
+<li>
+  <a href="management_training.html">Management training</a>
+</li>
+<li>
+  <a href="management_training_small_ems.html">Management training for small EMS</a>
+</li>
+<li>
+  <a href="location.html">Location crosstabs</a>
+</li>
+<li>
+  <a href="staff_compensation.html">Staff compensation crosstabs</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="section-header">
+
+
+
+<h1 class="title toc-ignore">Corporate Health Support Cross-tabs</h1>
+
+</div>
+
+
+<p>This section of analysis examines whether or not an agency was owned, managed or receives support from a corporate health system at all influenced how an agency responded to questions in the survey. The support question was;</p>
+<p><strong>Is your agency owned, managed or does it receive support from a corporate health system?</strong></p>
+<p>Respondents were provided the following options, listed in order of most respondents on top;</p>
+<ul>
+<li>No (72.0%, 134)</li>
+<li>Yes (27,4%, 51)</li>
+</ul>
+<p>The metro response was eliminated from analysis.</p>
+<p>The survey was broken into 7 different sections. The three sections in bold is what was included in the analysis due to the MN Department of Health providing incomplete data. You can navigate to the analysis of any of these sections using the table of contents on the left-hand side. The sections are.</p>
+<ol style="list-style-type: decimal">
+<li><strong>Characteristics questions</strong></li>
+<li><strong>Workforce sustainability questions</strong></li>
+<li><strong>Leadership questions</strong></li>
+<li>Education questions</li>
+<li>Medical direction questions</li>
+<li>Community relation questions</li>
+<li>Funding questions</li>
+</ol>
+<p>The analysis used for the cross tabs is the typical chi-square test with p-value.</p>
+<p><br></p>
+<div id="section-summary-of-results" class="section level1 tabset">
+<h1 class="tabset">Summary of results</h1>
+<p>The tabs below lists which questions showed a relationship to whether or not an agency was owned, managed or receive support from a corporate health system and combines the executive summary from the MN Department of Health’s analysis with the relationships found in this analysis.</p>
+<p><br></p>
+<div id="section-questions-with-relationships" class="section level2">
+<h2>Questions with relationships</h2>
+<p>The following are the questions that showed a statistical significance indicating a relationship were;</p>
+<ul>
+<li>Characteristics section
+<ul>
+<li>What is the estimated total population that you serve?</li>
+<li>What type of services do you provide?</li>
+<li>How are staff compensated, not including the agency director?</li>
+<li>Are you using Emergency Medical Responders (EMRs) to routinely staff your ambulance(s)?</li>
+<li>How does your compensation for EMS staff compare with other public safety agencies in your community?</li>
+</ul></li>
+<li>Workforce sustainability section
+<ul>
+<li>Do you have enough people to cover your cal schedule without undue burden or excessive time commitments?</li>
+<li>Is it difficult to recruit new EMS staff?</li>
+<li>Are any EMS staff cross-trained to work in police, fire, or other public service functions?</li>
+<li>Which of the following items are obstacles to recruiting EMS staff for your agency? - training requirements are too time consuming</li>
+<li>Which of the following items are obstacles to recruiting EMS staff for your agency? - time commitment is too great</li>
+<li>Which of the following items are obstacles to recruiting EMS staff for your agency? - child care responsibilities</li>
+<li>Does your EMS agency have a retention strategy?</li>
+<li>Which of the following items are obstacles to retaining staff for your agency? - age: older crew members retiring</li>
+<li>Which of the following items are obstacles to retaining staff for your agency? - excessive time commitment or scheduling conflicts</li>
+<li>Which of the following items are obstacles to retaining staff for your agency? - limited advancement opportunities</li>
+<li>Which of the following items are obstacles to retaining staff for your agency? - employer does not allow staff to leave work for a call</li>
+</ul></li>
+<li>Leadership section
+<ul>
+<li>Has the EMS manager of your agency had formal leadership or management training?</li>
+</ul></li>
+</ul>
+<p><br></p>
+</div>
+<div id="section-addition-to-mn-department-of-health-summary" class="section level2">
+<h2>Addition to MN Department of Health Summary</h2>
+<p>The following narrative combines the executive summary from the MN Department of Health’s aggregate analysis of the survey with the relationships found in this analysis. Hopefully this will round out the results a bit better and point to more specific trends within the results.</p>
+<p><br></p>
+<div id="section-characteristics-section" class="section level3 unnumbered unlisted toc-ignore">
+<h3 class="unnumbered unlisted toc-ignore">Characteristics section</h3>
+<p><strong>Key Findings</strong></p>
+<p>Most rural EMS agencies provide basic life support services to relatively small populations spread across large geographic areas. Along with low daily call volumes, these realities exacerbate the inability to create sustainable business and staffing models.</p>
+<ul>
+<li>The median call volume is nearly one call per day</li>
+<li>Over half of the agencies cover more than 200 square miles; 37 percent cover more than 300 square miles</li>
+<li>Over half of the agencies serve populations of less than 5,000</li>
+</ul>
+<p>However, it is worth noting that there were some differences in responses depending on whether they were owned, managed or received support from a corporate health system.</p>
+<ul>
+<li><em>Population served: </em> although a majority of agencies responded that they serve populations of less than 5,000 (55.4% of total responses), agencies that are owned, managed or received support from a corporate health system responded that they serve larger populations (10,000 pop or greater) at a significantly higher rate than agencies that are not connected to a health system (63% vs. 15%).</li>
+<li><em>Types of services provided: </em> although a very large percentage of agencies responded that they provide basic life support (88.2% of total responses), agencies that are NOT owned, managed or receiver support from a corporate health system responded that they provide basic life support at a significantly higher rate than other agencies (93% vs. 77%). On the flip side, agencies that ARE owned, managed or receive support from a corporate health system responded that they provide advanced life support at a higher rate than other agencies (58% vs. 16%).</li>
+<li><em>Staff compensation: </em> although a majority of agencies responded that they pay their staff using a volunteer / on call compensation structure (57% of total responses), agencies that are NOT owned, managed or receive support from a corporate health system were much more likely to pay this way than other agencies (64% vs. 35%). On the flip side, agencies that ARE owned, managed or receive support from a corporate health system confirmed that they pay their staff at a significantly higher rate than other agencies (48% vs. 10%).</li>
+<li><em>Using EMRs to staff ambulance: </em> Although a majority of agencies (59% of total responses) responded that they do NOT use EMRs to staff their ambulance(s), agencies that are owned, managed or receive support from a corporate health system responded this way at a significantly higher rate than other agencies (83% of responses vs. 50%).</li>
+<li><em>Compensation comparison to other public safety agencies: </em> Although a very small percentage (13%) of agencies said they paid their staff better compared to other public safety agencies, agencies that are owned, managed ore receive support from a corporate health system agencies responded this way at a significantly higher rate than other agencies (29% vs. 8%).</li>
+</ul>
+<p><br></p>
+</div>
+<div id="section-workforce-sustainability-section" class="section level3 unnumbered unlisted toc-ignore">
+<h3 class="unnumbered unlisted toc-ignore">Workforce sustainability section</h3>
+<p><strong>Key Findings</strong></p>
+<p>Staffing shortages are a major challenge for rural EMS agencies. Eighty (80) percent utilize some version of volunteers to staff their operations. Roster sizes are decreasing, many staff are trained for multiple public functions and many call schedules are not covered 24 hours prior to the shifts.</p>
+<ul>
+<li>The active staff roster decreased for half of the agencies from the previous year</li>
+<li>Weekday daytime hours are the most difficult shifts to cover. However, all weekend and holiday shifts are also difficult to cover</li>
+<li>About 60 percent of agencies have inadequate staff to cover their call schedule without undue burden to the agency.</li>
+<li>Fifty-nine (59) percent of agencies do not have their shifts 100 percent covered at least 24 hours in advance</li>
+</ul>
+<p>Recruitment and retention of ambulance personnel continues to be a significant challenge even though: * Emergency Medical Responders (EMRs) are now widely used to actively staff rural EMS agencies * Most agencies cover the full cost of the continuing education courses for their staff * Most eligible recipients take advantage of state EMS training reimbursement</p>
+<p>However, it is worth noting that there were some differences in responses depending on whether or not an agency was owned, manged or receives support from a corporate health system.</p>
+<ul>
+<li><em>Difficult to recruit new staff: </em> Although a majority of agencies (63%) said that staff recruitment was difficult, agencies that are NOT owned, managed or receive support from a corporate health system responded this way at a significantly higher rate than other agencies (68% vs. 48%).</li>
+<li><em>Cross-training of EMS staff: </em> Although a large majority of agencies (74%) said that their EMS staff were cross-trained in other publicly safety positions, agencies that are NOT owned, managed or receive support from a corporate health system responded this way at a significantly higher rate than other agencies (83% vs. 52%).</li>
+<li><em>Obstacles to recruiting - training requirements: </em> Although a majority of agencies (58%) responded that training requirements being too time consuming was a barrier to staff recruitment, agencies that are NOT owned, managed or receive support from a corporate health system responded this way at a significantly higher rate than other agencies (67% vs. 35%).</li>
+<li><em>Obstacles to recruiting - time commitment is too great: </em> Although a majority of all agencies (67%) responded that the time commitment being too great as a barrier to staff recruitment, agencies that are NOT owned, managed or receive support from a corporate health system responded this way at a significantly higher rate than other agencies (77% vs. 44%).</li>
+<li><em>Obstacles to recruiting - child care responsibilities: </em> Although only 38% of all agencies said that child care responsibilities were a barrier to staff recruitment, agencies that are NOT owned, managed or receive support from a corporate health system responded this way at a significantly higher rate than other agencies (55% vs. 21%).</li>
+<li><em>Agency have a retention strategy: </em> Half of all agencies responded that they have a retention strategy, however agencies that are owned, managed or receive support from a corporate health system responded this way at a significantly higher rate than other agencies (69% vs. 44% respectively).</li>
+<li><em>Obstacles to retention - retirements: </em> Although a large majority of agencies responded that age/retirements was a barrier to staff retention, agencies that are NOT owned, managed or receive support from a corporate health system responded this way at a significantly higher rate than other agencies (67% vs. 44%).</li>
+<li><em>Obstacles to retention - excessive time commitment: </em> Although a large majority of all agencies said that the excessive time commitment or scheduling conflicts were a barrier to staff retention, agencies that are NOT owned, managed or receive support from a corporate health systyem responded this way at a significantly higher rate than other agencies (82% vs. 50%)</li>
+<li><em>Obstacles to retention - limited advancement opportunities: </em> Although only 23% of all agencies said that limited advancement opportunities were a barrier to staff retention, agencies that are owned, managed or receive support from a corporate health system confirmed this barrier at a significantly higher rate than other agencies (44% vs. 16%).</li>
+<li><em>Obstacles to retention - employer not allowing staff to leave: </em> Although only 37% of all agencies said that employers not allowing staff to leave work for a call was a barrier to staff retention, agencies that are NOT owned, managed or receive support from a corporate health system confirmed this barrier at a significantly higher rate than other agencies (44% vs. 21%).</li>
+</ul>
+<p><br></p>
+</div>
+<div id="section-leadership-section" class="section level3 unnumbered unlisted toc-ignore">
+<h3 class="unnumbered unlisted toc-ignore">Leadership section</h3>
+<p><strong>Key Findings</strong></p>
+<p>The largest problems that rural EMS agency managers face today, as in the past, are recruitment of staff and filling call schedules. These two management tasks seem to form a Maslow’s Hierarchy of basic management needs (see Appendix C, Question 24). It may be that efforts to address other management issues will be fruitless and/or unwelcomed until these basic needs are addressed.</p>
+<ul>
+<li>Sixty-nine (69) percent of rural EMS managers report difficulty recruiting staff despite the fact that 57.5 percent have a recruitment plan</li>
+<li>Over half of rural EMS managers report difficulty staffing their schedule</li>
+</ul>
+<p>High leadership turnover was defined in this survey as an EMS agency having had three or more managers in the past five years. Using this definition, there is remarkably low turnover of rural EMS managers. A high majority of EMS managers have an active role in developing their budgets, but generally are not directly involved in billing.</p>
+<ul>
+<li>Eighty-six (86) percent of services did not have high turnover of their managers</li>
+<li>Eighty-one (81) percent of rural EMS managers have a role in developing their annual budgets</li>
+<li>Eighty-one (81) percent use other resources to bill, with billing agencies as the most common at fifty-two (52) percent</li>
+</ul>
+<p>However, it is worth noting that there was one difference in responses depending on whether or not an agency was owned, managed or receives support from a corporate health system.</p>
+<ul>
+<li><em>Management received training: </em> Although a majority of agencies (54%) responded that their management has received formal leadership or management training, agencies that are owned, managed or receive support from a corporate health system responded this way at a significantly higher rate than other agencies (77% vs. 46%).</li>
+</ul>
+<p><br></p>
+</div>
+</div>
+</div>
+<div id="section-characteristics-section-analysis" class="section level1 tabset">
+<h1 class="tabset">Characteristics section analysis</h1>
+<p>The questions where the support by corporate health system had a relationship with responses to the questions in the demographic section of the survey are summarized below.</p>
+<p><strong>Summary:</strong></p>
+<p><em>Population served:</em> Agencies that are owned, managed or receive support from a corporate health system responded that they serve a higher population at a higher rate than expected. Agencies that do NOT receive support responded that they serve lower populations at a higher rate than expected.</p>
+<p><em>Services:</em> Agencies that are owned, managed or receive support from a corporate health system responded that they offered advanced life support at a significantly higher rate than expected while agencies that did NOT receive support offered basic life support at a significantly higher rate than expected.</p>
+<p><em>Staff compensation:</em> Agencies that are owned, managed or receive support from a corporate health system responded that they paid their staff vs other compensation structures at a significantly higher rate than expected. Agencies that do NOT receive support responded that they pay on-call vs. other compensation structures at a significantly higher rate than expected.</p>
+<p><em>Using EMS to staff ambulances:</em> Agencies that are owned, managed or receive support from a corporate health system responded that they use EMS to staff ambulances at a LOWER rate than expected while the opposite was true for agencies that do NOT receive support - they use EMS to staff ambulances at a higher rate than expected.</p>
+<p><em>Compensation comparison:</em> Agencies that are owned, managed or receive support from a corporate health system responded that their compensation was better than other public safety positions at a higher rate than expected. Agencies that do NOT receive corporate health support responded that they pay their staff worse than other public safety positions at a higher rate than expected.</p>
+<p><br></p>
+<p><strong>Analysis:</strong></p>
+<p>The questions in the demographic section of the survey are provided in tabs below along with the chi-square and p-value for the relationship between region and each question.</p>
+<p><br></p>
+<div id="section-population-served" class="section level2">
+<h2>Population served</h2>
+<p><strong>What is the estimated total population that you serve?</strong></p>
+<p>This question provided 4 choices which are provided below;</p>
+<ul>
+<li>less than 2,500 (24.7%)</li>
+<li>2,500 - 4,999 (30.7%)</li>
+<li>5,000 - 9,999 (15.1%)</li>
+<li>10,000 - 14,999 (11.8%)</li>
+<li>greater than 15,000 (14.5%)</li>
+</ul>
+<p>There is a relationship in whether an agency is owned, managed or receives support from a corporate health system and population served.</p>
+<p>Agencies that do receive support responded that they serve the higher populations at a higher rate than expected.</p>
+<ul>
+<li>15,000 or greater: 20 responses (42%) vs. 7 expected (15%)</li>
+<li>10,000 - 14,999: 10 responses (21%) vs. 6 expected (12%)</li>
+<li>Lower than expected for all other population groups.</li>
+</ul>
+<p>The opposite is true for agencies that are not receive support - they responded that they serve lower populations at a higher rate.</p>
+<ul>
+<li>Less than 2,500: 39 responses (29%) vs. 33 expected (25%)</li>
+<li>2,500 - 4,999: 40 responses (37%) vs. 42 expected (31%)</li>
+<li>5,000 - 9,999: 25 responses (19%) vs. 22 expected (15%)</li>
+</ul>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  182 
+## 
+##  
+##                   | corp.pop$pop 
+## corp.pop$corp.sup |   Less than 2,500 |     2,500 – 4,999 |     5,000 – 9,999 |   10,000 – 14,999 | 15,000 or greater |         Row Total | 
+## ------------------|-------------------|-------------------|-------------------|-------------------|-------------------|-------------------|
+##                No |                39 |                50 |                25 |                14 |                 6 |               134 | 
+##                   |            33.132 |            41.967 |            22.088 |            17.670 |            19.143 |                   | 
+##                   |             0.291 |             0.373 |             0.187 |             0.104 |             0.045 |             0.736 | 
+## ------------------|-------------------|-------------------|-------------------|-------------------|-------------------|-------------------|
+##               Yes |                 6 |                 7 |                 5 |                10 |                20 |                48 | 
+##                   |            11.868 |            15.033 |             7.912 |             6.330 |             6.857 |                   | 
+##                   |             0.125 |             0.146 |             0.104 |             0.208 |             0.417 |             0.264 | 
+## ------------------|-------------------|-------------------|-------------------|-------------------|-------------------|-------------------|
+##      Column Total |                45 |                57 |                30 |                24 |                26 |               182 | 
+## ------------------|-------------------|-------------------|-------------------|-------------------|-------------------|-------------------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  48.33119     d.f. =  4     p =  8.050494e-10 
+## 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-services-provided" class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">Services provided</h2>
+<p><strong>What types of services do you provide?</strong></p>
+<p>This question provided 4 choices which are provided below in order of the top one receiving the most responses;</p>
+<ul>
+<li>Basic Life Support (88%)</li>
+<li>Advacned life support (27%)</li>
+<li>Part-time advanced life support (17%)</li>
+<li>Specialized advanced life support (9%)</li>
+</ul>
+<p><br></p>
+<div id="section-advanced-life-support" class="section level3">
+<h3>Advanced life support</h3>
+<p>There is a relationship in whether an agency is owned, managed or receives support from a corporate health system and whether they offer advanced life support.</p>
+<p>Agencies that did receive support provide advanced life support at a higher rate than expected - 30 responses (58%) vs. 14 expected (27%).</p>
+<p>The opposite is true for the agencies that do not receive support - 22 responded (16%) they did vs. the 38 expected (27%).</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                   | corp.als$provided 
+## corp.als$corp.sup |        No |       Yes | Row Total | 
+## ------------------|-----------|-----------|-----------|
+##                No |       113 |        22 |       135 | 
+##                   |    97.460 |    37.540 |           | 
+##                   |     0.837 |     0.163 |     0.722 | 
+## ------------------|-----------|-----------|-----------|
+##               Yes |        22 |        30 |        52 | 
+##                   |    37.540 |    14.460 |           | 
+##                   |     0.423 |     0.577 |     0.278 | 
+## ------------------|-----------|-----------|-----------|
+##      Column Total |       135 |        52 |       187 | 
+## ------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  32.04488     d.f. =  1     p =  1.506519e-08 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  30.01597     d.f. =  1     p =  4.285017e-08 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-basic-life-support" class="section level3">
+<h3>Basic life support</h3>
+<p>There is a relationship in whether an agency offers basic life support and if an agency is owned, managed or receives support from a corporate health system.</p>
+<p>Not surprisingly (considering the previous question), agencies that do NOT receive corporate health support provide basic life support at a higher rate than expected - 126 responses (93%) vs. the 120 expected (88.2%). The opposite is true for agencies that do receive support from a corporate health system - 40 responses (77%) vs. the 46 expected (88.2%).</p>
+<p>This relationship isn’t nearly as strong as the previous question about advanced life support.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                   | corp.bls$provided 
+## corp.bls$corp.sup |        No |       Yes | Row Total | 
+## ------------------|-----------|-----------|-----------|
+##                No |         9 |       126 |       135 | 
+##                   |    15.160 |   119.840 |           | 
+##                   |     0.067 |     0.933 |     0.722 | 
+## ------------------|-----------|-----------|-----------|
+##               Yes |        12 |        40 |        52 | 
+##                   |     5.840 |    46.160 |           | 
+##                   |     0.231 |     0.769 |     0.278 | 
+## ------------------|-----------|-----------|-----------|
+##      Column Total |        21 |       166 |       187 | 
+## ------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  10.14103     d.f. =  1     p =  0.001450051 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  8.561677     d.f. =  1     p =  0.00343313 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-part-time-advanced-life-support" class="section level3">
+<h3>Part-time Advanced life support</h3>
+<p>There is no relation in whether an agency offers part-time life support and if they are owned, managed or receive support from a corporate health system.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                            | corp.parttime.als$provided 
+## corp.parttime.als$corp.sup |        No |       Yes | Row Total | 
+## ---------------------------|-----------|-----------|-----------|
+##                         No |       114 |        21 |       135 | 
+##                            |   110.455 |    24.545 |           | 
+##                            |     0.844 |     0.156 |     0.722 | 
+## ---------------------------|-----------|-----------|-----------|
+##                        Yes |        39 |        13 |        52 | 
+##                            |    42.545 |     9.455 |           | 
+##                            |     0.750 |     0.250 |     0.278 | 
+## ---------------------------|-----------|-----------|-----------|
+##               Column Total |       153 |        34 |       187 | 
+## ---------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  2.250926     d.f. =  1     p =  0.1335345 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  1.660816     d.f. =  1     p =  0.1974931 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+</div>
+<div id="section-staff-compensation" class="section level2">
+<h2>Staff compensation</h2>
+<p><strong>How are staff compensated, not including the agency director?</strong></p>
+<p>Respondents were provided 4 choices which are provided below and ranked with top choice receiving the most responses;</p>
+<ul>
+<li>Volunteer, on call compensation (57%)</li>
+<li>Paid, hourly wage or salary (20%)</li>
+<li>Combination, volunteer and paid (17%)</li>
+<li>Volunteer, no compensation (5%)</li>
+</ul>
+<p>There is a relationship in the type of compensation provided and if an agency is owned, managed or receive support from a corporate health system.</p>
+<p>Agencies that do receive support responded that they paid their staff at a much higher rate than expected - 25 responses (48%) vs. 11 expected (20.3%).</p>
+<p>The opposite is true for agencies that do not receive support - 13 (10%) responded they paid their staff vs. the 27 expected (20.3%). These agencies responded that they paid on-call at a much higher rate than expected - 87 responses (64%) vs. the 76 expected (57%).</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                    | corp.comp$compensation 
+## corp.comp$corp.sup |      On-call |         Paid | Paid and vol |          Vol |    Row Total | 
+## -------------------|--------------|--------------|--------------|--------------|--------------|
+##                 No |           87 |           13 |           25 |           10 |          135 | 
+##                    |       75.802 |       27.433 |       24.545 |        7.219 |              | 
+##                    |        0.644 |        0.096 |        0.185 |        0.074 |        0.722 | 
+## -------------------|--------------|--------------|--------------|--------------|--------------|
+##                Yes |           18 |           25 |            9 |            0 |           52 | 
+##                    |       29.198 |       10.567 |        9.455 |        2.781 |              | 
+##                    |        0.346 |        0.481 |        0.173 |        0.000 |        0.278 | 
+## -------------------|--------------|--------------|--------------|--------------|--------------|
+##       Column Total |          105 |           38 |           34 |           10 |          187 | 
+## -------------------|--------------|--------------|--------------|--------------|--------------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  37.13859     d.f. =  3     p =  4.300964e-08 
+## 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-using-ems-to-staff-ambulances" class="section level2">
+<h2>Using EMS to staff ambulances</h2>
+<p><strong>Are you using Emergency Medical Responders (EMRs) to routinely staff your ambulance(s)?</strong></p>
+<p>Respondents were provided two choices which are provided below in order of the selection with the most responses on top; note: it was incorrect in their report. The answers were flipped.</p>
+<ul>
+<li>Yes (41%)</li>
+<li>No (59%)</li>
+</ul>
+<p>There is a significant relationship in whether an agency uses EMS to staff their ambulance and if an agency is owned, managed or receive support from a corporate health system.</p>
+<p>Agencies that are support by a corporate health system responded that they use EMS to staff their ambulances at a lower rate than expected - 9 responses (17%) vs. 21 expected (41%).</p>
+<p>Agencies that are not supported by a corporate health system responded they they use EMS to staff their ambulances a higher rate than expected - 68 responses (50%) vs. 56 expected (41%).</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                   | corp.ems$ems.use 
+## corp.ems$corp.sup |        No |       Yes | Row Total | 
+## ------------------|-----------|-----------|-----------|
+##                No |        67 |        68 |       135 | 
+##                   |    79.412 |    55.588 |           | 
+##                   |     0.496 |     0.504 |     0.722 | 
+## ------------------|-----------|-----------|-----------|
+##               Yes |        43 |         9 |        52 | 
+##                   |    30.588 |    21.412 |           | 
+##                   |     0.827 |     0.173 |     0.278 | 
+## ------------------|-----------|-----------|-----------|
+##      Column Total |       110 |        77 |       187 | 
+## ------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  16.94226     d.f. =  1     p =  3.853409e-05 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  15.60474     d.f. =  1     p =  7.805871e-05 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-compensation-comparison" class="section level2">
+<h2>Compensation comparison</h2>
+<p><strong>How does you compensation for EMS staff compare with other public safety agencies in your community?</strong></p>
+<p>Respondents were provided 4 choices, which are listed below in order of the top choice on top;</p>
+<ul>
+<li>Worse (33%)</li>
+<li>Same (29%)</li>
+<li>Unknown (24%)</li>
+<li>Better (13%)</li>
+</ul>
+<p>There is a relationship in compensation comparison and if an agency is owned, managed or received support from a corporate health system.</p>
+<p>Agencies that receive support from a corporate health system responded that their pay was better than other public safety positions at a higher rate than expected - 15 responses (29%) vs. 7 expected (13%).</p>
+<p>The opposite is true for agencies that do not receive support from a corporate health system;</p>
+<ul>
+<li>Worse - 50 responses (37%) vs. 45 expected (33%)</li>
+<li>Better - 10 responses (8%) vs. 18 expected (13%)</li>
+</ul>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  186 
+## 
+##  
+##                         | corp.comp.comp$comp.comp 
+## corp.comp.comp$corp.sup |    Better |      Same |   Unknown |     Worse | Row Total | 
+## ------------------------|-----------|-----------|-----------|-----------|-----------|
+##                      No |        10 |        40 |        34 |        50 |       134 | 
+##                         |    18.011 |    39.624 |    31.699 |    44.667 |           | 
+##                         |     0.075 |     0.299 |     0.254 |     0.373 |     0.720 | 
+## ------------------------|-----------|-----------|-----------|-----------|-----------|
+##                     Yes |        15 |        15 |        10 |        12 |        52 | 
+##                         |     6.989 |    15.376 |    12.301 |    17.333 |           | 
+##                         |     0.288 |     0.288 |     0.192 |     0.231 |     0.280 | 
+## ------------------------|-----------|-----------|-----------|-----------|-----------|
+##            Column Total |        25 |        55 |        44 |        62 |       186 | 
+## ------------------------|-----------|-----------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  15.63266     d.f. =  3     p =  0.001348565 
+## 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+</div>
+<div id="section-workforce-sustainability-section-analysis" class="section level1 tabset">
+<h1 class="tabset">Workforce sustainability section analysis</h1>
+<p>The questions in the workforce sustainability section of the survey where an agency was owned, managed or receives support from a corporate health system had a relationship in how an agency responded are summarized below.</p>
+<p><strong>Summary:</strong></p>
+<p><em>Covering the call schedule:</em> Agencies that are owned, managed or receive support responded that they could cover their call shift at a higher rate than expected. The opposite was true for agencies that do NOT receive support.</p>
+<p><em>Difficult to staff recruitment:</em> Agencies that are owned, managed or receive support responded that it is difficult to recruit new staff at a lower rate than expected. The opposite was true for agencies that do NOT receive support.</p>
+<p><em>Cross-training of staff</em> Agencies that are owned, managed or receive support responded that their EMS staff is cross-trained for other public safety positions at a lower rate than expected. The opposite was true for agencies that do NOT receive support.</p>
+<p><em>Obstacles to recruiting:</em> The following obstacles showed a relationship.</p>
+<ul>
+<li><p>Training takes too much time: Agencies that are owned, managed or receive support responded that training takes too much time is a barrier to staff recruitment at a lower rate than expected. The opposite was true for agencies that do NOT receive support.</p></li>
+<li><p>Too much time commitment: Agencies that are owned, managed or receive support responded that the time commitment for the position was a barrier to staff recruitment at a lower rate than expected. The opposite was true for agencies that do NOT receive support.</p></li>
+<li><p>Child care obligations: Agencies that are owned, managed or receive support responded that child care obligations were a barrier to staff recruitment at a lower rate than expected. The opposite was true for agencies that do NOT receive support.</p></li>
+</ul>
+<p><em>Retention strategy:</em> Agencies that are owned, managed or receive support from a corporate health system responded that they had a retention strategy at a higher rate than expected. The opposite was true for agencies that do NOT receive support.</p>
+<p><em>Obstacles to retention:</em> The following obstacles shows a relationship.</p>
+<ul>
+<li><p>Age: older crew members retiring: Agencies that are owned, managed or receive support from a corporate health system responded that retirements were a barrier to staff retainment at a lower rate than expected. The opposite was true for agencies that do NOT receive support.</p></li>
+<li><p>Time commitment: Agencies that are owned, managed or receive support from a corporate health system responded that time commitment was a barrier to staff retention at a lower rate than expected. The opposite was true for agencies that do NOT receive support.</p></li>
+<li><p>Limited advancement: Agencies that are owned, managed or receive support from a corporate health system responded that limited advancement was a barrier at a higher rate than expected. The opposite was true for agencies that do NOT receive support.</p></li>
+<li><p>Employer won’t allow staff to leave work: Agencies that are owned, managed or receive support from a corporate health system responded that employers not allowing EMS staff to leave work was a barrier to staff retention at a lower rate than expected. The opposite was true for agencies that do NOT receive support.</p></li>
+</ul>
+<p><br></p>
+<p><strong>Analysis:</strong></p>
+<p>The questions in the workforce sustainability section of the survey are provided in tabs below along with the chi-square and p-value for the relationship between region and each question.</p>
+<p><br></p>
+<div id="section-cover-call-schedule" class="section level2">
+<h2>Cover call schedule</h2>
+<p><strong>Do you have enough people to cover your call schedule without undue burden or excessive time commitments?</strong></p>
+<p>Respondents were provided with two choices which are provided below in order of top choice listed first;</p>
+<ul>
+<li>No (60%)</li>
+<li>Yes (40%)</li>
+</ul>
+<p>There is a relationship in whether an agency has their call schedule covered and if they are owned, managed or receive support from a corporate health system.</p>
+<p>Agencies that do receive support responded that they can cover their call schedule at a higher rate than expected - 29 responses (56%) vs. 20 expected (40%).</p>
+<p>Agencies that do not receive support responded that they can cover their call schedule at a lower rate than expected - 44 responses (33%) vs. 53 expected (40%).</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                        | corp.schedule$cover.sched 
+## corp.schedule$corp.sup |        No |       Yes | Row Total | 
+## -----------------------|-----------|-----------|-----------|
+##                     No |        91 |        44 |       135 | 
+##                        |    82.299 |    52.701 |           | 
+##                        |     0.674 |     0.326 |     0.722 | 
+## -----------------------|-----------|-----------|-----------|
+##                    Yes |        23 |        29 |        52 | 
+##                        |    31.701 |    20.299 |           | 
+##                        |     0.442 |     0.558 |     0.278 | 
+## -----------------------|-----------|-----------|-----------|
+##           Column Total |       114 |        73 |       187 | 
+## -----------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  8.473286     d.f. =  1     p =  0.003603997 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  7.527389     d.f. =  1     p =  0.006076793 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-roster-changes" class="section level2">
+<h2>Roster changes</h2>
+<p><strong>Over the past year, has the number of actie staff on your roster changed?</strong></p>
+<p>Respondents were provided three choices which are provided below in order of top choice listed first;</p>
+<ul>
+<li>Decreased (50%)</li>
+<li>Same (29%)</li>
+<li>Increased (21%)</li>
+</ul>
+<p>There is no relationship in changes to roster at an agency and if they are owned, managed or receive support from a corporate health care system.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                    | corp.rost$rost.changes 
+## corp.rost$corp.sup | Decreased | Increased | No change | Row Total | 
+## -------------------|-----------|-----------|-----------|-----------|
+##                 No |        75 |        22 |        38 |       135 | 
+##                    |    67.139 |    27.433 |    40.428 |           | 
+##                    |     0.556 |     0.163 |     0.281 |     0.722 | 
+## -------------------|-----------|-----------|-----------|-----------|
+##                Yes |        18 |        16 |        18 |        52 | 
+##                    |    25.861 |    10.567 |    15.572 |           | 
+##                    |     0.346 |     0.308 |     0.346 |     0.278 | 
+## -------------------|-----------|-----------|-----------|-----------|
+##       Column Total |        93 |        38 |        56 |       187 | 
+## -------------------|-----------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  7.703812     d.f. =  2     p =  0.02123922 
+## 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-recruitment-plan" class="section level2">
+<h2>Recruitment plan</h2>
+<p><strong>Does you agency have a recruitment plan?</strong></p>
+<p>Respondents were provided two choices which are provided below in order of top choice listed first;</p>
+<ul>
+<li>Yes (58%)</li>
+<li>No (41%)</li>
+</ul>
+<p>There is no relationship in whether an agency has a recruitment plan and if they are owned, managed or receive support from a corporate health system.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  184 
+## 
+##  
+##                        | corp.rec.plan$rec.plan 
+## corp.rec.plan$corp.sup |        No |       Yes | Row Total | 
+## -----------------------|-----------|-----------|-----------|
+##                     No |        62 |        71 |       133 | 
+##                        |    54.212 |    78.788 |           | 
+##                        |     0.466 |     0.534 |     0.723 | 
+## -----------------------|-----------|-----------|-----------|
+##                    Yes |        13 |        38 |        51 | 
+##                        |    20.788 |    30.212 |           | 
+##                        |     0.255 |     0.745 |     0.277 | 
+## -----------------------|-----------|-----------|-----------|
+##           Column Total |        75 |       109 |       184 | 
+## -----------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  6.813976     d.f. =  1     p =  0.009044713 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  5.967134     d.f. =  1     p =  0.01457495 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-difficult-to-recruit" class="section level2">
+<h2>Difficult to recruit?</h2>
+<p><strong>Is it difficult to recruit new EMS staff?</strong></p>
+<p>Respondents were provided three choices which are list below with the top choice first;</p>
+<ul>
+<li>Yes (63%)</li>
+<li>No (4%)</li>
+<li>Sometimes (33%)</li>
+</ul>
+<p>There is a relationship in whether an agency feels it’s difficult to recruit new staff and if they are owned, managed or receive support from a corporate health system.</p>
+<p>Agencies that do receive support responded that it is difficult to recruit staff at a lower rate than expected - 25 responses (48%) vs. 33 expected (63%).</p>
+<p>Agencies that do not receive support responded that it is difficult to recruit staff at a higher rate than expected - 92 responses (68%) vs. 85 expeected (63%).</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                       | corp.dif.rec$dif.rec 
+## corp.dif.rec$corp.sup |        No |  Somewhat |       Yes | Row Total | 
+## ----------------------|-----------|-----------|-----------|-----------|
+##                    No |         1 |        42 |        92 |       135 | 
+##                       |     5.053 |    45.481 |    84.465 |           | 
+##                       |     0.007 |     0.311 |     0.681 |     0.722 | 
+## ----------------------|-----------|-----------|-----------|-----------|
+##                   Yes |         6 |        21 |        25 |        52 | 
+##                       |     1.947 |    17.519 |    32.535 |           | 
+##                       |     0.115 |     0.404 |     0.481 |     0.278 | 
+## ----------------------|-----------|-----------|-----------|-----------|
+##          Column Total |         7 |        63 |       117 |       187 | 
+## ----------------------|-----------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  15.06778     d.f. =  2     p =  0.0005346556 
+## 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-cross-training-of-staff" class="section level2">
+<h2>Cross-training of staff</h2>
+<p><strong>Are any EMS staff cross-trained to work in police, fire, or other public service functions?</strong></p>
+<p>Respondents were provided two choices which are listed below with the top choice first;</p>
+<ul>
+<li>Yes (74%)</li>
+<li>No (25%)</li>
+</ul>
+<p>There is a relationship in whether an agency has staff cross-trained in other public emergency agencies and if they are owned, managed or receive support from a corporate health system.</p>
+<p>Agencies that do receive support responded that their staff is cross-trained with other public safety agencies at a lower rate than expected - 26 responses (52%) vs. 37 expected (84%).</p>
+<p>Agencies that do NOT receive support responded that their staff is cross-trained with other public safety agencies at a higher rate than expected - 112 responses (83%) vs. 101 expected (84%).</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  185 
+## 
+##  
+##                           | corp.cross.train$cross.train 
+## corp.cross.train$corp.sup |        No |       Yes | Row Total | 
+## --------------------------|-----------|-----------|-----------|
+##                        No |        23 |       112 |       135 | 
+##                           |    34.297 |   100.703 |           | 
+##                           |     0.170 |     0.830 |     0.730 | 
+## --------------------------|-----------|-----------|-----------|
+##                       Yes |        24 |        26 |        50 | 
+##                           |    12.703 |    37.297 |           | 
+##                           |     0.480 |     0.520 |     0.270 | 
+## --------------------------|-----------|-----------|-----------|
+##              Column Total |        47 |       138 |       185 | 
+## --------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  18.45796     d.f. =  1     p =  1.736943e-05 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  16.86027     d.f. =  1     p =  4.023497e-05 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-obstacles-to-recruiting" class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">Obstacles to recruiting</h2>
+<p><strong>Which of the following items are obstacles to recruiting EMS staff for your agency?</strong></p>
+<p>Respondents were provided 10 choices of which they coud select all that applied. The choices are provided below and in order with top choice listed first;</p>
+<ul>
+<li>Time commitment is too great (67%)</li>
+<li>Lack of availability (62%)</li>
+<li>Training requirements are too time consuming (58%)</li>
+<li>Lack of trained candidates (50%)</li>
+<li>inadequate pay or benefits (40%)</li>
+<li>Child care responsibilities (38%)</li>
+<li>Training requirements are too far away (23%)</li>
+<li>Too few runs or transports (14%)</li>
+<li>Too many runs or transports (9%)</li>
+<li>Other (5%)</li>
+</ul>
+<p>There was a relationship between type of ownership and the following barriers to recruitment;</p>
+<ul>
+<li>Training takes too much time</li>
+<li>Too much time commitment</li>
+<li>Child care obligations</li>
+</ul>
+<p><br></p>
+<div id="section-lack-of-interest" class="section level3">
+<h3>Lack of interest</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and whether lack of interest is considered an obstacle to recruitment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                           | corp.obs.rec.int$response 
+## corp.obs.rec.int$corp.sup |        No |       Yes | Row Total | 
+## --------------------------|-----------|-----------|-----------|
+##                        No |        65 |        70 |       135 | 
+##                           |    72.914 |    62.086 |           | 
+##                           |     0.481 |     0.519 |     0.722 | 
+## --------------------------|-----------|-----------|-----------|
+##                       Yes |        36 |        16 |        52 | 
+##                           |    28.086 |    23.914 |           | 
+##                           |     0.692 |     0.308 |     0.278 | 
+## --------------------------|-----------|-----------|-----------|
+##              Column Total |       101 |        86 |       187 | 
+## --------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  6.717507     d.f. =  1     p =  0.009547101 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  5.895551     d.f. =  1     p =  0.01517918 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-lack-of-availability" class="section level3">
+<h3>Lack of availability</h3>
+<p>There is no relationship between an agency being owned, managed or receives support from a corporate health system and whether lack of availability was considered an obstacle to recruitment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                                    | corp.obs.rec.availability$response 
+## corp.obs.rec.availability$corp.sup |        No |       Yes | Row Total | 
+## -----------------------------------|-----------|-----------|-----------|
+##                                 No |        45 |        90 |       135 | 
+##                                    |    49.813 |    85.187 |           | 
+##                                    |     0.333 |     0.667 |     0.722 | 
+## -----------------------------------|-----------|-----------|-----------|
+##                                Yes |        24 |        28 |        52 | 
+##                                    |    19.187 |    32.813 |           | 
+##                                    |     0.462 |     0.538 |     0.278 | 
+## -----------------------------------|-----------|-----------|-----------|
+##                       Column Total |        69 |       118 |       187 | 
+## -----------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  2.650077     d.f. =  1     p =  0.1035449 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  2.128052     d.f. =  1     p =  0.1446245 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-lack-of-trained-candidates" class="section level3">
+<h3>Lack of trained candidates</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and whether there is a lack of trained candidates acting as an obstacle to recruitment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                                    | corp.obs.rec.trained.cand$response 
+## corp.obs.rec.trained.cand$corp.sup |        No |       Yes | Row Total | 
+## -----------------------------------|-----------|-----------|-----------|
+##                                 No |        71 |        64 |       135 | 
+##                                    |    67.139 |    67.861 |           | 
+##                                    |     0.526 |     0.474 |     0.722 | 
+## -----------------------------------|-----------|-----------|-----------|
+##                                Yes |        22 |        30 |        52 | 
+##                                    |    25.861 |    26.139 |           | 
+##                                    |     0.423 |     0.577 |     0.278 | 
+## -----------------------------------|-----------|-----------|-----------|
+##                       Column Total |        93 |        94 |       187 | 
+## -----------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  1.58843     d.f. =  1     p =  0.2075506 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  1.203661     d.f. =  1     p =  0.2725912 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-training-takes-too-much-time" class="section level3">
+<h3>Training takes too much time</h3>
+<p>There is a relationship between if an agency is owned, managed or receives support from a corporate health system and whether training takes too much time and acts as an obstacle to recruitment.</p>
+<p>Agencies that do receive support responded that training takes too much time at a lower rate than expected - 18 responses (35%) vs. 30 expected (58%).</p>
+<p>Agencies that do NOT receive support responses that training takes too much time at a higher rate than expected - 90 responses (67%) vs. 78 expected (58%)</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                                     | corp.obs.rec.training.time$response 
+## corp.obs.rec.training.time$corp.sup |        No |       Yes | Row Total | 
+## ------------------------------------|-----------|-----------|-----------|
+##                                  No |        45 |        90 |       135 | 
+##                                     |    57.032 |    77.968 |           | 
+##                                     |     0.333 |     0.667 |     0.722 | 
+## ------------------------------------|-----------|-----------|-----------|
+##                                 Yes |        34 |        18 |        52 | 
+##                                     |    21.968 |    30.032 |           | 
+##                                     |     0.654 |     0.346 |     0.278 | 
+## ------------------------------------|-----------|-----------|-----------|
+##                        Column Total |        79 |       108 |       187 | 
+## ------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  15.80588     d.f. =  1     p =  7.018405e-05 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  14.51953     d.f. =  1     p =  0.000138714 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-training-too-expensive" class="section level3">
+<h3>Training too expensive</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and whether trainings being too expensive was an obstacle to recruitment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                                    | corp.obs.rec.training.exp$response 
+## corp.obs.rec.training.exp$corp.sup |        No |       Yes | Row Total | 
+## -----------------------------------|-----------|-----------|-----------|
+##                                 No |       109 |        26 |       135 | 
+##                                    |   104.679 |    30.321 |           | 
+##                                    |     0.807 |     0.193 |     0.722 | 
+## -----------------------------------|-----------|-----------|-----------|
+##                                Yes |        36 |        16 |        52 | 
+##                                    |    40.321 |    11.679 |           | 
+##                                    |     0.692 |     0.308 |     0.278 | 
+## -----------------------------------|-----------|-----------|-----------|
+##                       Column Total |       145 |        42 |       187 | 
+## -----------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  2.855683     d.f. =  1     p =  0.09105159 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  2.233015     d.f. =  1     p =  0.13509 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-training-locations-too-far" class="section level3">
+<h3>Training locations too far</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and whether trainings were too far to travel were obstacles to recruitment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                                         | corp.obs.rec.trainings.too.far$response 
+## corp.obs.rec.trainings.too.far$corp.sup |        No |       Yes | Row Total | 
+## ----------------------------------------|-----------|-----------|-----------|
+##                                      No |       101 |        34 |       135 | 
+##                                         |   102.513 |    32.487 |           | 
+##                                         |     0.748 |     0.252 |     0.722 | 
+## ----------------------------------------|-----------|-----------|-----------|
+##                                     Yes |        41 |        11 |        52 | 
+##                                         |    39.487 |    12.513 |           | 
+##                                         |     0.788 |     0.212 |     0.278 | 
+## ----------------------------------------|-----------|-----------|-----------|
+##                            Column Total |       142 |        45 |       187 | 
+## ----------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.3338693     d.f. =  1     p =  0.5633895 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0.1497001     d.f. =  1     p =  0.6988221 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-inadequate-pay" class="section level3">
+<h3>Inadequate pay</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and whether inadequate pay was an obstacle to recruitment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                                      | corp.obs.rec.inadequate.pay$response 
+## corp.obs.rec.inadequate.pay$corp.sup |        No |       Yes | Row Total | 
+## -------------------------------------|-----------|-----------|-----------|
+##                                   No |        80 |        55 |       135 | 
+##                                      |    82.299 |    52.701 |           | 
+##                                      |     0.593 |     0.407 |     0.722 | 
+## -------------------------------------|-----------|-----------|-----------|
+##                                  Yes |        34 |        18 |        52 | 
+##                                      |    31.701 |    20.299 |           | 
+##                                      |     0.654 |     0.346 |     0.278 | 
+## -------------------------------------|-----------|-----------|-----------|
+##                         Column Total |       114 |        73 |       187 | 
+## -------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.5918528     d.f. =  1     p =  0.4417036 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0.362449     d.f. =  1     p =  0.5471493 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-too-few-runs" class="section level3">
+<h3>Too few runs</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and whether too few runs is an obstacle to recruitment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                                    | corp.obs.rec.too.few.runs$response 
+## corp.obs.rec.too.few.runs$corp.sup |        No |       Yes | Row Total | 
+## -----------------------------------|-----------|-----------|-----------|
+##                                 No |       113 |        22 |       135 | 
+##                                    |   116.230 |    18.770 |           | 
+##                                    |     0.837 |     0.163 |     0.722 | 
+## -----------------------------------|-----------|-----------|-----------|
+##                                Yes |        48 |         4 |        52 | 
+##                                    |    44.770 |     7.230 |           | 
+##                                    |     0.923 |     0.077 |     0.278 | 
+## -----------------------------------|-----------|-----------|-----------|
+##                       Column Total |       161 |        26 |       187 | 
+## -----------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  2.321556     d.f. =  1     p =  0.1275923 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  1.658429     d.f. =  1     p =  0.1978156 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-too-many-runs" class="section level3">
+<h3>Too many runs</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and whether too many runs was an obstacle in recruitment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                                     | corp.obs.rec.too.many.runs$response 
+## corp.obs.rec.too.many.runs$corp.sup |        No |       Yes | Row Total | 
+## ------------------------------------|-----------|-----------|-----------|
+##                                  No |       125 |        10 |       135 | 
+##                                     |   124.171 |    10.829 |           | 
+##                                     |     0.926 |     0.074 |     0.722 | 
+## ------------------------------------|-----------|-----------|-----------|
+##                                 Yes |        47 |         5 |        52 | 
+##                                     |    47.829 |     4.171 |           | 
+##                                     |     0.904 |     0.096 |     0.278 | 
+## ------------------------------------|-----------|-----------|-----------|
+##                        Column Total |       172 |        15 |       187 | 
+## ------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.2480551     d.f. =  1     p =  0.6184479 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0.03905126     d.f. =  1     p =  0.8433472 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-too-much-time-commitment" class="section level3">
+<h3>Too much time commitment</h3>
+<p>There is a relationship between if an agency is owned, managed or receives support from a corporate health system and whether too much of a time commitment was an obstacle to recruitment.</p>
+<p>Agencies that do receive support responded that time commitment was a barrier to recruitment at a much lower rate than expected - 23 responses (44%) vs. 35 expected (67%).</p>
+<p>Agencies that do NOT receive support responded that time commitment was a barrier to recruitment at a higher rate than expected - 104 responses (77%) vs. 92 expected (67%).</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                                     | corp.obs.rec.too.much.time$response 
+## corp.obs.rec.too.much.time$corp.sup |        No |       Yes | Row Total | 
+## ------------------------------------|-----------|-----------|-----------|
+##                                  No |        31 |       104 |       135 | 
+##                                     |    43.316 |    91.684 |           | 
+##                                     |     0.230 |     0.770 |     0.722 | 
+## ------------------------------------|-----------|-----------|-----------|
+##                                 Yes |        29 |        23 |        52 | 
+##                                     |    16.684 |    35.316 |           | 
+##                                     |     0.558 |     0.442 |     0.278 | 
+## ------------------------------------|-----------|-----------|-----------|
+##                        Column Total |        60 |       127 |       187 | 
+## ------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  18.54118     d.f. =  1     p =  1.662727e-05 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  17.06623     d.f. =  1     p =  3.609858e-05 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-child-care-obligations" class="section level3">
+<h3>Child care obligations</h3>
+<p>There is a relationship between if an agency is owned, managed or receives support from a corporate health system and whether child care obligations were an obstacle to recruitment.</p>
+<p>Agencies that do receive support responded that child care obligations were a barrier to recruitment at a lower rate than expected - 11 responses (21%) vs. 21 expected (38%).</p>
+<p>Agencies that do NOT receive support responded that child care obligations were a barrier to recruitment at a higher rate than expected - 65 responses (48%) vs. 55 expected (38%).</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                                  | corp.obs.rec.child.care$response 
+## corp.obs.rec.child.care$corp.sup |        No |       Yes | Row Total | 
+## ---------------------------------|-----------|-----------|-----------|
+##                               No |        70 |        65 |       135 | 
+##                                  |    80.134 |    54.866 |           | 
+##                                  |     0.519 |     0.481 |     0.722 | 
+## ---------------------------------|-----------|-----------|-----------|
+##                              Yes |        41 |        11 |        52 | 
+##                                  |    30.866 |    21.134 |           | 
+##                                  |     0.788 |     0.212 |     0.278 | 
+## ---------------------------------|-----------|-----------|-----------|
+##                     Column Total |       111 |        76 |       187 | 
+## ---------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  11.3393     d.f. =  1     p =  0.0007588381 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  10.24794     d.f. =  1     p =  0.001368375 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+</div>
+<div id="section-retention-strategy" class="section level2">
+<h2>Retention strategy</h2>
+<p><strong>Does your EMS agency have a retention strategy?</strong></p>
+<p>Respondents were given two options which are provided below in order of top choice first;</p>
+<ul>
+<li>Yes (50%)</li>
+<li>No (49%)</li>
+</ul>
+<p>There is a relationship between if an agency is owned, managed or receives support from a corporate health system and whether an agency has a retention strategy.</p>
+<p>Agencies that do receive support from a corporate health system responded that they had a retention strategy at a higher rate than expected - 36 responses (69%) vs. 27 expected (50%).</p>
+<p>Agencies that do NOT receive support from a corporate health system responded that they had a retention strategy at a lower rate than expected - 59 responses (44%) vs. 68 expected (50%).</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  185 
+## 
+##  
+##                               | corp.retention.strat$retention.strat 
+## corp.retention.strat$corp.sup |        No |       Yes | Row Total | 
+## ------------------------------|-----------|-----------|-----------|
+##                            No |        74 |        59 |       133 | 
+##                               |    64.703 |    68.297 |           | 
+##                               |     0.556 |     0.444 |     0.719 | 
+## ------------------------------|-----------|-----------|-----------|
+##                           Yes |        16 |        36 |        52 | 
+##                               |    25.297 |    26.703 |           | 
+##                               |     0.308 |     0.692 |     0.281 | 
+## ------------------------------|-----------|-----------|-----------|
+##                  Column Total |        90 |        95 |       185 | 
+## ------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  9.255663     d.f. =  1     p =  0.002347684 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  8.28691     d.f. =  1     p =  0.003993188 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-trouble-retaining-staff" class="section level2">
+<h2>Trouble retaining staff</h2>
+<p><strong>Does your agency have difficulty retaining existing staff?</strong></p>
+<p>Respondents were provided three choices which are below in order of top choice listed first;</p>
+<ul>
+<li>Sometimes (84%)</li>
+<li>Always (10%)</li>
+<li>Never (5%)</li>
+</ul>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and their response to if they were having difficulty retaining staff.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                               | corp.retaining.staff$retaining.staff 
+## corp.retaining.staff$corp.sup |    Always |     Never | Sometimes | Row Total | 
+## ------------------------------|-----------|-----------|-----------|-----------|
+##                            No |        15 |         7 |       113 |       135 | 
+##                               |    13.717 |     7.219 |   114.064 |           | 
+##                               |     0.111 |     0.052 |     0.837 |     0.722 | 
+## ------------------------------|-----------|-----------|-----------|-----------|
+##                           Yes |         4 |         3 |        45 |        52 | 
+##                               |     5.283 |     2.781 |    43.936 |           | 
+##                               |     0.077 |     0.058 |     0.865 |     0.278 | 
+## ------------------------------|-----------|-----------|-----------|-----------|
+##                  Column Total |        19 |        10 |       158 |       187 | 
+## ------------------------------|-----------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.4914983     d.f. =  2     p =  0.7821184 
+## 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-obstacles-to-retaining" class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">Obstacles to retaining</h2>
+<p><strong>Which of the following items are obstacles to retaining staff for your agency?</strong></p>
+<p>This question provided a number of choices for an agency to select and were allowed to check all that apply. The choices are provided below in order of the choice receiving the most responses at the top and working our way down. The value in parenthesis is the percentage of responses it received.</p>
+<ul>
+<li>Excessive time commitment or scheduling conflicts (72%)</li>
+<li>Age: older crew members retiring (60%)</li>
+<li>Inadequate pay or benefits (39%)</li>
+<li>Employer does not allow staff to leave work for a call (37%)</li>
+<li>Certification is too difficult to maintain (26%)</li>
+<li>Limited advancement opportunities (23%)</li>
+<li>Lack of recognition (14%)</li>
+<li>Too many runs or transports (11%)</li>
+<li>Community is too isolated (10%)</li>
+<li>Other (10%)</li>
+<li>Too few runs or transports (10%)</li>
+<li>Dissatisfaction with EMS administrator/owner (5%)</li>
+<li>Dissatisfaction with job duties (3%)</li>
+<li>Dissatisfaction with EMS manager (1%)</li>
+</ul>
+<p>The following barriers had a relationship to the type of ownership;</p>
+<ul>
+<li>Age: older crew members retiring</li>
+<li>Time commitment</li>
+<li>Limited advancement</li>
+<li>Employer won’t allow staff to leave work</li>
+</ul>
+<p><br></p>
+<p><br></p>
+<div id="section-retirement" class="section level3">
+<h3>Retirement</h3>
+<p>There is a relationship between if an agency is owned, managed or receives support from a corporate health system and an agency’s response to retirement being an obstacle to retention.</p>
+<p>Agencies that do have support from a corporate health system responded that retirements were a barrier to staff retention at a lower rate than expected - 23 responses (44%) vs. 31 expected (60%).</p>
+<p>Agencies that do NOT have support from a corporate health system responded that retirements were a barrier to staff retention at a higher rate than expected - 90 responses (68%) vs. 82 expected (60%).</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                                    | corp.retention.retirement$response 
+## corp.retention.retirement$corp.sup |        No |       Yes | Row Total | 
+## -----------------------------------|-----------|-----------|-----------|
+##                                 No |        45 |        90 |       135 | 
+##                                    |    53.422 |    81.578 |           | 
+##                                    |     0.333 |     0.667 |     0.722 | 
+## -----------------------------------|-----------|-----------|-----------|
+##                                Yes |        29 |        23 |        52 | 
+##                                    |    20.578 |    31.422 |           | 
+##                                    |     0.558 |     0.442 |     0.278 | 
+## -----------------------------------|-----------|-----------|-----------|
+##                       Column Total |        74 |       113 |       187 | 
+## -----------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  7.902335     d.f. =  1     p =  0.004937102 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  6.991939     d.f. =  1     p =  0.00818776 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-time-commitment" class="section level3">
+<h3>Time commitment</h3>
+<p>There is a relationship between if an agency is owned, managed or receives support from a corporate health system and an agency’s response to whether excessive time commitment was an obstacle to retainment.</p>
+<p>Agencies that do receive support from a corporate health system responded taht the time commitment was a barrier to staff retainment at a lower rate than expected - 26 responses (50%) vs. 38 expected (72%).</p>
+<p>Agencies that do NOT receive support from a corporate health system responded that the time commitment was a barrier to staff retainment at a higher rate than expected - 110 responses (82%) vs. 98 expected (72%).</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                                     | corp.retention.time.commit$response 
+## corp.retention.time.commit$corp.sup |        No |       Yes | Row Total | 
+## ------------------------------------|-----------|-----------|-----------|
+##                                  No |        25 |       110 |       135 | 
+##                                     |    36.818 |    98.182 |           | 
+##                                     |     0.185 |     0.815 |     0.722 | 
+## ------------------------------------|-----------|-----------|-----------|
+##                                 Yes |        26 |        26 |        52 | 
+##                                     |    14.182 |    37.818 |           | 
+##                                     |     0.500 |     0.500 |     0.278 | 
+## ------------------------------------|-----------|-----------|-----------|
+##                        Column Total |        51 |       136 |       187 | 
+## ------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  18.75772     d.f. =  1     p =  1.484216e-05 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  17.2041     d.f. =  1     p =  3.357111e-05 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-difficult-to-maintain-certification" class="section level3">
+<h3>Difficult to maintain certification</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and whether an agency indicated that difficulty to maintain certification was an obstacle to retainment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                                                | corp.retention.maintain.certification$response 
+## corp.retention.maintain.certification$corp.sup |        No |       Yes | Row Total | 
+## -----------------------------------------------|-----------|-----------|-----------|
+##                                             No |        96 |        39 |       135 | 
+##                                                |   101.791 |    33.209 |           | 
+##                                                |     0.711 |     0.289 |     0.722 | 
+## -----------------------------------------------|-----------|-----------|-----------|
+##                                            Yes |        45 |         7 |        52 | 
+##                                                |    39.209 |    12.791 |           | 
+##                                                |     0.865 |     0.135 |     0.278 | 
+## -----------------------------------------------|-----------|-----------|-----------|
+##                                   Column Total |       141 |        46 |       187 | 
+## -----------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  4.817087     d.f. =  1     p =  0.02817893 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  4.021232     d.f. =  1     p =  0.04493088 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-inadequate-pay-1" class="section level3">
+<h3>Inadequate pay</h3>
+<p>There is no relationship between if an agency is owned, manages or receives support from a corporate health system and whether an agency indicated that inadequate pay was an obstacle to retainment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                                        | corp.retention.inadequate.pay$response 
+## corp.retention.inadequate.pay$corp.sup |        No |       Yes | Row Total | 
+## ---------------------------------------|-----------|-----------|-----------|
+##                                     No |        83 |        52 |       135 | 
+##                                        |    83.021 |    51.979 |           | 
+##                                        |     0.615 |     0.385 |     0.722 | 
+## ---------------------------------------|-----------|-----------|-----------|
+##                                    Yes |        32 |        20 |        52 | 
+##                                        |    31.979 |    20.021 |           | 
+##                                        |     0.615 |     0.385 |     0.278 | 
+## ---------------------------------------|-----------|-----------|-----------|
+##                           Column Total |       115 |        72 |       187 | 
+## ---------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  5.147474e-05     d.f. =  1     p =  0.9942756 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  1.996414e-30     d.f. =  1     p =  1 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-limited-advancement" class="section level3">
+<h3>Limited advancement</h3>
+<p>There is a relationship between if an agency is owned, managed or receives support from a corporate health system and whether an agency indicated that limited advancement opportunities was an obstacle to staff retainment.</p>
+<p>Agencies that do receive support from a corporate health system responded that limited advancement was a barrier to staff retention at a higher rate than expected - 23 responses (44%) vs. 12 expected (23%).</p>
+<p>Agencies that do NOT receive support from a corporate health system responded that limited advancement was a barrier to staff retention at a lower rate than expected - 21 responses (16%) vs. 32 expected (23%).</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                                             | corp.retention.limited.advancement$response 
+## corp.retention.limited.advancement$corp.sup |        No |       Yes | Row Total | 
+## --------------------------------------------|-----------|-----------|-----------|
+##                                          No |       114 |        21 |       135 | 
+##                                             |   103.235 |    31.765 |           | 
+##                                             |     0.844 |     0.156 |     0.722 | 
+## --------------------------------------------|-----------|-----------|-----------|
+##                                         Yes |        29 |        23 |        52 | 
+##                                             |    39.765 |    12.235 |           | 
+##                                             |     0.558 |     0.442 |     0.278 | 
+## --------------------------------------------|-----------|-----------|-----------|
+##                                Column Total |       143 |        44 |       187 | 
+## --------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  17.1555     d.f. =  1     p =  3.444111e-05 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  15.59883     d.f. =  1     p =  7.830304e-05 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-lack-of-recognition" class="section level3">
+<h3>Lack of recognition</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and whether an agency indicated lack of recognition was an obstacle to retainment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                                     | corp.retention.recognition$response 
+## corp.retention.recognition$corp.sup |        No |       Yes | Row Total | 
+## ------------------------------------|-----------|-----------|-----------|
+##                                  No |       113 |        22 |       135 | 
+##                                     |   116.230 |    18.770 |           | 
+##                                     |     0.837 |     0.163 |     0.722 | 
+## ------------------------------------|-----------|-----------|-----------|
+##                                 Yes |        48 |         4 |        52 | 
+##                                     |    44.770 |     7.230 |           | 
+##                                     |     0.923 |     0.077 |     0.278 | 
+## ------------------------------------|-----------|-----------|-----------|
+##                        Column Total |       161 |        26 |       187 | 
+## ------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  2.321556     d.f. =  1     p =  0.1275923 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  1.658429     d.f. =  1     p =  0.1978156 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-community-is-too-isolated" class="section level3">
+<h3>Community is too isolated</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and whether an agency indicated that the community is too isolated and acts as an obstacle to staff retainment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                                            | corp.retention.isolated.community$response 
+## corp.retention.isolated.community$corp.sup |        No |       Yes | Row Total | 
+## -------------------------------------------|-----------|-----------|-----------|
+##                                         No |       125 |        10 |       135 | 
+##                                            |   121.283 |    13.717 |           | 
+##                                            |     0.926 |     0.074 |     0.722 | 
+## -------------------------------------------|-----------|-----------|-----------|
+##                                        Yes |        43 |         9 |        52 | 
+##                                            |    46.717 |     5.283 |           | 
+##                                            |     0.827 |     0.173 |     0.278 | 
+## -------------------------------------------|-----------|-----------|-----------|
+##                               Column Total |       168 |        19 |       187 | 
+## -------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  4.030985     d.f. =  1     p =  0.04467184 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  3.019346     d.f. =  1     p =  0.08227664 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-employer-wont-allow-staff-to-leave-work" class="section level3">
+<h3>Employer won’t allow staff to leave work</h3>
+<p>There is a relationship between if an agency is owned, managed or receives support from a corporate health system and whether an agency indicated that employers not allowing staff to respond to calls during work hours was an obstacle to staff retainment.</p>
+<p>Agencies that do receive support from a corporate health system responded that employers won’t allow staff to leave work was a barrier to staff retainment at a lower rate than expected - 11 responses (21%) vs. 20 expected (37%).</p>
+<p>Agencies that do not receive support from a corporate health system responded at a higher rate - 60 responses (44%) vs. 51 expected (37%).</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                                              | corp.retention.employer.flexibility$response 
+## corp.retention.employer.flexibility$corp.sup |        No |       Yes | Row Total | 
+## ---------------------------------------------|-----------|-----------|-----------|
+##                                           No |        75 |        60 |       135 | 
+##                                              |    83.743 |    51.257 |           | 
+##                                              |     0.556 |     0.444 |     0.722 | 
+## ---------------------------------------------|-----------|-----------|-----------|
+##                                          Yes |        41 |        11 |        52 | 
+##                                              |    32.257 |    19.743 |           | 
+##                                              |     0.788 |     0.212 |     0.278 | 
+## ---------------------------------------------|-----------|-----------|-----------|
+##                                 Column Total |       116 |        71 |       187 | 
+## ---------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  8.646168     d.f. =  1     p =  0.0032775 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  7.685555     d.f. =  1     p =  0.005566457 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-too-many-runs-1" class="section level3">
+<h3>Too many runs</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and whether an agency indicated that too many runs or transports was an obstacle in retainment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                                       | corp.retention.too.many.runs$response 
+## corp.retention.too.many.runs$corp.sup |        No |       Yes | Row Total | 
+## --------------------------------------|-----------|-----------|-----------|
+##                                    No |       121 |        14 |       135 | 
+##                                       |   120.561 |    14.439 |           | 
+##                                       |     0.896 |     0.104 |     0.722 | 
+## --------------------------------------|-----------|-----------|-----------|
+##                                   Yes |        46 |         6 |        52 | 
+##                                       |    46.439 |     5.561 |           | 
+##                                       |     0.885 |     0.115 |     0.278 | 
+## --------------------------------------|-----------|-----------|-----------|
+##                          Column Total |       167 |        20 |       187 | 
+## --------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.05362728     d.f. =  1     p =  0.8168676 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  3.603869e-31     d.f. =  1     p =  1 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-too-few-runs-1" class="section level3">
+<h3>Too few runs</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and an agency’s response to whether too few runs or transports was an obstacle in staff retainment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                                      | corp.retention.too.few.runs$response 
+## corp.retention.too.few.runs$corp.sup |        No |       Yes | Row Total | 
+## -------------------------------------|-----------|-----------|-----------|
+##                                   No |       120 |        15 |       135 | 
+##                                      |   122.005 |    12.995 |           | 
+##                                      |     0.889 |     0.111 |     0.722 | 
+## -------------------------------------|-----------|-----------|-----------|
+##                                  Yes |        49 |         3 |        52 | 
+##                                      |    46.995 |     5.005 |           | 
+##                                      |     0.942 |     0.058 |     0.278 | 
+## -------------------------------------|-----------|-----------|-----------|
+##                         Column Total |       169 |        18 |       187 | 
+## -------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  1.231425     d.f. =  1     p =  0.2671302 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0.6939083     d.f. =  1     p =  0.4048382 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-dissastisfaction-with-ems-owners" class="section level3">
+<h3>Dissastisfaction with EMS owners</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and an agency’s response to whether dissatisfaction with ownership was an obstacle to retainment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                                                | corp.retention.dissatisfaction.owners$response 
+## corp.retention.dissatisfaction.owners$corp.sup |        No |       Yes | Row Total | 
+## -----------------------------------------------|-----------|-----------|-----------|
+##                                             No |       127 |         8 |       135 | 
+##                                                |   128.503 |     6.497 |           | 
+##                                                |     0.941 |     0.059 |     0.722 | 
+## -----------------------------------------------|-----------|-----------|-----------|
+##                                            Yes |        51 |         1 |        52 | 
+##                                                |    49.497 |     2.503 |           | 
+##                                                |     0.981 |     0.019 |     0.278 | 
+## -----------------------------------------------|-----------|-----------|-----------|
+##                                   Column Total |       178 |         9 |       187 | 
+## -----------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  1.312969     d.f. =  1     p =  0.2518577 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0.5845808     d.f. =  1     p =  0.4445224 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-dissatisfaction-with-ems-manager" class="section level3">
+<h3>Dissatisfaction with EMS manager</h3>
+<p>There is no relationship between if an agency is owned, manages or receives support from a corporate health system and an agency’s response to whether dissatisfaction was an obstacle to staff retainment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                                        | corp.retention.dissat.manager$response 
+## corp.retention.dissat.manager$corp.sup |        No |       Yes | Row Total | 
+## ---------------------------------------|-----------|-----------|-----------|
+##                                     No |       132 |         3 |       135 | 
+##                                        |   132.834 |     2.166 |           | 
+##                                        |     0.978 |     0.022 |     0.722 | 
+## ---------------------------------------|-----------|-----------|-----------|
+##                                    Yes |        52 |         0 |        52 | 
+##                                        |    51.166 |     0.834 |           | 
+##                                        |     1.000 |     0.000 |     0.278 | 
+## ---------------------------------------|-----------|-----------|-----------|
+##                           Column Total |       184 |         3 |       187 | 
+## ---------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  1.174396     d.f. =  1     p =  0.2784998 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0.1885061     d.f. =  1     p =  0.6641629 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-dissatisfaction-with-job-duties" class="section level3">
+<h3>Dissatisfaction with job duties</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and an agency’s response to whether dissatisfaction with job duties is an obstacle to staff retainment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  187 
+## 
+##  
+##                                       | corp.retention.dissat.duties$response 
+## corp.retention.dissat.duties$corp.sup |        No |       Yes | Row Total | 
+## --------------------------------------|-----------|-----------|-----------|
+##                                    No |       129 |         6 |       135 | 
+##                                       |   130.668 |     4.332 |           | 
+##                                       |     0.956 |     0.044 |     0.722 | 
+## --------------------------------------|-----------|-----------|-----------|
+##                                   Yes |        52 |         0 |        52 | 
+##                                       |    50.332 |     1.668 |           | 
+##                                       |     1.000 |     0.000 |     0.278 | 
+## --------------------------------------|-----------|-----------|-----------|
+##                          Column Total |       181 |         6 |       187 | 
+## --------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  2.387723     d.f. =  1     p =  0.1222917 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  1.171056     d.f. =  1     p =  0.2791844 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+</div>
+</div>
+<div id="section-leadership-section-analysis" class="section level1 tabset">
+<h1 class="tabset">Leadership section analysis</h1>
+<p>The questions where if an agency was owned, managed or receives support from a corporate health system had a relationship in how an agency responded to the questions in the leadership section of the survey are summarized below.</p>
+<p><strong>Summary:</strong> There was only one question in this section that showed a relationship.</p>
+<p><em>Leaders have training:</em> Agencies that do receive support from a corporate health system responded that their leaders have received training at a higher rate than expected. The opposite is true for agencies that do not receive support.</p>
+<p><br></p>
+<p><strong>Analysis:</strong></p>
+<p>The questions in the leadership section of the survey are provided in tabs below along with the chi-square and p-value for the relationship between region and each question.</p>
+<p><br></p>
+<div id="section-leaders-have-training" class="section level2">
+<h2>Leaders have training?</h2>
+<p><strong>Has the EMS manager of your agency had formal leadership or management training?</strong></p>
+<p>Respondents were provided two choices which are listed below in order of top choice first;</p>
+<ul>
+<li>Yes (54%)</li>
+<li>No (46%)</li>
+</ul>
+<p>There is a relationship between if an agency is owned, managed or receives support from a corporate health system and whether an agency indicated their managers received leadership and or management training.</p>
+<p>Agencies that do receive support responded that their leadership has received training at a higher rate than expected - 39 responses (77%) vs. 28 expected (54%).</p>
+<p>Agencies that do NOT receive support responded that their leadership has received training at a lower rate than expected - 62 responded (46%) vs. 73 expected (54%).</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  185 
+## 
+##  
+##                                   | corp.leadership.training$leadership.training 
+## corp.leadership.training$corp.sup |        No |       Yes | Row Total | 
+## ----------------------------------|-----------|-----------|-----------|
+##                                No |        72 |        62 |       134 | 
+##                                   |    60.843 |    73.157 |           | 
+##                                   |     0.537 |     0.463 |     0.724 | 
+## ----------------------------------|-----------|-----------|-----------|
+##                               Yes |        12 |        39 |        51 | 
+##                                   |    23.157 |    27.843 |           | 
+##                                   |     0.235 |     0.765 |     0.276 | 
+## ----------------------------------|-----------|-----------|-----------|
+##                      Column Total |        84 |       101 |       185 | 
+## ----------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  13.59301     d.f. =  1     p =  0.0002270299 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  12.40194     d.f. =  1     p =  0.0004288878 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-leadership-turnover" class="section level2">
+<h2>Leadership turnover</h2>
+<p><strong>Has your agency had three or more managers in the past five years?</strong></p>
+<p>Respondents were provided two choices which are listed below in order of top choice first;</p>
+<ul>
+<li>No (86%)</li>
+<li>Yes (13%)</li>
+</ul>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and how an agency responded to management turnover.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  185 
+## 
+##  
+##                                   | corp.leadership.turnover$leadership.turnover 
+## corp.leadership.turnover$corp.sup |        No |       Yes | Row Total | 
+## ----------------------------------|-----------|-----------|-----------|
+##                                No |       117 |        17 |       134 | 
+##                                   |   115.892 |    18.108 |           | 
+##                                   |     0.873 |     0.127 |     0.724 | 
+## ----------------------------------|-----------|-----------|-----------|
+##                               Yes |        43 |         8 |        51 | 
+##                                   |    44.108 |     6.892 |           | 
+##                                   |     0.843 |     0.157 |     0.276 | 
+## ----------------------------------|-----------|-----------|-----------|
+##                      Column Total |       160 |        25 |       185 | 
+## ----------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.2844098     d.f. =  1     p =  0.5938254 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0.08565285     d.f. =  1     p =  0.7697782 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-challenges-to-management-areas" class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">Challenges to management areas</h2>
+<p><strong>Which areas are most difficult to manage?</strong></p>
+<p>Respondents were provided 13 choices and were told to check all that apply. The choices are listed below in order of top choice first;</p>
+<ul>
+<li>Recruitment (69%)</li>
+<li>Staffing the schedule (51%)</li>
+<li>Retention (43%)</li>
+<li>Continuing education requirements (32%)</li>
+<li>Managing staff (31%)</li>
+<li>Policy development and enforcement (25%)</li>
+<li>Staff certification (20%)</li>
+<li>Budget development (17%)</li>
+<li>Billing and reimbursement (15%)</li>
+<li>Maintaining equipment (11%)</li>
+<li>Medical direction (10%)</li>
+<li>None (9%)</li>
+<li>Licensing requirements for the ambulance (5%)</li>
+</ul>
+<p>There were zero challenge areas in which the type of ownership seemed to influence responses.</p>
+<p><br></p>
+<p><br></p>
+<div id="section-recruitment" class="section level3">
+<h3>Recruitment</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and an agencies response to recruitment being a management challenge.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  186 
+## 
+##  
+##                                                 | corp.leadership.challenges.recruitment$response 
+## corp.leadership.challenges.recruitment$corp.sup |        No |       Yes | Row Total | 
+## ------------------------------------------------|-----------|-----------|-----------|
+##                                              No |        35 |       100 |       135 | 
+##                                                 |    42.097 |    92.903 |           | 
+##                                                 |     0.259 |     0.741 |     0.726 | 
+## ------------------------------------------------|-----------|-----------|-----------|
+##                                             Yes |        23 |        28 |        51 | 
+##                                                 |    15.903 |    35.097 |           | 
+##                                                 |     0.451 |     0.549 |     0.274 | 
+## ------------------------------------------------|-----------|-----------|-----------|
+##                                    Column Total |        58 |       128 |       186 | 
+## ------------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  6.340433     d.f. =  1     p =  0.01180161 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  5.478481     d.f. =  1     p =  0.01925198 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-retention" class="section level3">
+<h3>Retention</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and an agency’s response to retention being a management challenge area.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  186 
+## 
+##  
+##                                               | corp.leadership.challenges.retention$response 
+## corp.leadership.challenges.retention$corp.sup |        No |       Yes | Row Total | 
+## ----------------------------------------------|-----------|-----------|-----------|
+##                                            No |        72 |        63 |       135 | 
+##                                               |    76.935 |    58.065 |           | 
+##                                               |     0.533 |     0.467 |     0.726 | 
+## ----------------------------------------------|-----------|-----------|-----------|
+##                                           Yes |        34 |        17 |        51 | 
+##                                               |    29.065 |    21.935 |           | 
+##                                               |     0.667 |     0.333 |     0.274 | 
+## ----------------------------------------------|-----------|-----------|-----------|
+##                                  Column Total |       106 |        80 |       186 | 
+## ----------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  2.684717     d.f. =  1     p =  0.1013152 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  2.168308     d.f. =  1     p =  0.1408811 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-budget" class="section level3">
+<h3>Budget</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and whether an agency identified budget development as a management challenge area.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  186 
+## 
+##  
+##                                            | corp.leadership.challenges.budget$response 
+## corp.leadership.challenges.budget$corp.sup |        No |       Yes | Row Total | 
+## -------------------------------------------|-----------|-----------|-----------|
+##                                         No |       114 |        21 |       135 | 
+##                                            |   113.952 |    21.048 |           | 
+##                                            |     0.844 |     0.156 |     0.726 | 
+## -------------------------------------------|-----------|-----------|-----------|
+##                                        Yes |        43 |         8 |        51 | 
+##                                            |    43.048 |     7.952 |           | 
+##                                            |     0.843 |     0.157 |     0.274 | 
+## -------------------------------------------|-----------|-----------|-----------|
+##                               Column Total |       157 |        29 |       186 | 
+## -------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.0004806139     d.f. =  1     p =  0.9825095 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  3.968306e-31     d.f. =  1     p =  1 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-managing-staff" class="section level3">
+<h3>Managing staff</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and whether an agency identified managing staff as a management challenge area.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  186 
+## 
+##  
+##                                           | corp.leadership.challenges.staff$response 
+## corp.leadership.challenges.staff$corp.sup |        No |       Yes | Row Total | 
+## ------------------------------------------|-----------|-----------|-----------|
+##                                        No |        91 |        44 |       135 | 
+##                                           |    94.355 |    40.645 |           | 
+##                                           |     0.674 |     0.326 |     0.726 | 
+## ------------------------------------------|-----------|-----------|-----------|
+##                                       Yes |        39 |        12 |        51 | 
+##                                           |    35.645 |    15.355 |           | 
+##                                           |     0.765 |     0.235 |     0.274 | 
+## ------------------------------------------|-----------|-----------|-----------|
+##                              Column Total |       130 |        56 |       186 | 
+## ------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  1.44493     d.f. =  1     p =  0.2293432 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  1.046325     d.f. =  1     p =  0.306355 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-staffing-schedule" class="section level3">
+<h3>Staffing schedule</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and whether an agency identified staffing schedule as an management challenge area.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  186 
+## 
+##  
+##                                                       | corp.leadership.challenges.staffing.schedule$response 
+## corp.leadership.challenges.staffing.schedule$corp.sup |        No |       Yes | Row Total | 
+## ------------------------------------------------------|-----------|-----------|-----------|
+##                                                    No |        61 |        74 |       135 | 
+##                                                       |    66.774 |    68.226 |           | 
+##                                                       |     0.452 |     0.548 |     0.726 | 
+## ------------------------------------------------------|-----------|-----------|-----------|
+##                                                   Yes |        31 |        20 |        51 | 
+##                                                       |    25.226 |    25.774 |           | 
+##                                                       |     0.608 |     0.392 |     0.274 | 
+## ------------------------------------------------------|-----------|-----------|-----------|
+##                                          Column Total |        92 |        94 |       186 | 
+## ------------------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  3.603312     d.f. =  1     p =  0.05766458 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  3.006293     d.f. =  1     p =  0.08294177 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-medical-direction" class="section level3">
+<h3>Medical direction</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and how an agency responded to medical direction as a management challenge area.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  186 
+## 
+##  
+##                                                       | corp.leadership.challenges.medical.direction$response 
+## corp.leadership.challenges.medical.direction$corp.sup |        No |       Yes | Row Total | 
+## ------------------------------------------------------|-----------|-----------|-----------|
+##                                                    No |       126 |         9 |       135 | 
+##                                                       |   122.661 |    12.339 |           | 
+##                                                       |     0.933 |     0.067 |     0.726 | 
+## ------------------------------------------------------|-----------|-----------|-----------|
+##                                                   Yes |        43 |         8 |        51 | 
+##                                                       |    46.339 |     4.661 |           | 
+##                                                       |     0.843 |     0.157 |     0.274 | 
+## ------------------------------------------------------|-----------|-----------|-----------|
+##                                          Column Total |       169 |        17 |       186 | 
+## ------------------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  3.62624     d.f. =  1     p =  0.05687517 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  2.621448     d.f. =  1     p =  0.1054282 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-education-requirements" class="section level3">
+<h3>Education requirements</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and whether an agency indicated that keeping up with education requirements was a management challenge area.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  186 
+## 
+##  
+##                                                   | corp.leadership.challenges.education.req$response 
+## corp.leadership.challenges.education.req$corp.sup |        No |       Yes | Row Total | 
+## --------------------------------------------------|-----------|-----------|-----------|
+##                                                No |        87 |        48 |       135 | 
+##                                                   |    90.726 |    44.274 |           | 
+##                                                   |     0.644 |     0.356 |     0.726 | 
+## --------------------------------------------------|-----------|-----------|-----------|
+##                                               Yes |        38 |        13 |        51 | 
+##                                                   |    34.274 |    16.726 |           | 
+##                                                   |     0.745 |     0.255 |     0.274 | 
+## --------------------------------------------------|-----------|-----------|-----------|
+##                                      Column Total |       125 |        61 |       186 | 
+## --------------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  1.701514     d.f. =  1     p =  0.19209 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  1.275474     d.f. =  1     p =  0.2587422 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-equipment" class="section level3">
+<h3>Equipment</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and whether an agency indicated that updating equipment was a management challenge.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  186 
+## 
+##  
+##                                               | corp.leadership.challenges.equipment$response 
+## corp.leadership.challenges.equipment$corp.sup |        No |       Yes | Row Total | 
+## ----------------------------------------------|-----------|-----------|-----------|
+##                                            No |       121 |        14 |       135 | 
+##                                               |   121.935 |    13.065 |           | 
+##                                               |     0.896 |     0.104 |     0.726 | 
+## ----------------------------------------------|-----------|-----------|-----------|
+##                                           Yes |        47 |         4 |        51 | 
+##                                               |    46.065 |     4.935 |           | 
+##                                               |     0.922 |     0.078 |     0.274 | 
+## ----------------------------------------------|-----------|-----------|-----------|
+##                                  Column Total |       168 |        18 |       186 | 
+## ----------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.2704741     d.f. =  1     p =  0.6030139 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0.05861345     d.f. =  1     p =  0.808701 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-billing" class="section level3">
+<h3>Billing</h3>
+<p>There is no relationship between if an agency is owned, managed or receiveus support from a corporate health system and whether an agency indicated that billing and reimbursement was a management challenge area.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  186 
+## 
+##  
+##                                             | corp.leadership.challenges.billing$response 
+## corp.leadership.challenges.billing$corp.sup |        No |       Yes | Row Total | 
+## --------------------------------------------|-----------|-----------|-----------|
+##                                          No |       117 |        18 |       135 | 
+##                                             |   115.403 |    19.597 |           | 
+##                                             |     0.867 |     0.133 |     0.726 | 
+## --------------------------------------------|-----------|-----------|-----------|
+##                                         Yes |        42 |         9 |        51 | 
+##                                             |    43.597 |     7.403 |           | 
+##                                             |     0.824 |     0.176 |     0.274 | 
+## --------------------------------------------|-----------|-----------|-----------|
+##                                Column Total |       159 |        27 |       186 | 
+## --------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.5550869     d.f. =  1     p =  0.4562466 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0.2618837     d.f. =  1     p =  0.608829 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-licensing" class="section level3">
+<h3>Licensing</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and whether an agency indicated that licensing was a management challenge area.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  186 
+## 
+##  
+##                                               | corp.leadership.challenges.licensing$response 
+## corp.leadership.challenges.licensing$corp.sup |        No |       Yes | Row Total | 
+## ----------------------------------------------|-----------|-----------|-----------|
+##                                            No |       127 |         8 |       135 | 
+##                                               |   128.468 |     6.532 |           | 
+##                                               |     0.941 |     0.059 |     0.726 | 
+## ----------------------------------------------|-----------|-----------|-----------|
+##                                           Yes |        50 |         1 |        51 | 
+##                                               |    48.532 |     2.468 |           | 
+##                                               |     0.980 |     0.020 |     0.274 | 
+## ----------------------------------------------|-----------|-----------|-----------|
+##                                  Column Total |       177 |         9 |       186 | 
+## ----------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  1.263917     d.f. =  1     p =  0.260911 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0.5494627     d.f. =  1     p =  0.4585373 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-staff-certficiation" class="section level3">
+<h3>Staff certficiation</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and whether an agency indicated that keeping up on staff certification was a management challenge area.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  186 
+## 
+##  
+##                                                         | corp.leadership.challenges.staff.certification$response 
+## corp.leadership.challenges.staff.certification$corp.sup |        No |       Yes | Row Total | 
+## --------------------------------------------------------|-----------|-----------|-----------|
+##                                                      No |       107 |        28 |       135 | 
+##                                                         |   107.419 |    27.581 |           | 
+##                                                         |     0.793 |     0.207 |     0.726 | 
+## --------------------------------------------------------|-----------|-----------|-----------|
+##                                                     Yes |        41 |        10 |        51 | 
+##                                                         |    40.581 |    10.419 |           | 
+##                                                         |     0.804 |     0.196 |     0.274 | 
+## --------------------------------------------------------|-----------|-----------|-----------|
+##                                            Column Total |       148 |        38 |       186 | 
+## --------------------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.02922489     d.f. =  1     p =  0.8642608 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  7.313739e-31     d.f. =  1     p =  1 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-technology-updates" class="section level3">
+<h3>Technology updates</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and whether an agency indicated that maintaining technology was a management challenge area.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  372 
+## 
+##  
+##                                                | corp.leadership.challenges.technology$response 
+## corp.leadership.challenges.technology$corp.sup |        No |       Yes | Row Total | 
+## -----------------------------------------------|-----------|-----------|-----------|
+##                                             No |       220 |        50 |       270 | 
+##                                                |   227.177 |    42.823 |           | 
+##                                                |     0.815 |     0.185 |     0.726 | 
+## -----------------------------------------------|-----------|-----------|-----------|
+##                                            Yes |        93 |         9 |       102 | 
+##                                                |    85.823 |    16.177 |           | 
+##                                                |     0.912 |     0.088 |     0.274 | 
+## -----------------------------------------------|-----------|-----------|-----------|
+##                                   Column Total |       313 |        59 |       372 | 
+## -----------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  5.21441     d.f. =  1     p =  0.02240045 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  4.513213     d.f. =  1     p =  0.033634 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-policy-and-enforcement" class="section level3">
+<h3>Policy and enforcement</h3>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and whether an agency indicated that policy and enforcement was a management challenge area.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  186 
+## 
+##  
+##                                            | corp.leadership.challenges.policy$response 
+## corp.leadership.challenges.policy$corp.sup |        No |       Yes | Row Total | 
+## -------------------------------------------|-----------|-----------|-----------|
+##                                         No |        98 |        37 |       135 | 
+##                                            |   100.887 |    34.113 |           | 
+##                                            |     0.726 |     0.274 |     0.726 | 
+## -------------------------------------------|-----------|-----------|-----------|
+##                                        Yes |        41 |        10 |        51 | 
+##                                            |    38.113 |    12.887 |           | 
+##                                            |     0.804 |     0.196 |     0.274 | 
+## -------------------------------------------|-----------|-----------|-----------|
+##                               Column Total |       139 |        47 |       186 | 
+## -------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  1.192463     d.f. =  1     p =  0.2748333 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0.8151965     d.f. =  1     p =  0.3665884 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-none" class="section level3">
+<h3>None</h3>
+<p>There is a relationship between if an agency is owned, managed or receives support from a corporate health system and whether an agency indicated that there were no management challenge areas.</p>
+<p>Agencies that do receive support responded that there were no management challenges at a higher rate than expected - 10 responses (20%) vs. 4 expected (9%).</p>
+<p>Agencies that do NOT receive support responded that there were no management challenges at a lower rate than expected - 6 responses (4%) vs. 12 expeected (9%).</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  186 
+## 
+##  
+##                                          | corp.leadership.challenges.none$response 
+## corp.leadership.challenges.none$corp.sup |        No |       Yes | Row Total | 
+## -----------------------------------------|-----------|-----------|-----------|
+##                                       No |       129 |         6 |       135 | 
+##                                          |   123.387 |    11.613 |           | 
+##                                          |     0.956 |     0.044 |     0.726 | 
+## -----------------------------------------|-----------|-----------|-----------|
+##                                      Yes |        41 |        10 |        51 | 
+##                                          |    46.613 |     4.387 |           | 
+##                                          |     0.804 |     0.196 |     0.274 | 
+## -----------------------------------------|-----------|-----------|-----------|
+##                             Column Total |       170 |        16 |       186 | 
+## -----------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  10.82533     d.f. =  1     p =  0.001001209 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  8.982581     d.f. =  1     p =  0.002725654 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+</div>
+<div id="section-shift-coverage" class="section level2">
+<h2>Shift Coverage</h2>
+<p><strong>What percent of your shifts are fully covered at least 24 hours in advance?</strong></p>
+<p>Respondents were provided 5 choices which are provided below with the top choice listed first;</p>
+<ul>
+<li>75% - 99% (43%)</li>
+<li>100% (41%)</li>
+<li>25% - 49% (3%)</li>
+<li>0% - 24% (2%)</li>
+</ul>
+<p><br></p>
+<p>There is no relationship between if an agency is owned, managed or receives support from a corporate health system and how an agency responded to the percentage of shifts covered 24 hours in advance.</p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  184 
+## 
+##  
+##                              | corp.shifts.covered$pct.shifts.covered 
+## corp.shifts.covered$corp.sup |     0-24% |      100% |    25-49% |    50-74% |    75-99% | Row Total | 
+## -----------------------------|-----------|-----------|-----------|-----------|-----------|-----------|
+##                           No |         3 |        52 |         6 |        16 |        56 |       133 | 
+##                              |     2.891 |    54.212 |     4.337 |    15.179 |    56.380 |           | 
+##                              |     0.023 |     0.391 |     0.045 |     0.120 |     0.421 |     0.723 | 
+## -----------------------------|-----------|-----------|-----------|-----------|-----------|-----------|
+##                          Yes |         1 |        23 |         0 |         5 |        22 |        51 | 
+##                              |     1.109 |    20.788 |     1.663 |     5.821 |    21.620 |           | 
+##                              |     0.020 |     0.451 |     0.000 |     0.098 |     0.431 |     0.277 | 
+## -----------------------------|-----------|-----------|-----------|-----------|-----------|-----------|
+##                 Column Total |         4 |        75 |         6 |        21 |        78 |       184 | 
+## -----------------------------|-----------|-----------|-----------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  2.810443     d.f. =  4     p =  0.5900314 
+## 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("section-TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#section-TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

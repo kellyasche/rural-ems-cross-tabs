@@ -13,6 +13,8 @@ navbar:
       href: corporate_support.html
     - text: "Management training"
       href: management_training.html
+    - text: "Management training for small EMS"
+      href: management_training_small_ems.html
     - text: "Location crosstabs"
       href: location.html
     - text: "Staff compensation crosstabs"

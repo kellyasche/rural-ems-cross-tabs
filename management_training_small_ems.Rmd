@@ -1,0 +1,947 @@
+---
+title: "Management training for small EMS cross tabs"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 4
+runtime: shiny
+resource_files:
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.cpg
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.dbf
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.prj
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.sbn
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.sbx
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.shp.xml
+- Data/Shapefiles/County shapefiles/MNCounties_MNDOT.shx
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(sf)
+library(ggrepel)
+library(scales)
+library(shiny)
+library(shinycssloaders)
+library(ggiraph)
+library(kableExtra)
+library(rmapshaper)
+library(cowplot)
+library(DT)
+library(htmlwidgets)
+library(RColorBrewer)
+library(extrafont)
+library(readxl)
+library(janitor)
+library(lubridate)
+library(gmodels)
+library(infer)
+library(broom)
+library(crosstable)
+
+loadfonts()
+```
+
+```{r loading jon docs and shapefiles, cache=TRUE, include=FALSE}
+theme_bar <- theme_bw() +
+  theme(panel.grid.major = element_line(color = "grey70", size = 0.1),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text = element_text(face = "bold"),
+        panel.border = element_blank(),
+        legend.background = element_rect(fill = "transparent", color = "transparent"),
+        legend.key = element_rect(fill = "transparent"),
+        legend.key.size = unit(1, "lines"),
+        legend.margin = margin(0,0,0,0),
+        legend.title = element_blank(),
+        legend.text = element_text(margin = margin(l = 2)),
+        text = element_text(family = "Arial"))
+
+theme_line <- theme_bw() +
+  theme(legend.background = element_rect(fill = "transparent", color = "transparent"),
+        legend.key = element_rect(fill = "transparent"),
+        legend.text = element_text(margin = margin(l = 2)),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_line(color = "grey70", size = 0.1),
+        axis.ticks = element_blank(),
+        axis.text = element_text(face = "bold"),
+        panel.border = element_blank(),
+        legend.margin = margin(0,0,0,0),
+        legend.key.size = unit(1, "lines"),
+        text = element_text(family = "Arial"))
+
+
+theme_sf <- theme_bw() +
+  theme(axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks=element_blank(),
+        panel.background = element_blank(),
+        panel.grid.major = element_line(color = "white"),
+        panel.border = element_blank(),
+        plot.title = element_text(hjust = 0.5),
+        legend.title = element_blank(),
+        legend.text = element_text(margin = margin(l = 2)),
+        legend.margin = margin(0,0,0,0),
+        legend.key.size = unit(1, "lines"),
+        text = element_text(family = "Arial"))
+
+regions <- read_csv("Data/Join docs/county_regions.csv") %>%
+    select(5,6) %>%
+    unique() %>%
+    mutate(edr = str_replace(edr, "  ", " "),
+           planning.region = str_replace(planning.region, " Minnesota", ""),
+           planning.region = fct_relevel(planning.region, "Northwest", "Northeast", "Central", "Seven County Mpls-St Paul", "Southwest", "Southeast"),
+           edr = fct_relevel(edr, "EDR 1 - Northwest", "EDR 2 - Headwaters", "EDR 3 - Arrowhead", "EDR 4 - West Central", "EDR 5 - North Central", "EDR 6E- Southwest Central", "EDR 6W- Upper Minnesota Valley", "EDR 7E- East Central", "EDR 7W- Central", "EDR 8 - Southwest", "EDR 9 - South Central", "EDR 10 - Southeast", "EDR 11 - 7 County Twin Cities", "Minnesota"))
+
+counties.regions <- read_csv("Data/Join docs/county_regions.csv") %>%
+  rename(mif = `MIF Region`) %>%
+  mutate(countyfp = formatC(countyfp, width = 3, flag = "0"),
+         Name = str_to_title(Name),
+         Name = str_replace(Name, "Q", "q"),
+         Name = str_replace(Name, "Of The", "of the"),
+         Name = str_replace(Name, "Mcleod", "McLeod"),
+         Dem_Desc = ifelse(Name == "Minnesota", "Minnesota", Dem_Desc) ,
+         edr = str_replace(edr, "  ", " "),
+         planning.region = str_replace(planning.region, " Minnesota", ""),
+         planning.region = fct_relevel(planning.region, "Northwest", "Northeast", "Central", "Seven County Mpls-St Paul", "Southwest", "Southeast"),
+         edr = fct_relevel(edr, "EDR 1 - Northwest", "EDR 2 - Headwaters", "EDR 3 - Arrowhead", "EDR 4 - West Central", "EDR 5 - North Central", "EDR 6E- Southwest Central", "EDR 6W- Upper Minnesota Valley", "EDR 7E- East Central", "EDR 7W- Central", "EDR 8 - Southwest", "EDR 9 - South Central", "EDR 10 - Southeast", "EDR 11 - 7 County Twin Cities", "Minnesota"),
+         mif = ifelse(is.na(mif), "TC", mif),
+         mif = as.factor(mif),
+         mif = fct_relevel(mif, "NW", "NE", "WC", "EC", "SW", "SE", "TC"))
+
+color.ruca <- c("Entirely rural" = "#009933", "Town/rural mix" = "#99CC33", "Urban/town/rural mix" = "#CC9966", "Entirely urban" = "#754C29", "Minnesota" = "black")
+
+color.pr <- c("Northwest" = 	"#4575b4", "Northeast" = "#e0f3f8", "Central" = "#fee090", "Seven County Mpls-St Paul" = "#d73027", "Southwest" = "#91bfdb", "Southeast" = "#fc8d59", "Minnesota" = "black")
+
+color.edr <- c("EDR 1 - Northwest" = "#b3cde3", "EDR 2 - Headwaters" = "#8c96c6", "EDR 3 - Arrowhead" = "#fe9929", "EDR 4 - West Central" = "#8856a7", "EDR 5 - North Central" = "#810f7c", "EDR 6E- Southwest Central" = "#e5f5f9", "EDR 6W- Upper Minnesota Valley" = "#bdc9e1", "EDR 7E- East Central" = "#99d8c9", "EDR 7W- Central" = "#2ca25f", "EDR 8 - Southwest" = "#74a9cf", "EDR 9 - South Central" = "#0570b0", "EDR 10 - Southeast" = "#d7301f", "EDR 11 - 7 County Twin Cities" = "#d8b365", "Minnesota" = "black")
+
+color.pr.edr <- c ("Northwest" = "#4575b4","Northeast" = "#e0f3f8", "Central" = "#fee090", "Seven County Mpls-St Paul" = "#d73027", "Southwest" = "#91bfdb", "Southeast" = "#fc8d59", "Minnesota" = "black", "EDR 1 - Northwest" = "#b3cde3", "EDR 2 - Headwaters" = "#8c96c6", "EDR 3 - Arrowhead" = "#fe9929", "EDR 4 - West Central" = "#8856a7", "EDR 5 - North Central" = "#810f7c", "EDR 6E- Southwest Central" = "#e5f5f9", "EDR 6W- Upper Minnesota Valley" = "#bdc9e1", "EDR 7E- East Central" = "#99d8c9", "EDR 7W- Central" = "#2ca25f", "EDR 8 - Southwest" = "#74a9cf", "EDR 9 - South Central" = "#0570b0", "EDR 10 - Southeast" = "#d7301f", "EDR 11 - 7 County Twin Cities" = "#d8b365")
+
+mn_counties <- st_read("Data/Shapefiles/county shapefiles/MNCounties_MNDOT.shp", quiet = TRUE) %>%
+  ms_simplify(keep = .01, keep_shapes = TRUE) %>%
+  rename(countyfp = FIPS_CODE)
+
+```
+
+```{r master response, include=FALSE, cache=TRUE}
+master.responses <- read_csv("Data/Responses/Master-survey-responses.csv") %>%
+  mutate(region = fct_relevel(region, "Northeast", "Northwest", "West Central", "Central", "Southwest", "South Central", "Southeast")) %>%
+  rename(public.or.private = 4) %>%
+  mutate(public.or.private = str_replace(public.or.private, "Public owned or operated \\(e.g. city, county authority or joint powers board\\)", "Public owned or operated"),
+         public.or.private = str_replace(public.or.private, "Private or other non-profit owned or operated", "Private or non-profit"),
+         public.or.private = as.factor(public.or.private)) %>%
+  rename(pop.served = 3,
+         corp.sup = 9,
+         manager.train = 58) 
+
+resp.small.ems <- master.responses %>%
+  filter(pop.served %in% c("Less than 2,500", "2,500 – 4,999", "5,000 – 9,999"))
+```
+
+
+This section of analysis examines whether or not an agency's manager received formal training at all influenced how an agency responded to questions in the survey. The management training question was;
+
+**Has the EMS manager of your agency had formal leadership or management training? - for EMS agencies serving a population of 9,999 or less**
+
+Respondents were provided the following options, listed in order of most respondents on top; of all EMS respondents (larger EMS included) most managers had received formal training.
+
+```{r prep management training, include=FALSE, cache=TRUE}
+man.train <- resp.small.ems %>%
+  select(58) %>%
+  group_by(manager.train) %>%
+  summarise(n = n()) %>%
+  ungroup() %>%
+  drop_na %>%
+  mutate(pct = n / sum(n))
+
+names(man.train)
+```
+
+* Yes (53.8%, 100)
+* No (45.7%, 85)
+
+However, a majority of agencies that serve a population less than 10,000 did not have their manager's trained.
+
+* Yes (43.9%, 58)
+* No (56.1%, 74 responses)
+
+What this shows us is that although analysis from a previous page confirmed that there were typical differences in agencies that had managers with formal training vs. agencies with a manager with no training, this was also highly correlated to those agencies being more likely to be larger and flush with cash. By eliminating those agencies, we can pinpoint if management training makes a dent in any of these issues.
+
+The survey was broken into 7 different sections. For this analysis we only looked at relationships with questions in the workforce sustainability section. You can navigate to the analysis of any of these sections using the table of contents on the left-hand side. The sections are.
+
+1. Characteristics questions
+2. **Workforce sustainability questions**
+3. Leadership questions
+4. Education questions
+5. Medical direction questions
+6. Community relation questions
+7. Funding questions
+
+The analysis used for the cross tabs is the typical chi-square test with p-value.
+
+<br>
+
+# Summary of results{.tabset}
+
+The tabs below lists which questions showed a relationship to whether or not an agency's manager received formal management or leadership training and combines the executive summary from the MN Department of Health's analysis with the relationships found in this analysis. The agencies included in this analysis are ones that serve a population of less than 10,000.
+
+<br>
+
+## Questions with relationships
+
+The following are the questions that showed a statistical significance indicating a relationship were; 
+
+* Workforce sustainability section
+  + Does your EMS agency have a retention strategy?
+
+  
+
+<br>
+
+## Addition to MN Department of Health Summary
+
+The following narrative combines the executive summary from the MN Department of Health's aggregate analysis of the survey with the relationships found in this analysis. Hopefully this will round out the results a bit better and point to more specific trends within the results.
+
+<br>
+
+
+### Workforce sustainability section{.unnumbered .unlisted .toc-ignore}
+
+**Key Findings**
+
+Staffing shortages are a major challenge for rural EMS agencies. Eighty (80) percent utilize some version of volunteers to staff their operations. Roster sizes are decreasing, many staff are trained for multiple public functions and many call schedules are not covered 24 hours prior to the shifts.
+
+* The active staff roster decreased for half of the agencies from the previous year
+* Weekday daytime hours are the most difficult shifts to cover. However, all weekend and holiday
+shifts are also difficult to cover
+* About 60 percent of agencies have inadequate staff to cover their call schedule without undue
+burden to the agency.
+* Fifty-nine (59) percent of agencies do not have their shifts 100 percent covered at least 24 hours in
+advance
+
+Recruitment and retention of ambulance personnel continues to be a significant challenge even though:
+* Emergency Medical Responders (EMRs) are now widely used to actively staff rural EMS agencies
+* Most agencies cover the full cost of the continuing education courses for their staff
+* Most eligible recipients take advantage of state EMS training reimbursement
+
+However, it is worth noting that there were one difference in responses depending on whether their manager received formal leadership or management training. 
+
+* Agencies with a manager that have received training were significantly more likely to have developed a retention strategy - 57% of these agencies vs. 29% of other agencies.
+
+
+<br>
+
+# Workforce sustainability section analysis{.tabset}
+
+The questions in the workforce sustainability section of the survey where the agency's manager having formal leadership or management training had a relationship in how an agency responded are summarized below.The only agencies included in this analysis serve a population of less than 10,000.
+
+**Summary:**
+
+*Retention strategy:*
+Agencies with a manager that received formal training were significantly more likely to have developed a staff retention strategy.
+
+<br>
+
+**Analysis:**
+
+The questions in the workforce sustainability section of the survey are provided in tabs below along with the chi-square and p-value for the relationship between region and each question.
+
+<br>
+
+## Cover call schedule
+
+**Do you have enough people to cover your call schedule without undue burden or excessive time commitments?**
+
+Respondents were provided with two choices which are provided below in order of top choice listed first;
+
+```{r table management training and covering call schedule}
+man.train.schedule.table <- resp.small.ems %>%
+  select(58,23) %>%
+  group_by(manager.train) %>%
+  summarise(n = n()) %>%
+  ungroup() %>%
+  mutate(pct = percent(n / sum(n), accuracy = .1))
+
+kable(format = "html", man.train.schedule.table, escape = F) %>%
+  kable_styling(bootstrap_options = "striped", position = "left", full_width = FALSE) %>%
+  scroll_box(width = "100%")
+
+```
+
+* No (60%)
+* Yes (40%)
+
+There is no relationship in whether an agency's manager has received formal leadership or management training and whether their call schedule is covered.
+
+<br>
+
+```{r management training and covering all schedule}
+man.train.schedule <- resp.small.ems %>%
+  select(58,23) %>%
+  rename(cover.sched = 2) 
+
+CrossTable(man.train.schedule$manager.train, man.train.schedule$cover.sched, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+## Recruitment plan
+
+**Does you agency have a recruitment plan?**
+
+Respondents were provided two choices which are provided below in order of top choice listed first;
+
+```{r table management training and recruitment plan}
+man.train.rec.plan.table <- resp.small.ems %>%
+  select(58,25) %>%
+  group_by(manager.train) %>%
+  summarise(n = n()) %>%
+  ungroup() %>%
+  mutate(pct = percent(n / sum(n), accuracy = .1))
+
+kable(format = "html", man.train.rec.plan.table, escape = F) %>%
+  kable_styling(bootstrap_options = "striped", position = "left", full_width = FALSE) %>%
+  scroll_box(width = "100%")
+
+```
+
+* Yes (58%)
+* No (41%)
+
+There is no relationship in whether an agency has a recruitment plan and if their manager has received formal training.
+
+<br>
+
+```{r management training and recruitment plan}
+
+man.train.rec.plan <- resp.small.ems %>%
+  select(58,25) %>%
+  rename(rec.plan = 2) 
+
+CrossTable(man.train.rec.plan$manager.train, man.train.rec.plan$rec.plan, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+  
+
+```
+
+<br>
+
+## Difficult to recruit?
+
+**Is it difficult to recruit new EMS staff?**
+
+Respondents were provided three choices which are list below with the top choice first;
+
+```{r table management training and difficult to recruit}
+man.train.dif.recruit.table <- resp.small.ems %>%
+  select(58,26) %>%
+  group_by(manager.train) %>%
+  summarise(n = n()) %>%
+  ungroup() %>%
+  mutate(pct = percent(n / sum(n), accuracy = .1))
+
+kable(format = "html", man.train.dif.recruit.table, escape = F) %>%
+  kable_styling(bootstrap_options = "striped", position = "left", full_width = FALSE) %>%
+  scroll_box(width = "100%")
+
+```
+
+* Yes (63%)
+* No (4%)
+* Sometimes (33%)
+
+There is no relationship in whether an agency feels it's difficult to recruit new staff and if they have a manager that's received formal leadership or management training.
+
+
+<br>
+
+```{r management training and difficult to recruit}
+
+man.train.dif.rec <- resp.small.ems %>%
+  select(58,26) %>%
+  rename(dif.rec = 2) 
+
+CrossTable(man.train.dif.rec$manager.train, man.train.dif.rec$dif.rec, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+  
+```
+
+<br>
+
+## Obstacles to recruiting{.tabset .tabset-pills}
+
+**Which of the following items are obstacles to recruiting EMS staff for your agency?**
+
+Respondents were provided 10 choices of which they could select all that applied. The choices are provided below and in order with top choice listed first;
+
+```{r table management training and obstables to recruiting}
+man.train.obs.rec.table <- resp.small.ems %>%
+  select(58,28:38) %>%
+  rename(lack.interest = 2,
+         lack.availability = 3,
+         lack.trained.cand = 4,
+         training.too.time = 5,
+         training.too.exp = 6,
+         training.too.dist = 7,
+         inadequate.pay = 8,
+         too.few.runs = 9,
+         too.many.runs = 10,
+         too.time.commit = 11,
+         child.care = 12) %>%
+  gather(key = "obstacle", value = "response", 2:12) %>%
+  mutate(response = ifelse(response == "-", "No", "Yes")) %>%
+  group_by(obstacle, response) %>%
+  summarise(n = n()) %>%
+  ungroup() %>%
+  drop_na() %>%
+  group_by(obstacle) %>%
+  mutate(pct = percent(n / sum(n), accuracy = .1)) %>%
+  ungroup() %>%
+  filter(response == "Yes") %>%
+  arrange(desc(n))
+
+kable(format = "html", man.train.obs.rec.table, escape = F) %>%
+  kable_styling(bootstrap_options = "striped", position = "left", full_width = FALSE) %>%
+  scroll_box(width = "100%")
+
+
+```
+
+* Time commitment is too great (67%)
+* Lack of availability (62%)
+* Training requirements are too time consuming (58%)
+* Lack of trained candidates (50%)
+* inadequate pay or benefits (40%)
+* Child care responsibilities (38%)
+* Training requirements are too far away (23%)
+* Too few runs or transports (14%)
+* Too many runs or transports (9%)
+* Other (5%)
+
+There were no questions that had a relationship.
+
+<br>
+
+```{r prep corp support and obstables to recruiting, include=FALSE, cache=TRUE}
+
+man.train.obs.rec <- resp.small.ems %>%
+  select(58,28:38) %>%
+  rename(lack.interest = 2,
+         lack.availability = 3,
+         lack.trained.cand = 4,
+         training.too.time = 5,
+         training.too.exp = 6,
+         training.too.dist = 7,
+         inadequate.pay = 8,
+         too.few.runs = 9,
+         too.many.runs = 10,
+         too.time.commit = 11,
+         child.care = 12) %>%
+  gather(key = "obstacle", value = "response", 2:12) %>%
+  mutate(response = ifelse(response == "-", "No", "Yes"))
+```
+
+
+### Lack of availability
+
+There is no relationship between an agency having a manager who has received formal leadership or management training and whether lack of availability was considered an obstacle to recruitment.
+
+<br>
+
+```{r management training and obstables to recruiting - lack of availability}
+man.train.obs.rec.availability <- man.train.obs.rec %>%
+  filter(obstacle == "lack.availability")
+
+CrossTable(man.train.obs.rec.availability$manager.train, man.train.obs.rec.availability$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Lack of trained candidates
+
+There is no relationship between if an agency has a manager that received formal leadership or management training and whether there is a lack of trained candidates acting as an obstacle to recruitment.
+
+<br>
+
+```{r management training and obstables to recruiting - lack of candidates}
+man.train.obs.rec.trained.cand <- man.train.obs.rec %>%
+  filter(obstacle == "lack.trained.cand")
+
+CrossTable(man.train.obs.rec.trained.cand$manager.train, man.train.obs.rec.trained.cand$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Training takes too much time
+
+There is no relationship between if an agency has a manager that received formal leadership or management training and whether training takes too much time and acts as an obstacle to recruitment.
+
+<br>
+
+```{r management training and obstables to recruiting - training too much time}
+man.train.obs.rec.training.time <- man.train.obs.rec %>%
+  filter(obstacle == "training.too.time")
+
+CrossTable(man.train.obs.rec.training.time$manager.train, man.train.obs.rec.training.time$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Training too expensive
+
+There is no relationship between if an agency has a manager that received formal leadership or management training and whether trainings being too expensive was an obstacle to recruitment.
+
+<br>
+
+```{r management training and obstables to recruiting - training too expensive}
+man.train.obs.rec.training.exp <- man.train.obs.rec %>%
+  filter(obstacle == "training.too.exp")
+
+CrossTable(man.train.obs.rec.training.exp$manager.train, man.train.obs.rec.training.exp$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Training locations too far
+
+There is no relationship between if an agency has a manager that received formal leadership or management training and whether trainings were too far to travel were obstacles to recruitment.
+
+<br>
+
+```{r management training and obstables to recruiting - training too far}
+man.train.obs.rec.trainings.too.far <- man.train.obs.rec %>%
+  filter(obstacle == "training.too.dist")
+
+CrossTable(man.train.obs.rec.trainings.too.far$manager.train, man.train.obs.rec.trainings.too.far$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Inadequate pay
+
+There is no relationship between if an agency has a manager that received formal leadership or management training and whether inadequate pay was an obstacle to recruitment.
+
+<br>
+
+```{r management training and obstables to recruiting - inadequate pay}
+man.train.obs.rec.inadequate.pay <- man.train.obs.rec %>%
+  filter(obstacle == "inadequate.pay")
+
+CrossTable(man.train.obs.rec.inadequate.pay$manager.train, man.train.obs.rec.inadequate.pay$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Too few runs
+
+There is no relationship between if an agency has a manager that received formal leadership or management training and whether too few runs is an obstacle to recruitment.
+
+<br>
+
+```{r management training and obstables to recruiting - too few runs}
+man.train.obs.rec.too.few.runs <- man.train.obs.rec %>%
+  filter(obstacle == "too.few.runs")
+
+CrossTable(man.train.obs.rec.too.few.runs$manager.train, man.train.obs.rec.too.few.runs$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Too many runs
+
+There is no relationship between if an agency has a manager that received formal leadership or management training and whether too many runs was an obstacle in recruitment.
+
+<br>
+
+```{r management training and obstables to recruiting - too many runs}
+man.train.obs.rec.too.many.runs <- man.train.obs.rec %>%
+  filter(obstacle == "too.many.runs")
+
+CrossTable(man.train.obs.rec.too.many.runs$manager.train, man.train.obs.rec.too.many.runs$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Too much time commitment
+
+There is no relationship between if an agency has a manager that received formal leadership or management training and whether too much of a time commitment was an obstacle to recruitment.
+
+
+<br>
+
+```{r management training and obstables to recruiting - too much time commitment}
+man.train.obs.rec.too.much.time <- man.train.obs.rec %>%
+  filter(obstacle == "too.time.commit")
+
+CrossTable(man.train.obs.rec.too.much.time$manager.train, man.train.obs.rec.too.much.time$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+### Child care obligations
+
+There is no relationship between if an agency's manager received formal leadership or management training  and whether child care obligations were an obstacle to recruitment.
+
+
+<br>
+
+```{r management training and obstables to recruiting - child care}
+man.train.obs.rec.child.care <- man.train.obs.rec %>%
+  filter(obstacle == "child.care")
+
+CrossTable(man.train.obs.rec.child.care$manager.train, man.train.obs.rec.child.care$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+## Retention strategy
+
+**Does your EMS agency have a retention strategy?**
+
+Respondents were given two options which are provided below in order of top choice first;
+
+* Yes (41%)
+* No (59%)
+
+There is a relationship between if an agency's manager received formal leadership or management training and whether an agency has a retention strategy. 
+
+Agencies that do have a manager that received training responded that they had a retention strategy at a higher rate than expected - 33 responses (57%) vs. 24 expected (41%).
+
+Agencies that do NOT have a manager that received training responded that they had a retention strategy at a lower rate than expected - 21 responses (29%) vs. 30 expected (41%).
+
+<br>
+
+```{r management training and retention strategy}
+man.train.retention.strat <- resp.small.ems %>%
+  select(58,41) %>%
+  rename(retention.strat = 2)
+
+CrossTable(man.train.retention.strat$manager.train, man.train.retention.strat$retention.strat, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+## Trouble retaining staff
+
+**Does your agency have difficulty retaining existing staff?**
+
+Respondents were provided three choices which are below in order of top choice listed first;
+
+```{r table management training and difficulty retaining staff}
+man.train.retaining.staff.table <- resp.small.ems %>%
+  group_by(manager.train) %>%
+  summarise(n = n()) %>%
+  ungroup() %>%
+  drop_na %>%
+  mutate(pct = percent(n / sum(n), accuracy = .1))
+
+kable(format = "html", man.train.retaining.staff.table, escape = F) %>%
+  kable_styling(bootstrap_options = "striped", full_width = FALSE, position = "left") %>%
+  scroll_box(width = "100%") 
+
+```
+
+
+There is no relationship between if an agency has a manager that received formal leadership or management training and their response to if they were having difficulty retaining staff. 
+
+<br>
+
+```{r management training and difficulty retaining staff}
+man.train.retaining.staff <- resp.small.ems %>%
+  select(58, 42) %>%
+  rename(retaining.staff = 2)
+
+CrossTable(man.train.retaining.staff$manager.train, man.train.retaining.staff$retaining.staff, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+
+```
+
+<br>
+
+## Obstacles to retaining{.tabset .tabset-pills}
+
+**Which of the following items are obstacles to retaining staff for your agency?**
+
+This question provided a number of choices for an agency to select and were allowed to check all that apply. The choices are provided below in order of the choice receiving the most responses at the top and working our way down. The value in parenthesis is the percentage of responses it received.
+
+```{r table management training and staff retainment obstables}
+man.train.retention.obstacles.table <- resp.small.ems %>%
+  select(58,43:55)  %>%
+  rename(retirement = 2,
+         time.committment = 3,
+         certification.maintain = 4,
+         inadequate.pay = 5,
+         limited.advancement = 6,
+         lack.recognition = 7,
+         community.too.isolated = 8,
+         employer.flexibility = 9,
+         too.many.runs = 10,
+         too.few.runs = 11,
+         dissatisfaction.owner = 12,
+         dissatisfaction.manager = 13,
+         dissatisfaction.duties = 14) %>%
+  gather(key = "obstacles", value = "response", 2:14) %>% 
+  mutate(response = ifelse(response == "-", "No", "Yes")) %>%
+  group_by(response, obstacles) %>%
+  summarise(n = n()) %>%
+  ungroup() %>%
+  drop_na() %>%
+  group_by(obstacles) %>%
+  mutate(pct = percent(n / sum(n), accuracy = .1)) %>%
+  ungroup() %>%
+  filter(response == "Yes") %>%
+  arrange(desc(n))
+
+kable(format = "html", man.train.retention.obstacles.table, escape = F) %>%
+  kable_styling(bootstrap_options = "striped", position = "left", full_width = FALSE) %>%
+  scroll_box(width = "100%")
+
+```
+
+* Excessive time commitment or scheduling conflicts (72%)
+* Age: older crew members retiring (60%)
+* Inadequate pay or benefits (39%)
+* Employer does not allow staff to leave work for a call (37%)
+* Certification is too difficult to maintain (26%)
+* Limited advancement opportunities (23%)
+* Lack of recognition (14%)
+* Too many runs or transports (11%)
+* Community is too isolated (10%)
+* Other (10%)
+* Too few runs or transports (10%)
+* Dissatisfaction with EMS administrator/owner (5%)
+* Dissatisfaction with job duties (3%)
+* Dissatisfaction with EMS manager (1%)
+
+
+There were no questions that had a relationship.
+
+<br>
+
+```{r prep management training and obstacles to retention, include=FALSE, cache=TRUE}
+man.train.retention.obstacles <- resp.small.ems %>%
+  select(58,43:55)  %>%
+  rename(retirement = 2,
+         time.committment = 3,
+         certification.maintain = 4,
+         inadequate.pay = 5,
+         limited.advancement = 6,
+         lack.recognition = 7,
+         community.too.isolated = 8,
+         employer.flexibility = 9,
+         too.many.runs = 10,
+         too.few.runs = 11,
+         dissatisfaction.owner = 12,
+         dissatisfaction.manager = 13,
+         dissatisfaction.duties = 14) %>%
+  gather(key = "obstacles", value = "response", 2:14) %>% 
+  mutate(response = ifelse(response == "-", "No", "Yes"))
+```
+
+<br>
+
+### Retirement
+
+There is no relationship between if an agency's manager received formal leadership or management training and an agency's response to retirement being an obstacle to retention. 
+
+<br>
+
+```{r management training and retention - retirement}
+man.train.retention.retirement <- man.train.retention.obstacles %>%
+  filter(obstacles == "retirement")
+
+CrossTable(man.train.retention.retirement$manager.train, man.train.retention.retirement$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Time commitment
+
+There is no relationship between if an agency's manager received formal leadership or management training and an agency's response to whether excessive time commitment was an obstacle to retainment.
+
+<br>
+
+```{r management training and retention - time committment}
+man.train.retention.time.commit <- man.train.retention.obstacles %>%
+  filter(obstacles == "time.committment")
+
+CrossTable(man.train.retention.time.commit$manager.train, man.train.retention.time.commit$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Difficult to maintain certification
+
+There is no relationship between if an agency's manager received formal leadership or management training and whether an agency indicated that difficulty to maintain certification was an obstacle to retainment.
+
+<br>
+
+```{r management training and retention - maintain certification}
+man.train.retention.maintain.certification <- man.train.retention.obstacles %>%
+  filter(obstacles == "certification.maintain")
+
+CrossTable(man.train.retention.maintain.certification$manager.train, man.train.retention.maintain.certification$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Inadequate pay
+
+There is no relationship between if an agency's manager received formal leadership or management training and whether an agency indicated that inadequate pay was an obstacle to retainment.
+
+<br>
+
+```{r management training and retention - inadequate pay}
+man.train.retention.inadequate.pay <- man.train.retention.obstacles %>%
+  filter(obstacles == "inadequate.pay")
+
+CrossTable(man.train.retention.inadequate.pay$manager.train, man.train.retention.inadequate.pay$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Limited advancement
+
+There is no relationship between if an agency's manager received formal leadership or management training and whether an agency indicated that limited advancement opportunities was an obstacle to staff retainment.
+
+<br>
+
+```{r management training and retention - limited advancement opportunities}
+man.train.retention.limited.advancement <- man.train.retention.obstacles %>%
+  filter(obstacles == "limited.advancement")
+
+CrossTable(man.train.retention.limited.advancement$manager.train, man.train.retention.limited.advancement$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Lack of recognition
+
+There is no relationship between if an agency's manager received formal leadership or management training and whether an agency indicated lack of recognition was an obstacle to retainment.
+
+<br>
+
+```{r management training and retention - lack of recognition}
+man.train.retention.recognition <- man.train.retention.obstacles %>%
+  filter(obstacles == "lack.recognition")
+
+CrossTable(man.train.retention.recognition$manager.train, man.train.retention.recognition$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Community is too isolated
+
+There is no relationship between if an agency's manager received formal training and whether an agency indicated that the community is too isolated and acts as an obstacle to staff retainment.
+
+<br>
+
+```{r management training and retention - isolated community}
+man.train.retention.isolated.community <- man.train.retention.obstacles %>%
+  filter(obstacles == "community.too.isolated")
+
+CrossTable(man.train.retention.isolated.community$manager.train, man.train.retention.isolated.community$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Employer won't allow staff to leave work
+
+There is no relationship between if an agency's manager received formal training and whether an agency indicated that employers not allowing staff to respond to calls during work hours was an obstacle to staff retainment.
+
+<br>
+
+```{r management training and retention - employer flexibility}
+man.train.retention.employer.flexibility <- man.train.retention.obstacles %>%
+  filter(obstacles == "employer.flexibility")
+
+CrossTable(man.train.retention.employer.flexibility$manager.train, man.train.retention.employer.flexibility$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Too many runs
+
+There is no relationship between if an agency's manager received formal training and whether an agency indicated that too many runs or transports was an obstacle in retainment.
+
+<br>
+
+```{r management training and retention - too many runs}
+man.train.retention.too.many.runs <- man.train.retention.obstacles %>%
+  filter(obstacles == "too.many.runs")
+
+CrossTable(man.train.retention.too.many.runs$manager.train, man.train.retention.too.many.runs$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Too few runs
+
+There is no relationship between if an agency's manager received formal training and an agency's response to whether too few runs or transports was an obstacle in staff retainment.
+
+<br>
+
+```{r management training and retention - too few runs}
+man.train.retention.too.few.runs <- man.train.retention.obstacles %>%
+  filter(obstacles == "too.few.runs")
+
+CrossTable(man.train.retention.too.few.runs$manager.train, man.train.retention.too.few.runs$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Dissastisfaction with EMS owners
+
+There is no relationship between if an agency's manager received formal training and an agency's response to whether dissatisfaction with ownership was an obstacle to retainment.
+
+<br>
+
+```{r management training and retention - dissatisfaction with owners}
+man.train.retention.dissatisfaction.owners <- man.train.retention.obstacles %>%
+  filter(obstacles == "dissatisfaction.owner")
+
+CrossTable(man.train.retention.dissatisfaction.owners$manager.train, man.train.retention.dissatisfaction.owners$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+### Dissatisfaction with EMS manager
+
+There is no relationship between if an agency's manager received formal training and an agency's response to whether dissatisfaction was an obstacle to staff retainment.
+
+<br>
+
+```{r management training and retention - dissatisfaction with manager}
+man.train.retention.dissat.manager <- man.train.retention.obstacles %>%
+  filter(obstacles == "dissatisfaction.manager")
+
+CrossTable(man.train.retention.dissat.manager$manager.train, man.train.retention.dissat.manager$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+
+
+### Dissatisfaction with job duties
+
+There is no relationship between if an agency's manager received formal training and an agency's response to whether dissatisfaction with job duties is an obstacle to staff retainment.
+
+<br>
+
+```{r management training and retention - dissatisfaction with job duties}
+man.train.retention.dissat.duties <- man.train.retention.obstacles %>%
+  filter(obstacles == "dissatisfaction.duties")
+
+CrossTable(man.train.retention.dissat.duties$manager.train, man.train.retention.dissat.duties$response, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
+```
+
+<br>
+

@@ -1,0 +1,2446 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Management training for small EMS cross tabs</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#section-TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#section-TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="section-TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Crosstabs</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Summary and data overview</a>
+</li>
+<li>
+  <a href="population.html">Size of population served</a>
+</li>
+<li>
+  <a href="ownership_type.html">Type of ownership crosstabs</a>
+</li>
+<li>
+  <a href="corporate_support.html">Corporate health support</a>
+</li>
+<li>
+  <a href="management_training.html">Management training</a>
+</li>
+<li>
+  <a href="management_training_small_ems.html">Management training for small EMS</a>
+</li>
+<li>
+  <a href="location.html">Location crosstabs</a>
+</li>
+<li>
+  <a href="staff_compensation.html">Staff compensation crosstabs</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="section-header">
+
+
+
+<h1 class="title toc-ignore">Management training for small EMS cross tabs</h1>
+
+</div>
+
+
+<p>This section of analysis examines whether or not an agency’s manager received formal training at all influenced how an agency responded to questions in the survey. The management training question was;</p>
+<p><strong>Has the EMS manager of your agency had formal leadership or management training? - for EMS agencies serving a population of 9,999 or less</strong></p>
+<p>Respondents were provided the following options, listed in order of most respondents on top; of all EMS respondents (larger EMS included) most managers had received formal training.</p>
+<ul>
+<li>Yes (53.8%, 100)</li>
+<li>No (45.7%, 85)</li>
+</ul>
+<p>However, a majority of agencies that serve a population less than 10,000 did not have their manager’s trained.</p>
+<ul>
+<li>Yes (43.9%, 58)</li>
+<li>No (56.1%, 74 responses)</li>
+</ul>
+<p>What this shows us is that although analysis from a previous page confirmed that there were typical differences in agencies that had managers with formal training vs. agencies with a manager with no training, this was also highly correlated to those agencies being more likely to be larger and flush with cash. By eliminating those agencies, we can pinpoint if management training makes a dent in any of these issues.</p>
+<p>The survey was broken into 7 different sections. For this analysis we only looked at relationships with questions in the workforce sustainability section. You can navigate to the analysis of any of these sections using the table of contents on the left-hand side. The sections are.</p>
+<ol style="list-style-type: decimal">
+<li>Characteristics questions</li>
+<li><strong>Workforce sustainability questions</strong></li>
+<li>Leadership questions</li>
+<li>Education questions</li>
+<li>Medical direction questions</li>
+<li>Community relation questions</li>
+<li>Funding questions</li>
+</ol>
+<p>The analysis used for the cross tabs is the typical chi-square test with p-value.</p>
+<p><br></p>
+<div id="section-summary-of-results" class="section level1 tabset">
+<h1 class="tabset">Summary of results</h1>
+<p>The tabs below lists which questions showed a relationship to whether or not an agency’s manager received formal management or leadership training and combines the executive summary from the MN Department of Health’s analysis with the relationships found in this analysis. The agencies included in this analysis are ones that serve a population of less than 10,000.</p>
+<p><br></p>
+<div id="section-questions-with-relationships" class="section level2">
+<h2>Questions with relationships</h2>
+<p>The following are the questions that showed a statistical significance indicating a relationship were;</p>
+<ul>
+<li>Workforce sustainability section
+<ul>
+<li>Does your EMS agency have a retention strategy?</li>
+</ul></li>
+</ul>
+<p><br></p>
+</div>
+<div id="section-addition-to-mn-department-of-health-summary" class="section level2">
+<h2>Addition to MN Department of Health Summary</h2>
+<p>The following narrative combines the executive summary from the MN Department of Health’s aggregate analysis of the survey with the relationships found in this analysis. Hopefully this will round out the results a bit better and point to more specific trends within the results.</p>
+<p><br></p>
+<div id="section-workforce-sustainability-section" class="section level3 unnumbered unlisted toc-ignore">
+<h3 class="unnumbered unlisted toc-ignore">Workforce sustainability section</h3>
+<p><strong>Key Findings</strong></p>
+<p>Staffing shortages are a major challenge for rural EMS agencies. Eighty (80) percent utilize some version of volunteers to staff their operations. Roster sizes are decreasing, many staff are trained for multiple public functions and many call schedules are not covered 24 hours prior to the shifts.</p>
+<ul>
+<li>The active staff roster decreased for half of the agencies from the previous year</li>
+<li>Weekday daytime hours are the most difficult shifts to cover. However, all weekend and holiday shifts are also difficult to cover</li>
+<li>About 60 percent of agencies have inadequate staff to cover their call schedule without undue burden to the agency.</li>
+<li>Fifty-nine (59) percent of agencies do not have their shifts 100 percent covered at least 24 hours in advance</li>
+</ul>
+<p>Recruitment and retention of ambulance personnel continues to be a significant challenge even though: * Emergency Medical Responders (EMRs) are now widely used to actively staff rural EMS agencies * Most agencies cover the full cost of the continuing education courses for their staff * Most eligible recipients take advantage of state EMS training reimbursement</p>
+<p>However, it is worth noting that there were one difference in responses depending on whether their manager received formal leadership or management training.</p>
+<ul>
+<li>Agencies with a manager that have received training were significantly more likely to have developed a retention strategy - 57% of these agencies vs. 29% of other agencies.</li>
+</ul>
+<p><br></p>
+</div>
+</div>
+</div>
+<div id="section-workforce-sustainability-section-analysis" class="section level1 tabset">
+<h1 class="tabset">Workforce sustainability section analysis</h1>
+<p>The questions in the workforce sustainability section of the survey where the agency’s manager having formal leadership or management training had a relationship in how an agency responded are summarized below.The only agencies included in this analysis serve a population of less than 10,000.</p>
+<p><strong>Summary:</strong></p>
+<p><em>Retention strategy:</em> Agencies with a manager that received formal training were significantly more likely to have developed a staff retention strategy.</p>
+<p><br></p>
+<p><strong>Analysis:</strong></p>
+<p>The questions in the workforce sustainability section of the survey are provided in tabs below along with the chi-square and p-value for the relationship between region and each question.</p>
+<p><br></p>
+<div id="section-cover-call-schedule" class="section level2">
+<h2>Cover call schedule</h2>
+<p><strong>Do you have enough people to cover your call schedule without undue burden or excessive time commitments?</strong></p>
+<p>Respondents were provided with two choices which are provided below in order of top choice listed first;</p>
+<div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:100%; ">
+<table class="table table-striped" style="width: auto !important; ">
+<thead>
+<tr>
+<th style="text-align:left;">
+manager.train
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:left;">
+pct
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:right;">
+74
+</td>
+<td style="text-align:left;">
+54.8%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:right;">
+58
+</td>
+<td style="text-align:left;">
+43.0%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2.2%
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>No (60%)</li>
+<li>Yes (40%)</li>
+</ul>
+<p>There is no relationship in whether an agency’s manager has received formal leadership or management training and whether their call schedule is covered.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                  | man.train.schedule$cover.sched 
+## man.train.schedule$manager.train |        No |       Yes | Row Total | 
+## ---------------------------------|-----------|-----------|-----------|
+##                               No |        53 |        21 |        74 | 
+##                                  |    51.015 |    22.985 |           | 
+##                                  |     0.716 |     0.284 |     0.561 | 
+## ---------------------------------|-----------|-----------|-----------|
+##                              Yes |        38 |        20 |        58 | 
+##                                  |    39.985 |    18.015 |           | 
+##                                  |     0.655 |     0.345 |     0.439 | 
+## ---------------------------------|-----------|-----------|-----------|
+##                     Column Total |        91 |        41 |       132 | 
+## ---------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.5658373     d.f. =  1     p =  0.4519178 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0.3166658     d.f. =  1     p =  0.5736183 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-recruitment-plan" class="section level2">
+<h2>Recruitment plan</h2>
+<p><strong>Does you agency have a recruitment plan?</strong></p>
+<p>Respondents were provided two choices which are provided below in order of top choice listed first;</p>
+<div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:100%; ">
+<table class="table table-striped" style="width: auto !important; ">
+<thead>
+<tr>
+<th style="text-align:left;">
+manager.train
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:left;">
+pct
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:right;">
+74
+</td>
+<td style="text-align:left;">
+54.8%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:right;">
+58
+</td>
+<td style="text-align:left;">
+43.0%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2.2%
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>Yes (58%)</li>
+<li>No (41%)</li>
+</ul>
+<p>There is no relationship in whether an agency has a recruitment plan and if their manager has received formal training.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  130 
+## 
+##  
+##                                  | man.train.rec.plan$rec.plan 
+## man.train.rec.plan$manager.train |        No |       Yes | Row Total | 
+## ---------------------------------|-----------|-----------|-----------|
+##                               No |        39 |        33 |        72 | 
+##                                  |    34.338 |    37.662 |           | 
+##                                  |     0.542 |     0.458 |     0.554 | 
+## ---------------------------------|-----------|-----------|-----------|
+##                              Yes |        23 |        35 |        58 | 
+##                                  |    27.662 |    30.338 |           | 
+##                                  |     0.397 |     0.603 |     0.446 | 
+## ---------------------------------|-----------|-----------|-----------|
+##                     Column Total |        62 |        68 |       130 | 
+## ---------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  2.711612     d.f. =  1     p =  0.09962029 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  2.16111     d.f. =  1     p =  0.1415424 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-difficult-to-recruit" class="section level2">
+<h2>Difficult to recruit?</h2>
+<p><strong>Is it difficult to recruit new EMS staff?</strong></p>
+<p>Respondents were provided three choices which are list below with the top choice first;</p>
+<div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:100%; ">
+<table class="table table-striped" style="width: auto !important; ">
+<thead>
+<tr>
+<th style="text-align:left;">
+manager.train
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:left;">
+pct
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:right;">
+74
+</td>
+<td style="text-align:left;">
+54.8%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:right;">
+58
+</td>
+<td style="text-align:left;">
+43.0%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2.2%
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>Yes (63%)</li>
+<li>No (4%)</li>
+<li>Sometimes (33%)</li>
+</ul>
+<p>There is no relationship in whether an agency feels it’s difficult to recruit new staff and if they have a manager that’s received formal leadership or management training.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                 | man.train.dif.rec$dif.rec 
+## man.train.dif.rec$manager.train |        No |  Somewhat |       Yes | Row Total | 
+## --------------------------------|-----------|-----------|-----------|-----------|
+##                              No |         0 |        18 |        56 |        74 | 
+##                                 |     0.561 |    21.303 |    52.136 |           | 
+##                                 |     0.000 |     0.243 |     0.757 |     0.561 | 
+## --------------------------------|-----------|-----------|-----------|-----------|
+##                             Yes |         1 |        20 |        37 |        58 | 
+##                                 |     0.439 |    16.697 |    40.864 |           | 
+##                                 |     0.017 |     0.345 |     0.638 |     0.439 | 
+## --------------------------------|-----------|-----------|-----------|-----------|
+##                    Column Total |         1 |        38 |        93 |       132 | 
+## --------------------------------|-----------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  3.093034     d.f. =  2     p =  0.2129886 
+## 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-obstacles-to-recruiting" class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">Obstacles to recruiting</h2>
+<p><strong>Which of the following items are obstacles to recruiting EMS staff for your agency?</strong></p>
+<p>Respondents were provided 10 choices of which they could select all that applied. The choices are provided below and in order with top choice listed first;</p>
+<div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:100%; ">
+<table class="table table-striped" style="width: auto !important; ">
+<thead>
+<tr>
+<th style="text-align:left;">
+obstacle
+</th>
+<th style="text-align:left;">
+response
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:left;">
+pct
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+too.time.commit
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:right;">
+102
+</td>
+<td style="text-align:left;">
+76.7%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+lack.availability
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:right;">
+95
+</td>
+<td style="text-align:left;">
+71.4%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+training.too.time
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:right;">
+91
+</td>
+<td style="text-align:left;">
+68.4%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+lack.interest
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:right;">
+70
+</td>
+<td style="text-align:left;">
+52.6%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+child.care
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:right;">
+63
+</td>
+<td style="text-align:left;">
+47.4%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+inadequate.pay
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:right;">
+58
+</td>
+<td style="text-align:left;">
+43.6%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+lack.trained.cand
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:right;">
+57
+</td>
+<td style="text-align:left;">
+42.9%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+training.too.dist
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:right;">
+39
+</td>
+<td style="text-align:left;">
+29.3%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+training.too.exp
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:left;">
+22.6%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+too.few.runs
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:left;">
+14.3%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+too.many.runs
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+6.0%
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>Time commitment is too great (67%)</li>
+<li>Lack of availability (62%)</li>
+<li>Training requirements are too time consuming (58%)</li>
+<li>Lack of trained candidates (50%)</li>
+<li>inadequate pay or benefits (40%)</li>
+<li>Child care responsibilities (38%)</li>
+<li>Training requirements are too far away (23%)</li>
+<li>Too few runs or transports (14%)</li>
+<li>Too many runs or transports (9%)</li>
+<li>Other (5%)</li>
+</ul>
+<p>There were no questions that had a relationship.</p>
+<p><br></p>
+<div id="section-lack-of-availability" class="section level3">
+<h3>Lack of availability</h3>
+<p>There is no relationship between an agency having a manager who has received formal leadership or management training and whether lack of availability was considered an obstacle to recruitment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                              | man.train.obs.rec.availability$response 
+## man.train.obs.rec.availability$manager.train |        No |       Yes | Row Total | 
+## ---------------------------------------------|-----------|-----------|-----------|
+##                                           No |        21 |        53 |        74 | 
+##                                              |    21.303 |    52.697 |           | 
+##                                              |     0.284 |     0.716 |     0.561 | 
+## ---------------------------------------------|-----------|-----------|-----------|
+##                                          Yes |        17 |        41 |        58 | 
+##                                              |    16.697 |    41.303 |           | 
+##                                              |     0.293 |     0.707 |     0.439 | 
+## ---------------------------------------------|-----------|-----------|-----------|
+##                                 Column Total |        38 |        94 |       132 | 
+## ---------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.01377599     d.f. =  1     p =  0.9065659 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0     d.f. =  1     p =  1 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-lack-of-trained-candidates" class="section level3">
+<h3>Lack of trained candidates</h3>
+<p>There is no relationship between if an agency has a manager that received formal leadership or management training and whether there is a lack of trained candidates acting as an obstacle to recruitment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                              | man.train.obs.rec.trained.cand$response 
+## man.train.obs.rec.trained.cand$manager.train |        No |       Yes | Row Total | 
+## ---------------------------------------------|-----------|-----------|-----------|
+##                                           No |        37 |        37 |        74 | 
+##                                              |    42.606 |    31.394 |           | 
+##                                              |     0.500 |     0.500 |     0.561 | 
+## ---------------------------------------------|-----------|-----------|-----------|
+##                                          Yes |        39 |        19 |        58 | 
+##                                              |    33.394 |    24.606 |           | 
+##                                              |     0.672 |     0.328 |     0.439 | 
+## ---------------------------------------------|-----------|-----------|-----------|
+##                                 Column Total |        76 |        56 |       132 | 
+## ---------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  3.957091     d.f. =  1     p =  0.0466743 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  3.282709     d.f. =  1     p =  0.07001327 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-training-takes-too-much-time" class="section level3">
+<h3>Training takes too much time</h3>
+<p>There is no relationship between if an agency has a manager that received formal leadership or management training and whether training takes too much time and acts as an obstacle to recruitment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                               | man.train.obs.rec.training.time$response 
+## man.train.obs.rec.training.time$manager.train |        No |       Yes | Row Total | 
+## ----------------------------------------------|-----------|-----------|-----------|
+##                                            No |        20 |        54 |        74 | 
+##                                               |    23.545 |    50.455 |           | 
+##                                               |     0.270 |     0.730 |     0.561 | 
+## ----------------------------------------------|-----------|-----------|-----------|
+##                                           Yes |        22 |        36 |        58 | 
+##                                               |    18.455 |    39.545 |           | 
+##                                               |     0.379 |     0.621 |     0.439 | 
+## ----------------------------------------------|-----------|-----------|-----------|
+##                                  Column Total |        42 |        90 |       132 | 
+## ----------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  1.782026     d.f. =  1     p =  0.1819007 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  1.314845     d.f. =  1     p =  0.2515193 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-training-too-expensive" class="section level3">
+<h3>Training too expensive</h3>
+<p>There is no relationship between if an agency has a manager that received formal leadership or management training and whether trainings being too expensive was an obstacle to recruitment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                              | man.train.obs.rec.training.exp$response 
+## man.train.obs.rec.training.exp$manager.train |        No |       Yes | Row Total | 
+## ---------------------------------------------|-----------|-----------|-----------|
+##                                           No |        57 |        17 |        74 | 
+##                                              |    57.742 |    16.258 |           | 
+##                                              |     0.770 |     0.230 |     0.561 | 
+## ---------------------------------------------|-----------|-----------|-----------|
+##                                          Yes |        46 |        12 |        58 | 
+##                                              |    45.258 |    12.742 |           | 
+##                                              |     0.793 |     0.207 |     0.439 | 
+## ---------------------------------------------|-----------|-----------|-----------|
+##                                 Column Total |       103 |        29 |       132 | 
+## ---------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.09888517     d.f. =  1     p =  0.7531716 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0.01054336     d.f. =  1     p =  0.9182163 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-training-locations-too-far" class="section level3">
+<h3>Training locations too far</h3>
+<p>There is no relationship between if an agency has a manager that received formal leadership or management training and whether trainings were too far to travel were obstacles to recruitment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                                   | man.train.obs.rec.trainings.too.far$response 
+## man.train.obs.rec.trainings.too.far$manager.train |        No |       Yes | Row Total | 
+## --------------------------------------------------|-----------|-----------|-----------|
+##                                                No |        53 |        21 |        74 | 
+##                                                   |    52.697 |    21.303 |           | 
+##                                                   |     0.716 |     0.284 |     0.561 | 
+## --------------------------------------------------|-----------|-----------|-----------|
+##                                               Yes |        41 |        17 |        58 | 
+##                                                   |    41.303 |    16.697 |           | 
+##                                                   |     0.707 |     0.293 |     0.439 | 
+## --------------------------------------------------|-----------|-----------|-----------|
+##                                      Column Total |        94 |        38 |       132 | 
+## --------------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.01377599     d.f. =  1     p =  0.9065659 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0     d.f. =  1     p =  1 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-inadequate-pay" class="section level3">
+<h3>Inadequate pay</h3>
+<p>There is no relationship between if an agency has a manager that received formal leadership or management training and whether inadequate pay was an obstacle to recruitment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                                | man.train.obs.rec.inadequate.pay$response 
+## man.train.obs.rec.inadequate.pay$manager.train |        No |       Yes | Row Total | 
+## -----------------------------------------------|-----------|-----------|-----------|
+##                                             No |        39 |        35 |        74 | 
+##                                                |    41.485 |    32.515 |           | 
+##                                                |     0.527 |     0.473 |     0.561 | 
+## -----------------------------------------------|-----------|-----------|-----------|
+##                                            Yes |        35 |        23 |        58 | 
+##                                                |    32.515 |    25.485 |           | 
+##                                                |     0.603 |     0.397 |     0.439 | 
+## -----------------------------------------------|-----------|-----------|-----------|
+##                                   Column Total |        74 |        58 |       132 | 
+## -----------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.7709074     d.f. =  1     p =  0.3799365 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0.4918776     d.f. =  1     p =  0.4830909 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-too-few-runs" class="section level3">
+<h3>Too few runs</h3>
+<p>There is no relationship between if an agency has a manager that received formal leadership or management training and whether too few runs is an obstacle to recruitment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                              | man.train.obs.rec.too.few.runs$response 
+## man.train.obs.rec.too.few.runs$manager.train |        No |       Yes | Row Total | 
+## ---------------------------------------------|-----------|-----------|-----------|
+##                                           No |        62 |        12 |        74 | 
+##                                              |    63.348 |    10.652 |           | 
+##                                              |     0.838 |     0.162 |     0.561 | 
+## ---------------------------------------------|-----------|-----------|-----------|
+##                                          Yes |        51 |         7 |        58 | 
+##                                              |    49.652 |     8.348 |           | 
+##                                              |     0.879 |     0.121 |     0.439 | 
+## ---------------------------------------------|-----------|-----------|-----------|
+##                                 Column Total |       113 |        19 |       132 | 
+## ---------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.4538603     d.f. =  1     p =  0.5005074 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0.1796876     d.f. =  1     p =  0.6716418 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-too-many-runs" class="section level3">
+<h3>Too many runs</h3>
+<p>There is no relationship between if an agency has a manager that received formal leadership or management training and whether too many runs was an obstacle in recruitment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                               | man.train.obs.rec.too.many.runs$response 
+## man.train.obs.rec.too.many.runs$manager.train |        No |       Yes | Row Total | 
+## ----------------------------------------------|-----------|-----------|-----------|
+##                                            No |        69 |         5 |        74 | 
+##                                               |    69.515 |     4.485 |           | 
+##                                               |     0.932 |     0.068 |     0.561 | 
+## ----------------------------------------------|-----------|-----------|-----------|
+##                                           Yes |        55 |         3 |        58 | 
+##                                               |    54.485 |     3.515 |           | 
+##                                               |     0.948 |     0.052 |     0.439 | 
+## ----------------------------------------------|-----------|-----------|-----------|
+##                                  Column Total |       124 |         8 |       132 | 
+## ----------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.1433575     d.f. =  1     p =  0.7049658 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0.0001240117     d.f. =  1     p =  0.9911149 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-too-much-time-commitment" class="section level3">
+<h3>Too much time commitment</h3>
+<p>There is no relationship between if an agency has a manager that received formal leadership or management training and whether too much of a time commitment was an obstacle to recruitment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                               | man.train.obs.rec.too.much.time$response 
+## man.train.obs.rec.too.much.time$manager.train |        No |       Yes | Row Total | 
+## ----------------------------------------------|-----------|-----------|-----------|
+##                                            No |        17 |        57 |        74 | 
+##                                               |    17.379 |    56.621 |           | 
+##                                               |     0.230 |     0.770 |     0.561 | 
+## ----------------------------------------------|-----------|-----------|-----------|
+##                                           Yes |        14 |        44 |        58 | 
+##                                               |    13.621 |    44.379 |           | 
+##                                               |     0.241 |     0.759 |     0.439 | 
+## ----------------------------------------------|-----------|-----------|-----------|
+##                                  Column Total |        31 |       101 |       132 | 
+## ----------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.02455677     d.f. =  1     p =  0.8754766 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  1.652901e-30     d.f. =  1     p =  1 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-child-care-obligations" class="section level3">
+<h3>Child care obligations</h3>
+<p>There is no relationship between if an agency’s manager received formal leadership or management training and whether child care obligations were an obstacle to recruitment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                            | man.train.obs.rec.child.care$response 
+## man.train.obs.rec.child.care$manager.train |        No |       Yes | Row Total | 
+## -------------------------------------------|-----------|-----------|-----------|
+##                                         No |        39 |        35 |        74 | 
+##                                            |    39.242 |    34.758 |           | 
+##                                            |     0.527 |     0.473 |     0.561 | 
+## -------------------------------------------|-----------|-----------|-----------|
+##                                        Yes |        31 |        27 |        58 | 
+##                                            |    30.758 |    27.242 |           | 
+##                                            |     0.534 |     0.466 |     0.439 | 
+## -------------------------------------------|-----------|-----------|-----------|
+##                               Column Total |        70 |        62 |       132 | 
+## -------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.007256454     d.f. =  1     p =  0.9321145 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0     d.f. =  1     p =  1 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+</div>
+<div id="section-retention-strategy" class="section level2">
+<h2>Retention strategy</h2>
+<p><strong>Does your EMS agency have a retention strategy?</strong></p>
+<p>Respondents were given two options which are provided below in order of top choice first;</p>
+<ul>
+<li>Yes (41%)</li>
+<li>No (59%)</li>
+</ul>
+<p>There is a relationship between if an agency’s manager received formal leadership or management training and whether an agency has a retention strategy.</p>
+<p>Agencies that do have a manager that received training responded that they had a retention strategy at a higher rate than expected - 33 responses (57%) vs. 24 expected (41%).</p>
+<p>Agencies that do NOT have a manager that received training responded that they had a retention strategy at a lower rate than expected - 21 responses (29%) vs. 30 expected (41%).</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  131 
+## 
+##  
+##                                         | man.train.retention.strat$retention.strat 
+## man.train.retention.strat$manager.train |        No |       Yes | Row Total | 
+## ----------------------------------------|-----------|-----------|-----------|
+##                                      No |        52 |        21 |        73 | 
+##                                         |    42.908 |    30.092 |           | 
+##                                         |     0.712 |     0.288 |     0.557 | 
+## ----------------------------------------|-----------|-----------|-----------|
+##                                     Yes |        25 |        33 |        58 | 
+##                                         |    34.092 |    23.908 |           | 
+##                                         |     0.431 |     0.569 |     0.443 | 
+## ----------------------------------------|-----------|-----------|-----------|
+##                            Column Total |        77 |        54 |       131 | 
+## ----------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  10.55503     d.f. =  1     p =  0.001158723 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  9.42599     d.f. =  1     p =  0.002139316 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-trouble-retaining-staff" class="section level2">
+<h2>Trouble retaining staff</h2>
+<p><strong>Does your agency have difficulty retaining existing staff?</strong></p>
+<p>Respondents were provided three choices which are below in order of top choice listed first;</p>
+<div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:100%; ">
+<table class="table table-striped" style="width: auto !important; ">
+<thead>
+<tr>
+<th style="text-align:left;">
+manager.train
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:left;">
+pct
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:right;">
+74
+</td>
+<td style="text-align:left;">
+56.1%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:right;">
+58
+</td>
+<td style="text-align:left;">
+43.9%
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>There is no relationship between if an agency has a manager that received formal leadership or management training and their response to if they were having difficulty retaining staff.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                         | man.train.retaining.staff$retaining.staff 
+## man.train.retaining.staff$manager.train |    Always |     Never | Sometimes | Row Total | 
+## ----------------------------------------|-----------|-----------|-----------|-----------|
+##                                      No |         8 |         5 |        61 |        74 | 
+##                                         |     8.409 |     5.606 |    59.985 |           | 
+##                                         |     0.108 |     0.068 |     0.824 |     0.561 | 
+## ----------------------------------------|-----------|-----------|-----------|-----------|
+##                                     Yes |         7 |         5 |        46 |        58 | 
+##                                         |     6.591 |     4.394 |    47.015 |           | 
+##                                         |     0.121 |     0.086 |     0.793 |     0.439 | 
+## ----------------------------------------|-----------|-----------|-----------|-----------|
+##                            Column Total |        15 |        10 |       107 |       132 | 
+## ----------------------------------------|-----------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.2335072     d.f. =  2     p =  0.8898044 
+## 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-obstacles-to-retaining" class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">Obstacles to retaining</h2>
+<p><strong>Which of the following items are obstacles to retaining staff for your agency?</strong></p>
+<p>This question provided a number of choices for an agency to select and were allowed to check all that apply. The choices are provided below in order of the choice receiving the most responses at the top and working our way down. The value in parenthesis is the percentage of responses it received.</p>
+<div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:100%; ">
+<table class="table table-striped" style="width: auto !important; ">
+<thead>
+<tr>
+<th style="text-align:left;">
+response
+</th>
+<th style="text-align:left;">
+obstacles
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:left;">
+pct
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:left;">
+time.committment
+</td>
+<td style="text-align:right;">
+109
+</td>
+<td style="text-align:left;">
+82.0%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:left;">
+retirement
+</td>
+<td style="text-align:right;">
+91
+</td>
+<td style="text-align:left;">
+68.4%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:left;">
+employer.flexibility
+</td>
+<td style="text-align:right;">
+62
+</td>
+<td style="text-align:left;">
+46.6%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:left;">
+inadequate.pay
+</td>
+<td style="text-align:right;">
+56
+</td>
+<td style="text-align:left;">
+42.1%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:left;">
+certification.maintain
+</td>
+<td style="text-align:right;">
+38
+</td>
+<td style="text-align:left;">
+28.6%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:left;">
+lack.recognition
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:left;">
+15.8%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:left;">
+limited.advancement
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:left;">
+10.5%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:left;">
+too.many.runs
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:left;">
+9.8%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:left;">
+too.few.runs
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:left;">
+8.3%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:left;">
+community.too.isolated
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:left;">
+7.5%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:left;">
+dissatisfaction.owner
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+5.3%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:left;">
+dissatisfaction.duties
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+3.8%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:left;">
+dissatisfaction.manager
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2.3%
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>Excessive time commitment or scheduling conflicts (72%)</li>
+<li>Age: older crew members retiring (60%)</li>
+<li>Inadequate pay or benefits (39%)</li>
+<li>Employer does not allow staff to leave work for a call (37%)</li>
+<li>Certification is too difficult to maintain (26%)</li>
+<li>Limited advancement opportunities (23%)</li>
+<li>Lack of recognition (14%)</li>
+<li>Too many runs or transports (11%)</li>
+<li>Community is too isolated (10%)</li>
+<li>Other (10%)</li>
+<li>Too few runs or transports (10%)</li>
+<li>Dissatisfaction with EMS administrator/owner (5%)</li>
+<li>Dissatisfaction with job duties (3%)</li>
+<li>Dissatisfaction with EMS manager (1%)</li>
+</ul>
+<p>There were no questions that had a relationship.</p>
+<p><br></p>
+<p><br></p>
+<div id="section-retirement" class="section level3">
+<h3>Retirement</h3>
+<p>There is no relationship between if an agency’s manager received formal leadership or management training and an agency’s response to retirement being an obstacle to retention.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                              | man.train.retention.retirement$response 
+## man.train.retention.retirement$manager.train |        No |       Yes | Row Total | 
+## ---------------------------------------------|-----------|-----------|-----------|
+##                                           No |        25 |        49 |        74 | 
+##                                              |    23.545 |    50.455 |           | 
+##                                              |     0.338 |     0.662 |     0.561 | 
+## ---------------------------------------------|-----------|-----------|-----------|
+##                                          Yes |        17 |        41 |        58 | 
+##                                              |    18.455 |    39.545 |           | 
+##                                              |     0.293 |     0.707 |     0.439 | 
+## ---------------------------------------------|-----------|-----------|-----------|
+##                                 Column Total |        42 |        90 |       132 | 
+## ---------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.2999334     d.f. =  1     p =  0.5839242 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0.1291705     d.f. =  1     p =  0.7192936 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-time-commitment" class="section level3">
+<h3>Time commitment</h3>
+<p>There is no relationship between if an agency’s manager received formal leadership or management training and an agency’s response to whether excessive time commitment was an obstacle to retainment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                               | man.train.retention.time.commit$response 
+## man.train.retention.time.commit$manager.train |        No |       Yes | Row Total | 
+## ----------------------------------------------|-----------|-----------|-----------|
+##                                            No |        12 |        62 |        74 | 
+##                                               |    13.455 |    60.545 |           | 
+##                                               |     0.162 |     0.838 |     0.561 | 
+## ----------------------------------------------|-----------|-----------|-----------|
+##                                           Yes |        12 |        46 |        58 | 
+##                                               |    10.545 |    47.455 |           | 
+##                                               |     0.207 |     0.793 |     0.439 | 
+## ----------------------------------------------|-----------|-----------|-----------|
+##                                  Column Total |        24 |       108 |       132 | 
+## ----------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.4374029     d.f. =  1     p =  0.5083786 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0.1883737     d.f. =  1     p =  0.6642736 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-difficult-to-maintain-certification" class="section level3">
+<h3>Difficult to maintain certification</h3>
+<p>There is no relationship between if an agency’s manager received formal leadership or management training and whether an agency indicated that difficulty to maintain certification was an obstacle to retainment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                                          | man.train.retention.maintain.certification$response 
+## man.train.retention.maintain.certification$manager.train |        No |       Yes | Row Total | 
+## ---------------------------------------------------------|-----------|-----------|-----------|
+##                                                       No |        52 |        22 |        74 | 
+##                                                          |    53.258 |    20.742 |           | 
+##                                                          |     0.703 |     0.297 |     0.561 | 
+## ---------------------------------------------------------|-----------|-----------|-----------|
+##                                                      Yes |        43 |        15 |        58 | 
+##                                                          |    41.742 |    16.258 |           | 
+##                                                          |     0.741 |     0.259 |     0.439 | 
+## ---------------------------------------------------------|-----------|-----------|-----------|
+##                                             Column Total |        95 |        37 |       132 | 
+## ---------------------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.2411044     d.f. =  1     p =  0.6234096 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0.08749614     d.f. =  1     p =  0.7673848 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-inadequate-pay-1" class="section level3">
+<h3>Inadequate pay</h3>
+<p>There is no relationship between if an agency’s manager received formal leadership or management training and whether an agency indicated that inadequate pay was an obstacle to retainment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                                  | man.train.retention.inadequate.pay$response 
+## man.train.retention.inadequate.pay$manager.train |        No |       Yes | Row Total | 
+## -------------------------------------------------|-----------|-----------|-----------|
+##                                               No |        39 |        35 |        74 | 
+##                                                  |    43.167 |    30.833 |           | 
+##                                                  |     0.527 |     0.473 |     0.561 | 
+## -------------------------------------------------|-----------|-----------|-----------|
+##                                              Yes |        38 |        20 |        58 | 
+##                                                  |    33.833 |    24.167 |           | 
+##                                                  |     0.655 |     0.345 |     0.439 | 
+## -------------------------------------------------|-----------|-----------|-----------|
+##                                     Column Total |        77 |        55 |       132 | 
+## -------------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  2.196778     d.f. =  1     p =  0.1382995 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  1.701185     d.f. =  1     p =  0.1921331 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-limited-advancement" class="section level3">
+<h3>Limited advancement</h3>
+<p>There is no relationship between if an agency’s manager received formal leadership or management training and whether an agency indicated that limited advancement opportunities was an obstacle to staff retainment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                                       | man.train.retention.limited.advancement$response 
+## man.train.retention.limited.advancement$manager.train |        No |       Yes | Row Total | 
+## ------------------------------------------------------|-----------|-----------|-----------|
+##                                                    No |        67 |         7 |        74 | 
+##                                                       |    66.152 |     7.848 |           | 
+##                                                       |     0.905 |     0.095 |     0.561 | 
+## ------------------------------------------------------|-----------|-----------|-----------|
+##                                                   Yes |        51 |         7 |        58 | 
+##                                                       |    51.848 |     6.152 |           | 
+##                                                       |     0.879 |     0.121 |     0.439 | 
+## ------------------------------------------------------|-----------|-----------|-----------|
+##                                          Column Total |       118 |        14 |       132 | 
+## ------------------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.2335287     d.f. =  1     p =  0.6289196 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0.03939307     d.f. =  1     p =  0.842672 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-lack-of-recognition" class="section level3">
+<h3>Lack of recognition</h3>
+<p>There is no relationship between if an agency’s manager received formal leadership or management training and whether an agency indicated lack of recognition was an obstacle to retainment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                               | man.train.retention.recognition$response 
+## man.train.retention.recognition$manager.train |        No |       Yes | Row Total | 
+## ----------------------------------------------|-----------|-----------|-----------|
+##                                            No |        62 |        12 |        74 | 
+##                                               |    62.788 |    11.212 |           | 
+##                                               |     0.838 |     0.162 |     0.561 | 
+## ----------------------------------------------|-----------|-----------|-----------|
+##                                           Yes |        50 |         8 |        58 | 
+##                                               |    49.212 |     8.788 |           | 
+##                                               |     0.862 |     0.138 |     0.439 | 
+## ----------------------------------------------|-----------|-----------|-----------|
+##                                  Column Total |       112 |        20 |       132 | 
+## ----------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.1485022     d.f. =  1     p =  0.6999708 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0.01982592     d.f. =  1     p =  0.8880243 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-community-is-too-isolated" class="section level3">
+<h3>Community is too isolated</h3>
+<p>There is no relationship between if an agency’s manager received formal training and whether an agency indicated that the community is too isolated and acts as an obstacle to staff retainment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                                      | man.train.retention.isolated.community$response 
+## man.train.retention.isolated.community$manager.train |        No |       Yes | Row Total | 
+## -----------------------------------------------------|-----------|-----------|-----------|
+##                                                   No |        70 |         4 |        74 | 
+##                                                      |    68.394 |     5.606 |           | 
+##                                                      |     0.946 |     0.054 |     0.561 | 
+## -----------------------------------------------------|-----------|-----------|-----------|
+##                                                  Yes |        52 |         6 |        58 | 
+##                                                      |    53.606 |     4.394 |           | 
+##                                                      |     0.897 |     0.103 |     0.439 | 
+## -----------------------------------------------------|-----------|-----------|-----------|
+##                                         Column Total |       122 |        10 |       132 | 
+## -----------------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  1.13299     d.f. =  1     p =  0.2871384 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0.5373535     d.f. =  1     p =  0.4635316 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-employer-wont-allow-staff-to-leave-work" class="section level3">
+<h3>Employer won’t allow staff to leave work</h3>
+<p>There is no relationship between if an agency’s manager received formal training and whether an agency indicated that employers not allowing staff to respond to calls during work hours was an obstacle to staff retainment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                                        | man.train.retention.employer.flexibility$response 
+## man.train.retention.employer.flexibility$manager.train |        No |       Yes | Row Total | 
+## -------------------------------------------------------|-----------|-----------|-----------|
+##                                                     No |        39 |        35 |        74 | 
+##                                                        |    39.242 |    34.758 |           | 
+##                                                        |     0.527 |     0.473 |     0.561 | 
+## -------------------------------------------------------|-----------|-----------|-----------|
+##                                                    Yes |        31 |        27 |        58 | 
+##                                                        |    30.758 |    27.242 |           | 
+##                                                        |     0.534 |     0.466 |     0.439 | 
+## -------------------------------------------------------|-----------|-----------|-----------|
+##                                           Column Total |        70 |        62 |       132 | 
+## -------------------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.007256454     d.f. =  1     p =  0.9321145 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0     d.f. =  1     p =  1 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-too-many-runs-1" class="section level3">
+<h3>Too many runs</h3>
+<p>There is no relationship between if an agency’s manager received formal training and whether an agency indicated that too many runs or transports was an obstacle in retainment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                                 | man.train.retention.too.many.runs$response 
+## man.train.retention.too.many.runs$manager.train |        No |       Yes | Row Total | 
+## ------------------------------------------------|-----------|-----------|-----------|
+##                                              No |        65 |         9 |        74 | 
+##                                                 |    66.712 |     7.288 |           | 
+##                                                 |     0.878 |     0.122 |     0.561 | 
+## ------------------------------------------------|-----------|-----------|-----------|
+##                                             Yes |        54 |         4 |        58 | 
+##                                                 |    52.288 |     5.712 |           | 
+##                                                 |     0.931 |     0.069 |     0.439 | 
+## ------------------------------------------------|-----------|-----------|-----------|
+##                                    Column Total |       119 |        13 |       132 | 
+## ------------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  1.015408     d.f. =  1     p =  0.3136106 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0.5089368     d.f. =  1     p =  0.4755995 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-too-few-runs-1" class="section level3">
+<h3>Too few runs</h3>
+<p>There is no relationship between if an agency’s manager received formal training and an agency’s response to whether too few runs or transports was an obstacle in staff retainment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                                | man.train.retention.too.few.runs$response 
+## man.train.retention.too.few.runs$manager.train |        No |       Yes | Row Total | 
+## -----------------------------------------------|-----------|-----------|-----------|
+##                                             No |        68 |         6 |        74 | 
+##                                                |    67.833 |     6.167 |           | 
+##                                                |     0.919 |     0.081 |     0.561 | 
+## -----------------------------------------------|-----------|-----------|-----------|
+##                                            Yes |        53 |         5 |        58 | 
+##                                                |    53.167 |     4.833 |           | 
+##                                                |     0.914 |     0.086 |     0.439 | 
+## -----------------------------------------------|-----------|-----------|-----------|
+##                                   Column Total |       121 |        11 |       132 | 
+## -----------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.0111836     d.f. =  1     p =  0.9157787 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  3.364505e-30     d.f. =  1     p =  1 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-dissastisfaction-with-ems-owners" class="section level3">
+<h3>Dissastisfaction with EMS owners</h3>
+<p>There is no relationship between if an agency’s manager received formal training and an agency’s response to whether dissatisfaction with ownership was an obstacle to retainment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                                          | man.train.retention.dissatisfaction.owners$response 
+## man.train.retention.dissatisfaction.owners$manager.train |        No |       Yes | Row Total | 
+## ---------------------------------------------------------|-----------|-----------|-----------|
+##                                                       No |        72 |         2 |        74 | 
+##                                                          |    70.636 |     3.364 |           | 
+##                                                          |     0.973 |     0.027 |     0.561 | 
+## ---------------------------------------------------------|-----------|-----------|-----------|
+##                                                      Yes |        54 |         4 |        58 | 
+##                                                          |    55.364 |     2.636 |           | 
+##                                                          |     0.931 |     0.069 |     0.439 | 
+## ---------------------------------------------------------|-----------|-----------|-----------|
+##                                             Column Total |       126 |         6 |       132 | 
+## ---------------------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  1.318067     d.f. =  1     p =  0.2509393 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  0.5286913     d.f. =  1     p =  0.4671576 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-dissatisfaction-with-ems-manager" class="section level3">
+<h3>Dissatisfaction with EMS manager</h3>
+<p>There is no relationship between if an agency’s manager received formal training and an agency’s response to whether dissatisfaction was an obstacle to staff retainment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                                  | man.train.retention.dissat.manager$response 
+## man.train.retention.dissat.manager$manager.train |        No |       Yes | Row Total | 
+## -------------------------------------------------|-----------|-----------|-----------|
+##                                               No |        74 |         0 |        74 | 
+##                                                  |    72.318 |     1.682 |           | 
+##                                                  |     1.000 |     0.000 |     0.561 | 
+## -------------------------------------------------|-----------|-----------|-----------|
+##                                              Yes |        55 |         3 |        58 | 
+##                                                  |    56.682 |     1.318 |           | 
+##                                                  |     0.948 |     0.052 |     0.439 | 
+## -------------------------------------------------|-----------|-----------|-----------|
+##                                     Column Total |       129 |         3 |       132 | 
+## -------------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  3.9166     d.f. =  1     p =  0.04781149 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  1.933982     d.f. =  1     p =  0.1643234 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+<div id="section-dissatisfaction-with-job-duties" class="section level3">
+<h3>Dissatisfaction with job duties</h3>
+<p>There is no relationship between if an agency’s manager received formal training and an agency’s response to whether dissatisfaction with job duties is an obstacle to staff retainment.</p>
+<p><br></p>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |              Expected N |
+## |           N / Row Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  132 
+## 
+##  
+##                                                 | man.train.retention.dissat.duties$response 
+## man.train.retention.dissat.duties$manager.train |        No |       Yes | Row Total | 
+## ------------------------------------------------|-----------|-----------|-----------|
+##                                              No |        71 |         3 |        74 | 
+##                                                 |    71.197 |     2.803 |           | 
+##                                                 |     0.959 |     0.041 |     0.561 | 
+## ------------------------------------------------|-----------|-----------|-----------|
+##                                             Yes |        56 |         2 |        58 | 
+##                                                 |    55.803 |     2.197 |           | 
+##                                                 |     0.966 |     0.034 |     0.439 | 
+## ------------------------------------------------|-----------|-----------|-----------|
+##                                    Column Total |       127 |         5 |       132 | 
+## ------------------------------------------------|-----------|-----------|-----------|
+## 
+##  
+## Statistics for All Table Factors
+## 
+## 
+## Pearson&#39;s Chi-squared test 
+## ------------------------------------------------------------
+## Chi^2 =  0.03274064     d.f. =  1     p =  0.8564117 
+## 
+## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## ------------------------------------------------------------
+## Chi^2 =  2.150242e-30     d.f. =  1     p =  1 
+## 
+## </code></pre>
+<p><br></p>
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("section-TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#section-TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
