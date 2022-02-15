@@ -1223,7 +1223,7 @@ Respondents were provided 13 choices and were told to check all that apply. The 
 * None (9%)
 * Licensing requirements for the ambulance (5%)
 
-There were zero challenge areas in which the type of ownership seemed to influence responses.
+There were only one challenge areas in which management having formal training seemed to influence responses.
 
 * Staff recruitment
 
@@ -1260,7 +1260,7 @@ There is a relationship between if an agency's manager received formal training 
 
 Agencies with a manager that received training were significantly less likely to say that staff recruitment was a challenge area - 61 responses (60%) vs. 70 expected (69%).
 
-Agencies with a manager that has NOT received training were significantely more likely to say that staff recruitment was difficult to manager - 68 responses (80%) vs. 59 expected (69%).
+Agencies with a manager that has NOT received training were significantly more likely to say that staff recruitment was difficult to manager - 68 responses (80%) vs. 59 expected (69%).
 
 <br>
 
