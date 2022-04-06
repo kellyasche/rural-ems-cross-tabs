@@ -872,9 +872,8 @@ Agencies that do NOT have a manager that received training responded that they h
 <br>
 
 ```{r management training and retention strategy}
-man.train.retention.strat <- master.responses %>%
-  select(58,41) %>%
-  rename(retention.strat = 2)
+
+
 
 CrossTable(man.train.retention.strat$manager.train, man.train.retention.strat$retention.strat, expected = TRUE, prop.t = FALSE, prop.c = FALSE, prop.chisq = FALSE)
 ```

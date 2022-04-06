@@ -132,7 +132,6 @@ master.responses <- read_csv("Data/Responses/Master-survey-responses.csv") %>%
          public.or.private = str_replace(public.or.private, "Private or other non-profit owned or operated", "Private or non-profit"),
          public.or.private = as.factor(public.or.private)) %>%
   rename(corp.sup = 9)
-levels(master.responses$public.or.private)
 ```
 
 This section of analysis examines whether or not an agency was owned, managed or receives support from a corporate health system at all influenced how an agency responded to questions in the survey. The support question was;
